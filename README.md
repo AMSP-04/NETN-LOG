@@ -12,8 +12,3 @@ The NETN Logistics covers the following services:
 The NETN LOG FOM Module is composed of base interactions to the support a service consumer-provider pattern and more specialised classes for specific logistics operations.
 
 The module also contains one object class, LOG_Facility which inherits from the RPR v2.0 object class EmbeddedSystem. The attribute StorageList specifies the materials that are located at a facility and the attribute ServiceCapability – Defines the service that the facility is offer. Since the LOG_Facility object class inherits from RPR v2.0 object class EmbeddedSystem, it has the attributes HostObjectIdentifier and RelativePosition, it can be given a spatial relation to a RPR 2.0 instance, e.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
-
-![][objectclasses]
-	
-
-[objectclasses]: ./objectclasses.png
