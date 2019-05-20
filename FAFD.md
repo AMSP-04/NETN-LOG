@@ -18,7 +18,7 @@ The logistics service pattern is divided into three phases:
 2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
 3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-<img src="/scpphases.png" width="75%">
+<img src="/scpphases.png" width="50%">
 
 ### Service Request and Negotiation
 Service Negotiation: the service is requested, offers received and offers are either accepted or rejected.
