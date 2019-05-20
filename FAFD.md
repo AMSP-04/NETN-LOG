@@ -6,7 +6,7 @@ The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by sub
 
 ## Consumer-Provider Pattern
 
-![](./scp.png)
+<img src="/scp.png" width="50%">
 
 ## Supply
 
