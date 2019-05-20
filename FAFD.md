@@ -8,12 +8,12 @@
 ### Supply Service
 Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the LOG_ReadyToReceiveSupply interaction and shall not exceed the amount of supplies, by type, specified in the LOG_OfferSupply interaction.
 
-To request supplies a LOG_RequestSupply interaction is used. The amount and type of requested materials are included as parameters. _In this request, the Consumer specifies a preference for whether the service delivery is controlled by the Provider (default) or by the Consumer._
+To request supplies a `LOG_RequestSupply` interaction is used. The amount and type of requested materials are included as parameters. _In this request, the Consumer specifies a preference for whether the service delivery is controlled by the Provider (default) or by the Consumer._
 
-A LOG_OfferSupply interaction is used by potential supplies to provide an offer, including the amount and type of offered materials, as a response to the requested supplies. _In this offer the provider can agree with the Consumer's choice of service delivery control or make a counter-offer._
+A `LOG_OfferSupply` interaction is used by potential supplies to provide an offer, including the amount and type of offered materials, as a response to the requested supplies. _In this offer the provider can agree with the Consumer's choice of service delivery control or make a counter-offer._
 
 
-LOG_ReadyToReceiveSupply is used by a Consumer to indicate that supply delivery can start.
+`LOG_ReadyToReceiveSupply` is used by a Consumer to indicate that supply delivery can start.
 
 If the transfer is controlled by the Provider then LOG_SupplyComplete is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a LOG_ServiceReceived in response to the LOG_SupplyComplete interaction. Transfer of supplies is considered complete once the LOG_ServiceReceived is issued.
 
