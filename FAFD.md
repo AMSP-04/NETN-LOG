@@ -4,6 +4,24 @@
 ## Consumer-Provider Pattern
 
 ## Supply
+Services for resupply of consumable materials include:
+* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the condumer of the service.
+* Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
+
+These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. In both services the Consumer and Provider are specified with parameters and an optional `Appointment` parameter describes where and when the transfer of the consumable materials shall take place. The Provider can change the appointment data from the request, e.g. the Consumer does not specify the appointment data in the request interaction, thereafter the Provider specifies appointment data in the offer interaction, the Consumer than has to accept or reject the offer.
+
+If the time specified in the `RequestTimeOut` parameter of the request passes without the Provider sending a positive offer, the Consumer shall cancel the service. The Consumer may then again initiate a request interaction.
+
+The `LoadingDoneByProvider` parameter is used by the Consumer to propose whether the loading is controlled by the Provider or by the Consumer. This is an agreement between the parties and is specified in the offer from the Provider, which is accepted by the Consumer; the Provider can agree or disagree with the Consumer's proposal. By default the service delivery is controlled by the Provider.
+
+If the service delivery is controlled by the Provider then the consuming entity shall issue a `LOG_ServiceReceived` interaction in response to the `LOG_SupplyComplete` or `LOG_StorageComplete` interaction. Transfer of supplies is considered as complete once the `LOG_ServiceReceived` interaction is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+
+If the service delivery is controlled by the Consumer then the providing entity shall issue a `LOG_SupplyComplete` or `LOG_StorageComplete` in response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered as complete once the `LOG_SupplyComplete` or `LOG_StorageComplete` is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+
+Early termination of the service request or delivery is possible by either the Consumer or Provider by a cancellation of the service. On early termination, no materials will be transferred. 
+
+Rejection of a service offer is allowed. In this case, no material will be transferred.
+
 
 ### Supply Service
 Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the LOG_ReadyToReceiveSupply interaction and shall not exceed the amount of supplies, by type, specified in the LOG_OfferSupply interaction.
