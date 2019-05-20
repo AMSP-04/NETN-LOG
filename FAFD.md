@@ -1,6 +1,16 @@
-## Facilities and Materials
+## Facilities
 
 Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
+
+## Consumer-Provider Pattern
+
+## Supply
+
+Services for resupply of consumable materials include:
+* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the condumer of the service.
+* Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
+
+These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. 
 
 Materials are differentiated between:
 * Consumable materials:
@@ -23,19 +33,7 @@ Consumable materials, hereafter also referred to as supplies, differ from non-co
 
 The definition of the type of the supply is based on the description in the Bit Encoded Values (SISO-REF-010) for Use with Protocols for Distributed Interactive Simulation Applications. Additional supply types shall be defined and specified in the Federation Agreement Document.
 
-Appointment Data
-
-Services delivery may require an agreement between the consumer and provider of when and where the service delivery shall take place; these requirements are specified in the appointment data.
-
-
-## Consumer-Provider Pattern
-
-## Supply
-Services for resupply of consumable materials include:
-* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the condumer of the service.
-* Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
-
-These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. In both services the Consumer and Provider are specified with parameters and an optional `Appointment` parameter describes where and when the transfer of the consumable materials shall take place. The Provider can change the appointment data from the request, e.g. the Consumer does not specify the appointment data in the request interaction, thereafter the Provider specifies appointment data in the offer interaction, the Consumer than has to accept or reject the offer.
+In both the Supply and Storage services the Consumer and Provider are specified and an optional `Appointment` parameter describes where and when the transfer of the consumable materials shall take place. The Provider can change the appointment data from the request, e.g. the Consumer does not specify the appointment data in the request interaction, thereafter the Provider specifies appointment data in the offer interaction, the Consumer than has to accept or reject the offer.
 
 If the time specified in the `RequestTimeOut` parameter of the request passes without the Provider sending a positive offer, the Consumer shall cancel the service. The Consumer may then again initiate a request interaction.
 
