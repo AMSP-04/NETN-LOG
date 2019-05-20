@@ -1,5 +1,32 @@
 ## Facilities and Materials
 
+Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
+
+Materials are differentiated between:
+* Consumable materials:
+.# Ammunition.
+.# Mines.
+.# NBC Materials.
+.# Fuel (Diesel, Gas, Aviation fuel, etc.).
+.# Water.
+.# Food.
+.# Medical materials.
+.# Spare parts.
+* Non-consumable materials:
+.# Platforms.
+.# Humans.
+.# Aggregates.
+.# Reconnaissance and Artillery systems (Radar).
+.# Missile.
+
+Consumable materials, hereafter also referred to as supplies, differ from non-consumables in that the former can be transferred to a unit, thereby "resupplying" that unit with the appropriate consumable material. Consumable materials are further differentiated between piece goods and bulk goods (e.g. fuel, water, decontamination means). Material may therefore be requested as individual pieces (each), or in cubic meters for liquid bulk goods and kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not taken into account.
+
+The definition of the type of the supply is based on the description in the Bit Encoded Values (SISO-REF-010) for Use with Protocols for Distributed Interactive Simulation Applications. Additional supply types shall be defined and specified in the Federation Agreement Document.
+
+Appointment Data
+
+Services delivery may require an agreement between the consumer and provider of when and where the service delivery shall take place; these requirements are specified in the appointment data.
+
 
 ## Consumer-Provider Pattern
 
