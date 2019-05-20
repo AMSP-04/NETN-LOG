@@ -6,11 +6,30 @@ Facilities are the central element through which services are provided, e.g. mat
 
 The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by subclassing and defining attributes for a `StorageList` that specifies the materials that are located in the facility and an attribute `ServiceCapability`used to declare the service capabilities offered by the facility. Since the `LOG_Facility` object class inherits from `EmbeddedSystem` it can be associated to a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
 
-## Consumer-Provider Pattern
+## Logistics Service Pattern
+The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transactions. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
+
+The base classes for the Logistics Service Pattern are extended by subclassing to detail information required for specific logistics services.
 
 <img src="/scp.png" width="50%">
 
-## Supply
+The logistics service pattern is divided into three phases:
+1.	**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
+2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
+
+<img src="/scpphases.png" width="75%">
+
+### Service Request and Negotiation
+Service Negotiation: the service is requested, offers received and offers are either accepted or rejected.
+
+### Service Delivery
+Service Delivery: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+
+### Service Acceptance
+Service Acceptance: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
+
+## Supply and Storage Services
 
 Services for resupply of consumable materials include:
 * Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the consumer of the service.
@@ -94,10 +113,10 @@ Figure 9-8: Provider Sends a Negative Offer to the Consumer.
 
 ### Storage Service
 
-## Maintenance
-### Repair Service
 
-## Transport
+## Maintenance and Repair Services
+ 
+## Transport Service
 
 ### Disaggregation of Units for Transportation 
 ### Warfare Interactions Against Transporter
