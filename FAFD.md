@@ -6,10 +6,12 @@ The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by sub
 
 ## Consumer-Provider Pattern
 
+![][scp]
+
 ## Supply
 
 Services for resupply of consumable materials include:
-* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the condumer of the service.
+* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the consumer of the service.
 * Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
 
 These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. 
@@ -101,3 +103,6 @@ Figure 9-8: Provider Sends a Negative Offer to the Consumer.
 ### Disembarkment Service
 ### Transport Services and Attrition
 ### Scenario Initialization Phase
+
+
+[scp]: ./scp.png
