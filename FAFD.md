@@ -4,20 +4,20 @@ Facilities are the central element through which services are provided, e.g. mat
 
 Materials are differentiated between:
 * Consumable materials:
-.# Ammunition.
-.# Mines.
-.# NBC Materials.
-.# Fuel (Diesel, Gas, Aviation fuel, etc.).
-.# Water.
-.# Food.
-.# Medical materials.
-.# Spare parts.
+ 1. Ammunition.
+ 2. Mines.
+ 3. NBC Materials.
+ 4. Fuel (Diesel, Gas, Aviation fuel, etc.).
+ 5. Water.
+ 6. Food.
+ 7. Medical materials.
+ 8. Spare parts.
 * Non-consumable materials:
-.# Platforms.
-.# Humans.
-.# Aggregates.
-.# Reconnaissance and Artillery systems (Radar).
-.# Missile.
+ 1. Platforms.
+ 2. Humans.
+ 3. Aggregates.
+ 4. Reconnaissance and Artillery systems (Radar).
+ 5. Missile.
 
 Consumable materials, hereafter also referred to as supplies, differ from non-consumables in that the former can be transferred to a unit, thereby "resupplying" that unit with the appropriate consumable material. Consumable materials are further differentiated between piece goods and bulk goods (e.g. fuel, water, decontamination means). Material may therefore be requested as individual pieces (each), or in cubic meters for liquid bulk goods and kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not taken into account.
 
