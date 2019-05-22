@@ -39,20 +39,20 @@ These two services are different in terms of flow of materials between service c
 
 Materials are differentiated between:
 * Consumable materials:
- 1. Ammunition.
- 2. Mines.
- 3. NBC Materials.
- 4. Fuel (Diesel, Gas, Aviation fuel, etc.).
- 5. Water.
- 6. Food.
- 7. Medical materials.
- 8. Spare parts.
+    * Ammunition.
+    * Mines.
+    * NBC Materials.
+    * Fuel (Diesel, Gas, Aviation fuel, etc.).
+    * Water.
+    * Food.
+    * Medical materials.
+    * Spare parts.
 * Non-consumable materials:
- 1. Platforms.
- 2. Humans.
- 3. Aggregates.
- 4. Reconnaissance and Artillery systems (Radar).
- 5. Missile.
+    * Platforms.
+    * Humans.
+    * Aggregates.
+    * Reconnaissance and Artillery systems (Radar).
+    * Missile.
 
 Consumable materials, hereafter also referred to as supplies, differ from non-consumables in that the former can be transferred to a unit, thereby "resupplying" that unit with the appropriate consumable material. Consumable materials are further differentiated between piece goods and bulk goods (e.g. fuel, water, decontamination means). Material may therefore be requested as individual pieces (each), or in cubic meters for liquid bulk goods and kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not taken into account.
 
@@ -74,7 +74,7 @@ Rejection of a service offer is allowed. In this case, no material will be trans
 
 
 ### Supply Service
-Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the LOG_ReadyToReceiveSupply interaction and shall not exceed the amount of supplies, by type, specified in the LOG_OfferSupply interaction.
+Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` interaction and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` interaction.
 
 To request supplies a `LOG_RequestSupply` interaction is used. The amount and type of requested materials are included as parameters. _In this request, the Consumer specifies a preference for whether the service delivery is controlled by the Provider (default) or by the Consumer._
 
@@ -83,17 +83,17 @@ A `LOG_OfferSupply` interaction is used by potential supplies to provide an offe
 
 `LOG_ReadyToReceiveSupply` is used by a Consumer to indicate that supply delivery can start.
 
-If the transfer is controlled by the Provider then LOG_SupplyComplete is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a LOG_ServiceReceived in response to the LOG_SupplyComplete interaction. Transfer of supplies is considered complete once the LOG_ServiceReceived is issued.
+If the transfer is controlled by the Provider then `LOG_SupplyComplete` is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a `LOG_ServiceReceived` in response to the `LOG_SupplyComplete` interaction. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is issued.
 
-If the transfer is controlled by the Consumer then LOG_ServiceReceived is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a LOG_StorageComplete in response to the LOG_ServiceReceived interaction. Transfer of supplies is considered complete once the LOG_StorageComplete is issued.
+If the transfer is controlled by the Consumer then `LOG_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` in response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered complete once the `LOG_StorageComplete` is issued.
 
-The transfer may only be a part of the offered materials (partial transfer); the actual transferred supplies are specified in SuppliesData parameter of the LOG_SupplyComplete interaction. If requested materials are only partially transferred, the consumer may start another LOG_RequestSupply in order to obtain all desired supplies.
+The transfer may only be a part of the offered materials (partial transfer); the actual transferred supplies are specified in SuppliesData parameter of the `LOG_SupplyComplete` interaction. If requested materials are only partially transferred, the consumer may start another `LOG_RequestSupply` in order to obtain all desired supplies.
 
-If the LOG_CancelService occurs between LOG_ServiceStarted and LOG_SupplyComplete, the Provider shall inform the Consumer of the amount of supplies transferred using LOG_SupplyComplete parameter SuppliesData. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during resupply, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
+If the `LOG_CancelService` occurs between `LOG_ServiceStarted` and `LOG_SupplyComplete`, the Provider shall inform the Consumer of the amount of supplies transferred using `LOG_SupplyComplete` parameter `SuppliesData`. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during resupply, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
  
 Figure 9-4: OK Transfer of Resources, Provider Controls the Service Delivery.
 
-The service can be cancelled by both the provider and the consumer with the LOG_CancelService interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
+The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
  
 Figure 9-5: Early Cancellation, here by the Provider. Service is terminated.
 
