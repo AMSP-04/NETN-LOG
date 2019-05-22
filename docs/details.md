@@ -1,153 +1,129 @@
+## Facilities
 
-## ETR Task Handling
+Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
 
-The following sections define how tasks shall be handled.
+<img src="/objectclasses.png" width="50%">
 
-### ETR Task Modes
+The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by subclassing and defining attributes for a `StorageList` that specifies the materials that are located in the facility and an attribute `ServiceCapability`used to declare the service capabilities offered by the facility. Since the `LOG_Facility` object class inherits from `EmbeddedSystem` it can be associated to a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
 
-The ETR FOM module defines two modes for a task: non-concurrent mode and concurrent mode.
+## Logistics Service Pattern
+The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transactions. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
 
-In the non-concurrent mode the task is placed on the task list for the entity, which serves as a waiting list. Once the task is at the head of the task list, and the currently executing task completes, it is removed from the task list and started. Using this task mode, tasks are executed one after the other.
+The base classes for the Logistics Service Pattern are extended by subclassing to detail information required for specific logistics services.
 
-In the concurrent mode, the task is executed concurrently with other tasks. With this task mode, there is no task list involved.
+<img src="/scp.png" width="50%">
 
-The mode value is provided for each task. So, at any point in time an entity has zero or more concurrent mode tasks executing and at most one non-concurrent mode task executing, with zero or more non-concurrent mode tasks waiting on the task list.
+The logistics service pattern is divided into three phases:
+1.	**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
+2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-### ETR Task States
+<img src="/scpphases.png" width="50%">
 
-The following states are defined for a task:
+### Service Request and Negotiation
+Service Negotiation: the service is requested, offers received and offers are either accepted or rejected.
 
-* TaskStatus.Received: the task is received;
-* TaskStatus.Waiting: the task is waiting for execution;
-* TaskStatus.Executing: the task is executing.
+### Service Delivery
+Service Delivery: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
 
-The task state diagram is shown below.
+### Service Acceptance
+Service Acceptance: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-<img src="./images/etr_taskstates.png" width="75%"/>
-  
-#### Received State
-A task in the Received state shall be handled in the following way:
+## Supply and Storage Services
+
+Services for resupply of consumable materials include:
+* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the consumer of the service.
+* Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
+
+These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. 
+
+Materials are differentiated between:
+* Consumable materials:
+ 1. Ammunition.
+ 2. Mines.
+ 3. NBC Materials.
+ 4. Fuel (Diesel, Gas, Aviation fuel, etc.).
+ 5. Water.
+ 6. Food.
+ 7. Medical materials.
+ 8. Spare parts.
+* Non-consumable materials:
+ 1. Platforms.
+ 2. Humans.
+ 3. Aggregates.
+ 4. Reconnaissance and Artillery systems (Radar).
+ 5. Missile.
+
+Consumable materials, hereafter also referred to as supplies, differ from non-consumables in that the former can be transferred to a unit, thereby "resupplying" that unit with the appropriate consumable material. Consumable materials are further differentiated between piece goods and bulk goods (e.g. fuel, water, decontamination means). Material may therefore be requested as individual pieces (each), or in cubic meters for liquid bulk goods and kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not taken into account.
+
+The definition of the type of the supply is based on the description in the Bit Encoded Values (SISO-REF-010) for Use with Protocols for Distributed Interactive Simulation Applications. Additional supply types shall be defined and specified in the Federation Agreement Document.
+
+In both the Supply and Storage services the Consumer and Provider are specified and an optional `Appointment` parameter describes where and when the transfer of the consumable materials shall take place. The Provider can change the appointment data from the request, e.g. the Consumer does not specify the appointment data in the request interaction, thereafter the Provider specifies appointment data in the offer interaction, the Consumer than has to accept or reject the offer.
+
+If the time specified in the `RequestTimeOut` parameter of the request passes without the Provider sending a positive offer, the Consumer shall cancel the service. The Consumer may then again initiate a request interaction.
+
+The `LoadingDoneByProvider` parameter is used by the Consumer to propose whether the loading is controlled by the Provider or by the Consumer. This is an agreement between the parties and is specified in the offer from the Provider, which is accepted by the Consumer; the Provider can agree or disagree with the Consumer's proposal. By default the service delivery is controlled by the Provider.
+
+If the service delivery is controlled by the Provider then the consuming entity shall issue a `LOG_ServiceReceived` interaction in response to the `LOG_SupplyComplete` or `LOG_StorageComplete` interaction. Transfer of supplies is considered as complete once the `LOG_ServiceReceived` interaction is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+
+If the service delivery is controlled by the Consumer then the providing entity shall issue a `LOG_SupplyComplete` or `LOG_StorageComplete` in response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered as complete once the `LOG_SupplyComplete` or `LOG_StorageComplete` is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+
+Early termination of the service request or delivery is possible by either the Consumer or Provider by a cancellation of the service. On early termination, no materials will be transferred. 
+
+Rejection of a service offer is allowed. In this case, no material will be transferred.
+
+
+### Supply Service
+Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the LOG_ReadyToReceiveSupply interaction and shall not exceed the amount of supplies, by type, specified in the LOG_OfferSupply interaction.
+
+To request supplies a `LOG_RequestSupply` interaction is used. The amount and type of requested materials are included as parameters. _In this request, the Consumer specifies a preference for whether the service delivery is controlled by the Provider (default) or by the Consumer._
+
+A `LOG_OfferSupply` interaction is used by potential supplies to provide an offer, including the amount and type of offered materials, as a response to the requested supplies. _In this offer the provider can agree with the Consumer's choice of service delivery control or make a counter-offer._
+
+
+`LOG_ReadyToReceiveSupply` is used by a Consumer to indicate that supply delivery can start.
+
+If the transfer is controlled by the Provider then LOG_SupplyComplete is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a LOG_ServiceReceived in response to the LOG_SupplyComplete interaction. Transfer of supplies is considered complete once the LOG_ServiceReceived is issued.
+
+If the transfer is controlled by the Consumer then LOG_ServiceReceived is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a LOG_StorageComplete in response to the LOG_ServiceReceived interaction. Transfer of supplies is considered complete once the LOG_StorageComplete is issued.
+
+The transfer may only be a part of the offered materials (partial transfer); the actual transferred supplies are specified in SuppliesData parameter of the LOG_SupplyComplete interaction. If requested materials are only partially transferred, the consumer may start another LOG_RequestSupply in order to obtain all desired supplies.
+
+If the LOG_CancelService occurs between LOG_ServiceStarted and LOG_SupplyComplete, the Provider shall inform the Consumer of the amount of supplies transferred using LOG_SupplyComplete parameter SuppliesData. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during resupply, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
  
-1. Determine if the task is supported. The determination is made by the federate application in accordance with section 8.4.3.
-2. If the task is not supported then
-    * A `TaskStatusReport` (refused) shall be returned to the Tasker.
-    * The task is removed.
-3. Else
-    * For a non-concurrent mode task:
-        * The task shall be placed in the entity task list in accordance with section 8.3.3.
-    * A `TaskStatusReport` (accepted) shall be returned to the Tasker.
-    * The task shall transition to the Waiting state.
+Figure 9-4: OK Transfer of Resources, Provider Controls the Service Delivery.
 
-#### Waiting State
-A task in the Waiting state shall be handled in the following way:
-1.	Determine if the task can start using the following conditions:
-    * For a non-concurrent mode task:
-        * The task’s taskee is not executioning a task, and
-        * The task is at head of the task list, and
-        * The task has no `StartWhen` time (i.e. the StartWhen is undefined), or the task has a StartWhen time and this time is less than or equal to the current time.
-    * For a concurrent mode task:
-        * The task has no `StartWhen` time (i.e. the StartWhen is undefined), or the task has a StartWhen time and this time is less than or equal to the current time, and
-        * The task does not conflict with other executing tasks (see section 8.3.4).
-2.	If the task can start then
-    * For a non-concurrent mode task:
-        * The task shall be removed from the task list.
-        * A `TaskStatusReport` (executing) shall be returned to the Tasker.
-        * The task shall transition to the Executing state.
-3.	Else
-    * The task shall remain in the Waiting state, even if the current time has passed the time specified in the `StartWhen` parameter of the task.
-
-#### Executing State
-A task in the Executing state shall be handled in the following way:
-
-1.	Determine if the task has completed. The conditions are scenario specific and the determination is up to the federate application.
-2.	If the task has completed then
-    * A `TaskStatusReport` (completed) shall be returned to the Tasker.
-    * The task is removed.
-3.	Else
-    * The task shall remain in the Executing state.
-
-#### TaskStatus State
-A task in the TaskStatus state shall be handled as specified in the substates, and also in the following way:
-
-1.	If the task is cancelled by either a `CancelAllTasks` or `CancelSpecifiedTask` then
-    * A `TaskStatusReport` (cancelled) shall be returned to the Tasker.
-    * The task is removed.
-2.	If the task cannot be handled due to an internal federate application error then
-    * A `TaskStatusReport` (error) shall be returned to the Tasker and a description of the error shall be included in the message.
-    * The task is removed.
-
-### Task List Order
-Each entity has a task list for non-concurrent mode tasks. The task at the head of the list is the first task to be started once the currently executing task completes. The ordering of tasks in the task list shall be according to the following figure.
-
-<img src="./images/etr_tasklist.png" width="75%"/>
+The service can be cancelled by both the provider and the consumer with the LOG_CancelService interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
  
-The tasklist shall be divided in two parts: a left part that contains tasks where the StartWhen is specified, and a right part that contains tasks where no StartWhen is specified. The division point shall mark the head of the left part and the tail of the right part. A part is empty if there are no tasks for that part.
+Figure 9-5: Early Cancellation, here by the Provider. Service is terminated.
 
-A task shall be placed in the task list as follows:
+If the service is cancelled during service delivery, the provider must inform the consumer of the amount and type of material transferred.
+ 
+Figure 9-6: Cancellation by the Provider After the Service 
+has Started, Provider Controls the Service Delivery.
 
-1.	If the StartWhen time of the task is specified then the task shall be placed in the left part of the task list, using the StartWhen time to order the tasks in this part (with decreasing StartWhen value towards the head of the list).
-2.	If the StartWhen time of the task is not specified then the task shall be placed at the tail of the right part of the task list.
+The consumer can reject an offer from the provider and no more negotiations shall be done in the rejected service.
+ 
+Figure 9-7: Consumer Rejects the Offer from the Provider.
 
-###	Concurrent Tasks
-The following table defines which tasks for the same entity can execute concurrently. The table shows which tasks can transition from the Waiting state to the Execution state given another task that is already in Execution state for the same entity. 
+The provider can inform the Consumer that it is not able to fulfil the required supply data.
+ 
+Figure 9-8: Provider Sends a Negative Offer to the Consumer.
 
-|Number|Task in Execution state|Tasks allowed to go to Execution state|
-|---|---|---|
-|1|Move|6, 7, 10, 11, 12, 13, 14, 15, 17, 22|
-|2|MoveToLocation|10, 11, 12, 13, 14, 15, 17, 22|
-|3|MoveToEntity|10, 11, 12, 13, 14, 15, 17, 22|
-|4|MoveIntoFormation|10, 11, 12, 13, 14, 15, 17|
-|5|FollowEntity|10, 11, 12, 13, 14, 15, 17|
-|6|TurnToHeading|1|
-|7|TurnToOrientation|1|
-|8|MountVehicle| |
-|9|DismountVehickle| |
-|10|FireAtLocation|1, 2, 3, 4, 5, 18, 19|
-|11|FireAtLocationWM|1, 2, 3, 4, 5, 18, 19|
-|12|FireAtEntity|1, 2, 3, 4, 5, 18, 19|
-|13|FireAtEntityWM|1, 2, 3, 4, 5, 18, 19|
-|14|SetOrderedSpeed|1, 2, 3, 4, 5, 18, 19|
-|15|SetOrderedAltitude|1, 2, 3, 4, 5, 18, 19|
-|16|Wait| |
-|17|SetRulesOfEngagement|1, 2, 3, 4, 5, 18, 19|
-|18|Patrol|10, 11, 12, 13, 14, 15, 17|
-|19|PatrolRepeating|10, 11, 12, 13, 14, 15, 17|
-|20|EstablishCheckPoint| |
-|21|OperateCheckPoint| |
-|22|StopAtSideOfRoad|1, 2, 3|
-|23|RemoveCheckPoint| |
-|24|CreateObstacle| |
-|25|CreateMinefield| |
-|26|ClearObstacle| |
-|27|AddPassage| |
-|28|RemovePassage| |
 
-## ETR SimCon Handling
-A Simulation Control message for an entity shall be executed immediately, regardless the presence of any (concurrent or non-concurrent) executing task.
+### Storage Service
 
-### Magic Move
-A `MagicMove` for an entity shall implicitly cancel all tasks for the entity. A TaskStatusReport (cancelled) shall be issued for each task in accordance with the task state diagram.
 
-### Magic Resources
-A `MagicResource` shall update the entity resources. Waiting or executing tasks of the entity are effected in the sense that these tasks have more or less resources available after the MagicResource.
+## Maintenance and Repair Services
+ 
+## Transport Service
 
-### Entity Task and Reporting Capabilities
-It shall be possible to query an entity for the ETR tasks and ETR reports that it supports. The set of tasks and reports that an entity supports is implementation specific, and shall be used in the Received state of a task to determine if the task is supported.
+### Disaggregation of Units for Transportation 
+### Warfare Interactions Against Transporter
+### Embarkment Service
+### Disembarkment Service
+### Transport Services and Attrition
+### Scenario Initialization Phase
 
-With the interaction class `QueryCapabilitiesSupported` an entity can be queried for the supported ETR tasks and ETR reports. The result is provided via the interaction class `CapabilitiesSupported`.
 
-## Implementation Requirements
-This section lists the requirements for federate applications that implement Entity Tasking and Reporting. The requirements are provided from receiver point of view (entity taskee, the federate application modelling the entity) and sender point of view (entity tasker, the federate application sending a task or receiving a report for an entity).
-
-The receiver:
-1.	SHALL support all ETR TaskManagement and ETR SimCon classes.
-2.	MAY support a subset of the ETR Task and ETR Report classes.
-3.	SHALL provide all interaction class parameters when sending an ETR interaction.
-The sender:
-4.	SHALL provide all interaction class parameters when sending an ETR interaction.
-In addition, for the receiver, the following SHALL be documented in the federation agreements:
-5.	Distance tolerances of supported tasks (for the tasks `Mount`, `EstablishCheckPoint`, `OperateCheckPoint`, `RemoveCheckPoint`, `CreateObstacle`, `ClearObstacle`, `CreateMinefield`, `AddPassage`, and `RemovePassage`).
-6.	Entities that provide ETR Reports.
-7.	Time frequencies and conditions for the supported ETR Reports.
-8.	Modeling agreements related to checkpoints (if supported, see `EstablishCheckPoint`, `OperateCheckPoint`, and `RemoveCheckPoint`).
-9.	Modeling agreements related to minefields (if supported, see `CreateMineField`).
+[scp]: ./scp.png
