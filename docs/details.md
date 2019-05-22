@@ -2,7 +2,7 @@
 
 Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
 
-<img src="/objectclasses.png" width="50%">
+<img src="/images/objectclasses.png" width="50%">
 
 The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by subclassing and defining attributes for a `StorageList` that specifies the materials that are located in the facility and an attribute `ServiceCapability`used to declare the service capabilities offered by the facility. Since the `LOG_Facility` object class inherits from `EmbeddedSystem` it can be associated to a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
 
@@ -11,14 +11,14 @@ The Logistics Service pattern is used for modelling request, negotiation and del
 
 The base classes for the Logistics Service Pattern are extended by subclassing to detail information required for specific logistics services.
 
-<img src="/scp.png" width="50%">
+<img src="/images/scp.png" width="50%">
 
 The logistics service pattern is divided into three phases:
 1.	**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
 3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-<img src="/scpphases.png" width="50%">
+<img src="/images/scpphases.png" width="50%">
 
 ### Service Request and Negotiation
 Service Negotiation: the service is requested, offers received and offers are either accepted or rejected.
@@ -125,5 +125,3 @@ Figure 9-8: Provider Sends a Negative Offer to the Consumer.
 ### Transport Services and Attrition
 ### Scenario Initialization Phase
 
-
-[scp]: ./scp.png
