@@ -2,7 +2,7 @@
 cd "${0%/*}"
 pwd 
 
-xsltproc --output ../README.md LOG.xslt ../NETN-LOG.xml
+# xsltproc --output ../README.md LOG.xslt ../NETN-LOG.xml
 pause
 
-cat details.md >> ../README.md
+cat details.md > ../README.md
