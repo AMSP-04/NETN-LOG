@@ -8,43 +8,6 @@
 
 <xsl:apply-templates select="ns:modelIdentification"/>
 	
-### Entity Tasks
-
-This section summarizes the Entity Task interaction classes in the ETR FOM module.
-
-&lt;img src="./images/etr_task.png" width="75%"/>
-
-|Task|Description|
-|---|---|
-<xsl:apply-templates select="//ns:interactionClass[ns:name = 'ETR_Task']/ns:interactionClass" mode="detail"/>
-	
-### Entity Reports
-This section summarizes the Entity Report interaction classes in the ETR FOM module, shown in the figure below.
- 
-&lt;img src="./images/etr_report.png" width="75%"/>
-
-|Report|Description|
-|---|---|
-<xsl:apply-templates select="//ns:interactionClass[ns:name = 'ETR_Report']/ns:interactionClass" mode="detail"/>
-
-### Task Management
-This section summarizes the Task Management interaction classes in the ETR FOM module, shown in the figure below.
- 
-&lt;img src="./images/etr_taskmanagement.png" width="75%"/>
-
-
-|Task Management|Description|
-|---|---|
-<xsl:apply-templates select="//ns:interactionClass[ns:name = 'ETR_TaskManagement']/ns:interactionClass" mode="detail"/>
-
-### Simulation Control
-This section summarizes the Simulaltion Control interaction classes in the ETR FOM module, shown in the figure below.
-
-&lt;img src="./images/etr_simcon.png" width="75%"/>
-
-|Simulation Control|Description|
-|---|---|
-<xsl:apply-templates select="//ns:interactionClass[ns:name = 'ETR_SimCon']/ns:interactionClass" mode="detail"/>
 </xsl:template>
 
 
