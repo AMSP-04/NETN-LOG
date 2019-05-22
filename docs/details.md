@@ -158,27 +158,25 @@ Figure 9-9: Storage FOM Interaction Classes.
 
 `ReadyToReceiveStorage` is used by a Consumer to indicate that supply delivery can start.
 
-`SCP_ServiceStarted` is used by a Provider to indicate that the storage of requested materials has started.
+`LOG_ServiceStarted` is used by a Provider to indicate that the storage of requested materials has started.
 
-If the transfer is controlled by the Provider then `StorageComplete` is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a `SCP_ServiceReceived` in response to the StorageComplete interaction. Transfer of supplies is considered complete once the `SCP_ServiceReceived` is issued.
+If the transfer is controlled by the Provider then `StorageComplete` is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a `LOG_ServiceReceived` in response to the StorageComplete interaction. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is issued.
 
-If the transfer is controlled by the Consumer then `SCP_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a StorageComplete as response to the `SCP_ServiceReceived` interaction. Transfer of supplies is considered complete once the `StorageComplete` is issued.
+If the transfer is controlled by the Consumer then `LOG_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a StorageComplete as response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered complete once the `StorageComplete` is issued.
 
 The transfer may only be part of the offered materials (partial transfer); the actual transferred supplies are specified in `SuppliesData` parameter of the `StorageComplete` interaction. If requested materials are only partially transferred, the consumer may start another `RequestStorage` in order to transfer all desired supplies.
 
-If the `SCP_CancelService` occurs during `SCP_ServiceStarted` and `StorageComplete`, the Provider shall inform the Consumer of the amount of supplies transferred using StorageComplete parameter `SuppliesData`. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during storage actions, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
+If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `StorageComplete`, the Provider shall inform the Consumer of the amount of supplies transferred using StorageComplete parameter `SuppliesData`. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during storage actions, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
  
 Figure 9-10: OK Transfer of Resources, Provider Controls the Service Delivery.
 
-The service can be cancelled by both the provider and the consumer with the `SCP_CancelService` interaction. If the service is cancelled before the service delivery has started, the service transaction is terminated.
+The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before the service delivery has started, the service transaction is terminated.
  
-Figure 9-11: Early Cancellation, here by the 
-Consumer. The service is terminated.
+Figure 9-11: Early Cancellation, here by the Consumer. The service is terminated.
 
 If the service is cancelled during service delivery, the provider must inform the consumer of the amount and type of material transferred.
  
-Figure 9-12: Cancellation by the Consumer After the Service 
-has Started, Provider Controls the Service Delivery.
+Figure 9-12: Cancellation by the Consumer After the Service has Started, Provider Controls the Service Delivery.
 
 The consumer can reject an offer from the provider and no more negotiations shall be done in the rejected service.
  
@@ -198,17 +196,17 @@ The service is initiated with a `RequestRepair` interaction, sent by a federate 
 
 The `RepairData`parameter in the request interaction is a list of equipment and type of repairs. The list of offered repairs may be different from the list of requested repairs. If the HLA object (equipment to be repaired) has a damaged state, the list of requested repairs could be empty. The providing federate models the efforts to repair a damaged platform.
 
-The consuming entity shall send a `SCP_ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `SCP_ServiceReceived` is sent.
+The consuming entity shall send a `LOG_ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
 
-If the `SCP_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done.
+If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done.
 
-If the `SCP_CancelService` occurs during `SCP_ServiceStarted` and `RepairComplete`, the Provider shall inform the Consumer of the amount of repair done using `RepairComplete` parameter `RepairData`. This allows for interruptions due to operational necessity, e.g. death/destruction of either the consumer or provider during repair actions.
+If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `RepairComplete`, the Provider shall inform the Consumer of the amount of repair done using `RepairComplete` parameter `RepairData`. This allows for interruptions due to operational necessity, e.g. death/destruction of either the consumer or provider during repair actions.
 
 By default the Maintenance Pattern does not include a transfer of modelling responsibility of the damaged platform to the application with modelling responsibility for the repairing facility, but could be included in the service delivery if applications are aware of the Transfer of Modelling Responsibility (TMR) pattern.
  
 Figure 9-16: OK Repair.
 
-The service can be cancelled by both the provider and the consumer with the `SCP_CancelService` interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
+The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
  
 Figure 9-17: Early Cancellation by the Provider.
  
@@ -252,44 +250,50 @@ During execution of transport services, the service provider shall inform the se
 * TransportDestroyedEntities interaction is used by a service provider to indicate the damage state of units during the transport.
 
 The following NETN Service Consumer-Provider base interactions are also used in the Transport Pattern:
-* SCP_AcceptOffer.
-* SCP_ReadyToReceiveService.
-* SCP_ServiceStarted.
-* SCP_ServiceComplete.
-* SCP_ServiceReceived.
-* SCP_CancelService.
+* `LOG_OfferService`.
+* `LOG_ReadyToReceiveService`.
+* `LOG_ServiceStarted`.
+* `LOG_ServiceComplete`.
+* `LOG_ServiceReceived`.
+* `LOG_CancelService`.
  
 Figure 9-22: Transport Service Requested and Delivered.
-7.	A Consumer makes a request for transport with the following data in a RequestTransport interaction:
-a.	List with units to transport; and
-b.	Time and location for embarkment and disembarkment.
-8.	A Provider offers a response to the consumer request with an OfferTransport interaction with the following parameters which may be modified from the originating request:
-a.	List with units that the provider can transport;
-b.	Time and location for embarkment and disembarkment; and
-c.	List of units that will execute the transport.
-9.	An offer is accepted with the interaction SCP_AcceptOffer or rejected with the interaction SCP_RejectOffer by the Consumer. The offer is accepted when both service Consumer and Provider have agreed about the conditions for delivery of the service. To achieve the transport service, the units listed for transport must be present on time at the embarkment location in order to embark and declare it with the SCP_ReadyToReceiveService interaction.
-10.	During the execution of the transport service, each transporting unit enters a loop where:
-a.	It publishes a list of embarked units.
-b.	It publishes a list of disembarked entities. If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).
-11.	Both TransportEmbarkmentStatus and TransportDisembarkmentStatus interactions can be repeated as much as needed, if transportation needs to be realized in several iterations. Unit management during delivery of services:
-a.	When Embarkment: Federate with modelling responsibility for the embarked units shall set these units as inactive. The unit is no more taken into account in simulation execution.
-b.	During Transport: The modelling responsibility of spatial attributes for the units specified in this list can be transferred to the Provider until disembarkment (see Transfer of Modelling Responsibility) or the consumer shall update the Spatial attribute or IsPartOf and RelativeSpatial attributes.
-c.	When Disembarkment: Federate with modelling responsibility for the disembarked units shall set these units as active and assign their location to the disembarkment location.
-12.	A Transport service is considered as closed:
-a.	When the Consumer receives a SCP_ServiceCompleted interaction and sends a SCP_ServiceReceived interaction.
-b.	When a SCP_RejectOffer is issued by the service Consumer.
-c.	When a SCP_CancelService is issued by either the service Provider or service Consumer.
+
+A Consumer makes a request for transport with the following data in a RequestTransport interaction:
+* List with units to transport; and
+* Time and location for embarkment and disembarkment.
+
+A Provider offers a response to the consumer request with an OfferTransport interaction with the following parameters which may be modified from the originating request:
+* List with units that the provider can transport;
+* Time and location for embarkment and disembarkment; and
+* List of units that will execute the transport.
+
+An offer is accepted with the interaction `LOG_OfferService` or rejected with the interaction `LOG_RejectOffer` by the Consumer. The offer is accepted when both service Consumer and Provider have agreed about the conditions for delivery of the service. To achieve the transport service, the units listed for transport must be present on time at the embarkment location in order to embark and declare it with the `LOG_ReadyToReceiveService` interaction.
+
+During the execution of the transport service, each transporting unit enters a loop where:
+* It publishes a list of embarked units.
+* It publishes a list of disembarked entities. If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).
+
+Both TransportEmbarkmentStatus and TransportDisembarkmentStatus interactions can be repeated as much as needed, if transportation needs to be realized in several iterations. Unit management during delivery of services:
+* When Embarkment: Federate with modelling responsibility for the embarked units shall set these units as inactive. The unit is no more taken into account in simulation execution.
+* During Transport: The modelling responsibility of spatial attributes for the units specified in this list can be transferred to the Provider until disembarkment (see Transfer of Modelling Responsibility) or the consumer shall update the Spatial attribute or IsPartOf and RelativeSpatial attributes.
+* When Disembarkment: Federate with modelling responsibility for the disembarked units shall set these units as active and assign their location to the disembarkment location.
+
+A Transport service is considered as closed:
+* When the Consumer receives a `LOG_ServiceComplete` interaction and sends a `LOG_ServiceReceived` interaction.
+* When a `LOG_RejectOffer` is issued by the service Consumer.
+* When a `LOG_CancelService` is issued by either the service Provider or service Consumer.
  
-Figure 9-23: Early Cancellation of the Service, here by the 
-Provider. The service transaction is terminated.
-13.	If a Transport service is cancelled:
-a.	During negotiation phase (before service delivery start):
-(1)	The transaction between service Consumer and Provider is considered as closed without delivery of service.
-b.	During delivery phase (after service start and before disembarkment has started):
-(1)	All units already embarked or partially embarked are kept by the service Provider. The service Provider needs a new Request to continue, either to embark remaining units or to disembark the already embarked units.
+Figure 9-23: Early Cancellation of the Service, here by the Provider. The service transaction is terminated.
+
+If a Transport service is cancelled:
+* During negotiation phase (before service delivery start):
+    * The transaction between service Consumer and Provider is considered as closed without delivery of service.
+* During delivery phase (after service start and before disembarkment has started):
+    * All units already embarked or partially embarked are kept by the service Provider. The service Provider needs a new Request to continue, either to embark remaining units or to disembark the already embarked units.
  
-c.	During delivery phase (after disembarkment has started and before complete):
-(1)	All units already disembarked or partially disembarked are kept by the service Consumer. The service Provider needs a Cancellation of the transport service after it is started, and transported units will remain on the transporter.
+* During delivery phase (after disembarkment has started and before complete):
+    * All units already disembarked or partially disembarked are kept by the service Consumer. The service Provider needs a Cancellation of the transport service after it is started, and transported units will remain on the transporter.
  
 Figure 9-24: Cancellation of the Transport Service after Disembarkment is Started, Units not yet Disembarked will Remain on the Transporter.
  
@@ -325,12 +329,12 @@ A Provider offers a response to the consumer request with the following paramete
 * Time and location for embarkment.
 * List of units that will execute the embarkment.
 
-An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve the embarkment service, the units listed for embarkment must be present on time at the embarkment location in order to embark and declare it with the SCP_ReadyToReceiveService interaction.
+An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve the embarkment service, the units listed for embarkment must be present on time at the embarkment location in order to embark and declare it with the `LOG_ReadyToReceiveService` interaction.
 
 The TransportEmbarkmentStatus interaction can be repeated as much as needed, if embarkment needs to be realized in several iterations. During an Embarkment service execution, each transporter enters a loop publishing a list of embarked units. If the modelling responsibility is transferred to the application that provides the service then it shall remain there in this protocol. An Embarkment service is considered as closed:
-* When the service Consumer receives a SCP_ServiceCompleted interaction and sends a SCP_ServiceReceived interaction.
-* When a SCP_RejectOffer is used by the service Consumer.
-* When a SCP_CancelService is used by the service Provider or Consumer.
+* When the service Consumer receives a `LOG_ServiceComplete` interaction and sends a `LOG_ServiceReceived` interaction.
+* When a `LOG_RejectOffer` is used by the service Consumer.
+* When a `LOG_CancelService` is used by the service Provider or Consumer.
 
 If an Embarkment service is cancelled:
 * During negotiation phase (before service delivery start):
@@ -349,14 +353,14 @@ A Provider offers a response to the consumer request with the following paramete
 * Time and location for disembarkment.
 * List of units that will execute the disembarkment.
 
-An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve a Disembarkment service, Consumer shall publish the `SCP_ReadyToReceiveService` interaction.
+An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve a Disembarkment service, Consumer shall publish the `LOG_ReadyToReceiveService` interaction.
 
 A TransportDisembarkmentStatus interaction can be repeated as much as needed, if disembarkment needs to be realized in several iterations. During a Disembarkment service execution, each transporter enters a loop where it publishes a list of disembarked units. If the modelling responsibility is transferred to the application that provides the service then it shall be returned back to the application that consumed the service.
 
 A Disembarkment service is considered as closed:
-* When the service Consumer receives a SCP_ServiceCompleted interaction and issues a SCP_ServiceReceived interaction.
-* When a SCP_RejectOffer is issued by the service Consumer.
-* When a SCP_CancelService is issued by the service Provider or Consumer.
+* When the service Consumer receives a `LOG_ServiceComplete` interaction and issues a `LOG_ServiceReceived` interaction.
+* When a `LOG_RejectOffer` is issued by the service Consumer.
+* When a `LOG_CancelService` is issued by the service Provider or Consumer.
 
 If a Disembarkment service is cancelled:
 * During negotiation phase (before service delivery start):
@@ -365,11 +369,11 @@ If a Disembarkment service is cancelled:
     * All embarked units are kept by the service Provider. The service Provider needs a new Request to continue, either to disembark remaining units or to embark the already disembarked units.
 
 Variations:
-* Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (SCP_OfferService), without processing the query phase (RequestTansport).
+* Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (`LOG_OfferService`), without processing the query phase (RequestTansport).
 
 ### Transport Services and Attrition 
 
-The TransportDestroyedEntities interaction can take place at any time between the start of the service (SCP_ServiceStarted interaction) and the end of the service (SCP_ServiceComplete interaction). Impact on the transport service pattern could be the following example.
+The TransportDestroyedEntities interaction can take place at any time between the start of the service (`LOG_ServiceStarted` interaction) and the end of the service (`LOG_ServiceComplete` interaction). Impact on the transport service pattern could be the following example.
 
 Vessel « 1 » and « 2 » are transporters. Some units need to be transported in two rotations on each Vessel. We study the case where Vessel « 1 » is destroyed during its first rotation and Vessel « 2 » is destroyed during its second rotation:
 
@@ -391,10 +395,10 @@ The embarkment phase is assumed to have taken place during the scenario preparat
 * The Provider offers the service.
 * If the offer conditions are OK, it is accepted by the Consumer.
 * Consumer directly sends a ReadyToReceive interaction.
-* Provider directly sends a SCP_ServiceStarted.
+* Provider directly sends a `LOG_ServiceStarted`.
 * Provider sends TransportDisembarkStatus when it arrives at the location.
-* Provider sends a SCP_ServiceCompleted when all units have disembarked.
-* Consumer sends a SCP_ServiceReceived.
+* Provider sends a `LOG_ServiceComplete` when all units have disembarked.
+* Consumer sends a `LOG_ServiceReceived`.
  
 
 
