@@ -3,4 +3,6 @@ cd "${0%/*}"
 pwd 
 
 xsltproc --output ../README.md LOG.xslt ../NETN-LOG.xml
-cat details.md > ../README.md
+pause
+
+cat details.md >> ../README.md

@@ -5,15 +5,12 @@
 <xsl:output version="4.0" method="text" indent="no" encoding="UTF-8" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/loose.dtd"/>
 
 <xsl:template match="/ns:objectModel">
-
 <xsl:apply-templates select="ns:modelIdentification"/>
-	
 </xsl:template>
 
 
 <xsl:template match="ns:modelIdentification">
 	<xsl:text># </xsl:text><xsl:value-of select="ns:name"/>
-
 	<xsl:text>&#xd;</xsl:text>
 	<xsl:if test="ns:description"><xsl:value-of select="ns:description"/></xsl:if>
 	<xsl:if test="ns:purpose">

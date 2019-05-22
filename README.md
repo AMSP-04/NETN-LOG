@@ -1,4 +1,4 @@
-## Facilities
+# NETN-LogisticsA combined module of the NETN2 modules, NETN-Transport, NETN-Supply, NETN-Storage and NETN-Repair.## Purpose## Scope## Facilities
 
 Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
 
