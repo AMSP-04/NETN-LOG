@@ -224,32 +224,40 @@ The `NETN_RepairTypeEnum16` enumerated data type is defined in the NETN-Repair F
 In the RPR FOM modules values are defined as a fixed part of some enumerated data types. In order not to violate the modular FOM merging rules, the NETN Logistics FOM modules does not define any extensions to these data types as part of the FOM module. A separate table for adding values to the existing range of enumerations defined in the RPR FOM modules is allowed instead. This table shall be part of any federation specific agreements where extensions to an enumerated data type are required. It is also recommended but not required that any additional enumerated values added to this data type shall be submitted as Change Requests to the SISO RPR-FOM Product Development Group. All existing enumerators in RPR FOM modules and their values are reserved. Additional repair types are documented in the federation specific agreements.
 
  
-## TRANSPORT PATTERN
-1.	Transport services are used when there are needs to transport non-consumable materials such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. Services for Transport include:
-a.	Transport service provided by a facility, a unit or entity with transportation capability of storing and delivering non-consumable materials.
-b.	Embarkment service provided by a facility, a unit or entity with transportation capability of storing non-consumable materials.
-c.	Disembarkment service provided by a facility, a unit or entity with transportation capability of delivering non-consumable materials.
-2.	Transport services differ in terms of the flow of units between service consumer and service provider:
-a.	In Disembarkment service, units are transferred from a service provider to a service consumer.
-b.	In Embarkment service, units are transferred from a service consumer to a service provider.
-c.	The Transport service consists of both Embarkment and Disembarkment service.
-3.	The Embarkment and Disembarkment services could also be extended to management of facilities; with the capability of delivering and storing non-consumable materials to/from other facilities, units or battlefield entities. The Transport pattern includes an optional Transfer of Modelling Responsibility mechanism between a service consumer and a service provider (see Transfer of Modelling Responsibility).
+## Transport
+
+Transport services are used when there are needs to transport non-consumable materials such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. 
+
+Services for Transport include:
+* Transport service provided by a facility, a unit or entity with transportation capability of storing and delivering non-consumable materials.
+* Embarkment service provided by a facility, a unit or entity with transportation capability of storing non-consumable materials.
+* Disembarkment service provided by a facility, a unit or entity with transportation capability of delivering non-consumable materials.
+
+Transport services differ in terms of the flow of units between service consumer and service provider:
+* In Disembarkment service, units are transferred from a service provider to a service consumer.
+* In Embarkment service, units are transferred from a service consumer to a service provider.
+* The Transport service consists of both Embarkment and Disembarkment service.
+
+The Embarkment and Disembarkment services could also be extended to management of facilities; with the capability of delivering and storing non-consumable materials to/from other facilities, units or battlefield entities. The Transport pattern includes an optional Transfer of Modelling Responsibility mechanism between a service consumer and a service provider (see Transfer of Modelling Responsibility).
  
 Figure 9-21: Transport FOM Module.
-4.	The following interaction classes are extensions of the NETN Service Consumer-Provider base interactions:
-a.	RequestTransport interaction is used by the consumer to initiate a request of transport to a transport service provider. Units and appointment data are included in the request. The appointment data specifies when and where embarkment and disembarkment shall take place.
-b.	OfferTransport interaction is used by the transport service provider to indicate which of the requested units can be transported. In the offer, the provider can also change the appointment data specified in the request.
-5.	During execution of transport services, the service provider shall inform the service consumer about the service progress using the following interactions:
-a.	TransportEmbarkmentStatus interaction is used by the service provider to indicate precisely when units are embarked.
-b.	TransportDisembarkmentStatus interaction is used by a service provider to indicate precisely when units are disembarked.
-c.	TransportDestroyedEntities interaction is used by a service provider to indicate the damage state of units during the transport.
-6.	The following NETN Service Consumer-Provider base interactions are also used in the Transport Pattern:
-a.	SCP_AcceptOffer.
-b.	SCP_ReadyToReceiveService.
-c.	SCP_ServiceStarted.
-d.	SCP_ServiceComplete.
-e.	SCP_ServiceReceived.
-f.	SCP_CancelService.
+
+The following interaction classes are extensions of the NETN Service Consumer-Provider base interactions:
+* RequestTransport interaction is used by the consumer to initiate a request of transport to a transport service provider. Units and appointment data are included in the request. The appointment data specifies when and where embarkment and disembarkment shall take place.
+* OfferTransport interaction is used by the transport service provider to indicate which of the requested units can be transported. In the offer, the provider can also change the appointment data specified in the request.
+
+During execution of transport services, the service provider shall inform the service consumer about the service progress using the following interactions:
+* TransportEmbarkmentStatus interaction is used by the service provider to indicate precisely when units are embarked.
+* TransportDisembarkmentStatus interaction is used by a service provider to indicate precisely when units are disembarked.
+* TransportDestroyedEntities interaction is used by a service provider to indicate the damage state of units during the transport.
+
+The following NETN Service Consumer-Provider base interactions are also used in the Transport Pattern:
+* SCP_AcceptOffer.
+* SCP_ReadyToReceiveService.
+* SCP_ServiceStarted.
+* SCP_ServiceComplete.
+* SCP_ServiceReceived.
+* SCP_CancelService.
  
 Figure 9-22: Transport Service Requested and Delivered.
 7.	A Consumer makes a request for transport with the following data in a RequestTransport interaction:
