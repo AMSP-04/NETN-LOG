@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_92" class="java.beans.XMLDecoder">
+ <int>5</int>
+ <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentProject">
+  <boolean>true</boolean>
+  <string>test</string>
+  <boolean>true</boolean>
+  <boolean>true</boolean>
+  <boolean>true</boolean>
+  <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentDefaults">
+   <object class="java.lang.Enum" method="valueOf">
+    <class>se.pitch.vomt2.model.OrderType</class>
+    <string>RECEIVE</string>
+   </object>
+   <object class="java.lang.Enum" method="valueOf">
+    <class>se.pitch.vomt2.model.TransportationType</class>
+    <string>HLA_RELIABLE</string>
+   </object>
+   <object class="java.lang.Enum" method="valueOf">
+    <class>se.pitch.vomt2.model.Ownership</class>
+    <string>NO_TRANSFER</string>
+   </object>
+  </object>
+  <object class="java.util.ArrayList">
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule" id="PersistentProjectHelper$PersistentModule0">
+     <string>MIM</string>
+     <string>HLAstandardMIM.xml</string>
+     <boolean>true</boolean>
+     <boolean>false</boolean>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.util.ArrayList"/>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.awt.Color">
+      <int>253</int>
+      <int>180</int>
+      <int>98</int>
+      <int>255</int>
+     </object>
+    </object>
+   </void>
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
+     <string>NETN-LOG</string>
+     <string>NETN-LOG.xml</string>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <int>2</int>
+      </void>
+      <void method="add">
+       <int>4</int>
+      </void>
+     </object>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <object class="java.awt.Color">
+      <int>255</int>
+      <int>255</int>
+      <int>179</int>
+      <int>255</int>
+     </object>
+    </object>
+   </void>
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
+     <string>RPR-Base_v2.0</string>
+     <string>/Users/bjornlofstrand/Documents/GitHub/dependencies/RPR-Base_v2.0.xml</string>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <int>3</int>
+      </void>
+     </object>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <object class="java.awt.Color">
+      <int>204</int>
+      <int>235</int>
+      <int>197</int>
+      <int>255</int>
+     </object>
+    </object>
+   </void>
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
+     <string>RPR-Foundation_v2.0</string>
+     <string>/Users/bjornlofstrand/Documents/GitHub/dependencies/RPR-Foundation_v2.0.xml</string>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <int>0</int>
+      </void>
+     </object>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <object class="java.awt.Color">
+      <int>141</int>
+      <int>211</int>
+      <int>199</int>
+      <int>255</int>
+     </object>
+    </object>
+   </void>
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
+     <string>NETN-BASE</string>
+     <string>/Users/bjornlofstrand/Documents/GitHub/dependencies/NETN-BASE.xml</string>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <boolean>true</boolean>
+     <boolean>true</boolean>
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <int>2</int>
+      </void>
+     </object>
+     <boolean>false</boolean>
+     <boolean>false</boolean>
+     <object class="java.awt.Color">
+      <int>251</int>
+      <int>128</int>
+      <int>114</int>
+      <int>255</int>
+     </object>
+    </object>
+   </void>
+  </object>
+  <null/>
+  <null/>
+  <null/>
+  <null/>
+  <object class="java.util.LinkedHashSet"/>
+  <object class="java.util.LinkedHashSet">
+   <void method="add">
+    <object idref="PersistentProjectHelper$PersistentModule0"/>
+   </void>
+  </object>
+  <boolean>false</boolean>
+ </object>
+</java>

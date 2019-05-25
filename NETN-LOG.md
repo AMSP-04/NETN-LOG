@@ -1,193 +1,220 @@
 # NETN LOG
-NATO Education and Training Network (NETN) Logistics FOM Module.
+
+The NATO Education and Training Network (NETN) Logistics FOM Module.
+
+This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.
 
 ## Purpose
 
+The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.	
 
 ## Scope
-The NETN Logistics covers the following services:
-* Supply service is provided by a facility, a unit or entity with consumable materials supply capability. Resources are transferred from the providing unit to the consuming unit.
-* Storage service is provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consuming unit to the providing unit.
-* Repair service can be performed on equipment (i.e. non-consumables items such as platforms) by facilities or units capable of performing the requested repairs. Modelling responsibility is by default not transferred from the consuming unit (e.g. a damaged platform) to the application with modelling responsibility for the providing unit (i.e. repairing facility). Modelling responsibility can be transferred with the inclusion of the Transfer of Modelling Responsibility (TMR) pattern.
-* Transport service is provided by a facility, a unit or entity with transportation capability of non-consumable materials (units). Transported units are embarked, transported and disembarked. Modelling responsibility is by default not transferred from the consuming unit (transported unit) to the application with modelling responsibility for the providing unit (transporter). Modelling responsibility can be transferred with the introduction of the Transfer of Modelling Responsibility pattern.
 
-**Examples of use**:
+The NETN Logistics module covers the following services:
 
-* Supply of fixed wing aircraft in airports or during aerial refuelling.
-* Supply of helicopters in assembly areas.
-* Repair of damaged platforms by a maintenance unit without changing platform's location.
-* Maintenance of damaged platforms previously deposited in a facility.
-* Transport of units, platforms, and humans by train, ship, or aircraft.
-* Embarkment and disembarkment of units.
+* Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service.
+* Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service.
+* Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark.
+* Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
 
-## Changelog
-The NETN LOG module is a combination of AMSP-04 NETN FAFD Ed A v1.0 FOM modules NETN-Transport, NETN-Supply, NETN-Storage,  NETN-Repair and the supporting Service Consumer-Provider (SCP) FOM module. Renaming of elements have been made to better align with other NETN modules. The NETN LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
+Examples of use:
 
+* Refuelling of aircraft at an airbase or in the air
+* Transport of supplies between facilities
+* Repair of damaged platforms in facility or by unit
+* Transport of units, platforms, and humans by train, ship, or aircraft
+* Embarkment and disembarkment of units on platforms
+        	
+	
 # Overview
-The NETN Logistics services are based on a Service Consumer-Provider Pattern. The pattern is described below and is implemented as base classes in the Logistics FOM Module. 
+All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
+ 
+The NETN LOG FOM module extends RPR-FOM v2.0 FOM. Datatypes are re-used and extensions to object classes are defined.
 
-Detailed description of how these services map to the NETN Logistics FOM modules are included in this document. The NETN Logistics FOM module depends on RPR v2.0 FOM modules due to the fact that a few data types defined in these modules are reused in the definition of parameters for NETN Logistics interactions. 
+## Facility
 
-In addition, a Transfer of Modelling Responsibility pattern is introduced as an option for some logistics services. 
+The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
+ 
+The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
 
-Extensions to RPR v2.0 object classes are also defined. 
+<img src="./images/log_facility.png" width="500px"/>
 
-## Facilities
+|Attribute|Datatype|Description|
+|---|---|---|
+|IsOperational|HLAboolean|The operational status of the facility (true = is operational)| 
+|StorageList|ArrayOfSupplyStruct|List of the material located in the facility.| 
+|UniqueID|UuidArrayOfHLAbyte16|The unique identifier for the facility| 
+|ServiceCapability|LOG_ServiceTypeEnum8|Describes the service capability of the LOG_Facility instance.| 
 
-Facilities are the central element through which services are provided, e.g. material can be transferred to a consuming unit. Facilities may be created during a simulation or may be a part of the infrastructure (railway station, storage tanks depot, port, etc.). A facility may be part of a unit (e.g. ship).
 
-<img src="/images/log_objects.png" width="50%">
+## Materiel
+Materiel are classified as:
+* Consumable Supplies
+    * Piece Goods
+        * Ammunition
+        * Mines
+        * Medical materiel
+        * Spare parts
+    * Bulk Goods
+        * Fuel (Diesel, Gas, Aviation fuel, etc.)
+        * Water
+        * Food
+* Non-consumable materiel
+    * Platforms
+    * Humans
+    * Aggregates
+    * Reconnaissance and Artillery systems (Radar)
+    * Missile
 
-The object class `LOG_Facility` extends the RPR-FOM v2.0 `EmbeddedSystem` by subclassing and defining attributes for a `StorageList` that specifies the materials that are located in the facility and an attribute `ServiceCapability`used to declare the service capabilities offered by the facility. Since the `LOG_Facility` object class inherits from `EmbeddedSystem` it can be associated to a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
+Transfer of supplies can be requested as a number of items, as cubic meters for liquid bulk goods and in kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not considered.
+
+***Transport of non-consumable materiel*** 
 
 ## Logistics Service Pattern
-The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transactions. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
 
-The base classes for the Logistics Service Pattern are extended by subclassing to detail information required for specific logistics services.
+The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. 
 
-<img src="/images/log_scp_interactions.png" width="50%">
+Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transaction. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
+
+The base classes for the Logistics Service Pattern are extended with subclasses in order to provide more detail information required for specific logistics services.
+
+<img src="./images/log_scp_interactions.png" width="75%">
 
 The logistics service pattern is divided into three phases:
 1.	**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
 3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-<img src="/images/log_scp_phases.png" width="50%">
+<img src="./images/log_scp_phases.svg" width="400px"/>
 
-### Service Request and Negotiation
-Service Negotiation: the service is requested, offers received and offers are either accepted or rejected.
+<!--```
+DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+Consumer->Provider: LOG_RequestService(RequestTimeOut)
+Provider->Consumer: LOG_OfferService(IsOffering, RequestTimeOut)
+Consumer->Provider: LOG_AcceptOffer
+Consumer->Provider: LOG_ReadyToReceiveService
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_ServiceComplete
+Consumer->Provider: LOG_ServiceReceived
+```-->
 
-### Service Delivery
-Service Delivery: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+1. The consumer initiates negotiation by requesting a service using `LOG_RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `LOG_CancelService`.
+2. Offers are sent by provider using `LOG_OfferService`. The provider notify the consumer of its ability to deliver the service using the `IsOffering`attribute and `RequestTimeOut` indicates how long the offer is valid.
+3. The consumer accepts an offer using `LOG_AcceptOffer`and the `LOG_ServiceStarted` is used to indicate that service delivery has started. A consumer can also reject an offer from a provider using `LOG_RejectOffer`and then no more negotiation is performed with that provider.
+4. The modelling responsibility of the service consumer and/or provider could change during service delivery by using NETN TMR.
+5. When service delivery is complete a `LOG_ServiceComplete` message is sent and the consumer sends a `LOG_ServiceReceived`message to conclude the service pattern.
 
-### Service Acceptance
-Service Acceptance: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
+# Transfer of Supplies
 
-## Supply and Storage Services
+Facilities can have supply and/or storage capabilities that can be offered as supply and storage services. Both of these services involves the transfer of materiel from one simulated entity to antoher. When such transfer of supplies occur between entites modelled in different distributed federated systems, the transaction is managed by the NETN Supply and Storage Services. 
 
-Services for resupply of consumable materials include:
-* Supply services provided by a facility, a unit or an entity with consumable materials supply capability. Resources are transferred from the provider to the consumer of the service.
-* Storage services are provided by a facility, a unit or entity with consumable materials storage capability. Resources are transferred from the consumer to the provider of the service.
+Supply and storage services are different in terms of flow of materiel between service consumer and provider. 
 
-These two services are different in terms of flow of materials between service consumer and provider. Both services follow the basic Service Consumer-Provider pattern to establish a service contract and a service delivery. 
+* Supply Service: Supplies are transferred from the provider to the consumer of the service.
+* Storage Services: Supplies are transferred from the consumer to the provider of the service.
 
-Materials are differentiated between:
-* Consumable materials:
-    * Ammunition.
-    * Mines.
-    * NBC Materials.
-    * Fuel (Diesel, Gas, Aviation fuel, etc.).
-    * Water.
-    * Food.
-    * Medical materials.
-    * Spare parts.
-* Non-consumable materials:
-    * Platforms.
-    * Humans.
-    * Aggregates.
-    * Reconnaissance and Artillery systems (Radar).
-    * Missile.
+The definition of the type of the supply is based on the SISO-REF-010 standard. Additional supply types can be defined and documented in federation specific agreements.
 
-Consumable materials, hereafter also referred to as supplies, differ from non-consumables in that the former can be transferred to a unit, thereby "resupplying" that unit with the appropriate consumable material. Consumable materials are further differentiated between piece goods and bulk goods (e.g. fuel, water, decontamination means). Material may therefore be requested as individual pieces (each), or in cubic meters for liquid bulk goods and kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not taken into account.
+The supply and storage service are based on the general NETN Logistics Services Pattern but with specific extensions for supplies.
 
-The definition of the type of the supply is based on the description in the Bit Encoded Values (SISO-REF-010) for Use with Protocols for Distributed Interactive Simulation Applications. Additional supply types shall be defined and specified in the Federation Agreement Document.
+___Figure: SUPPLY & Storage INTERACTION CLASSES___
 
-In both the Supply and Storage services the Consumer and Provider are specified and an optional `Appointment` parameter describes where and when the transfer of the consumable materials shall take place. The Provider can change the appointment data from the request, e.g. the Consumer does not specify the appointment data in the request interaction, thereafter the Provider specifies appointment data in the offer interaction, the Consumer than has to accept or reject the offer.
+Both the Supply and Storage services can use `Appointment` information to negotiate where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the Provider can also change this and propose an alternative `Appointmnet` in the service offer.
 
-If the time specified in the `RequestTimeOut` parameter of the request passes without the Provider sending a positive offer, the Consumer shall cancel the service. The Consumer may then again initiate a request interaction.
+___The `LoadingDoneByProvider` parameter is a request that the loading of suplies should be controlled by the provider of the service. This is an agreement between the parties and is specified in the offer from the Provider, which is accepted by the Consumer; the Provider can agree or disagree with the Consumer's proposal. By default the service delivery is controlled by the Provider.___
 
-The `LoadingDoneByProvider` parameter is used by the Consumer to propose whether the loading is controlled by the Provider or by the Consumer. This is an agreement between the parties and is specified in the offer from the Provider, which is accepted by the Consumer; the Provider can agree or disagree with the Consumer's proposal. By default the service delivery is controlled by the Provider.
+If the service delivery is controlled by the provider then the consumer shall respond with a `LOG_ServiceReceived` to any `LOG_ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `LOG_ServiceReceived` message is sent. 
 
-If the service delivery is controlled by the Provider then the consuming entity shall issue a `LOG_ServiceReceived` interaction in response to the `LOG_SupplyComplete` or `LOG_StorageComplete` interaction. Transfer of supplies is considered as complete once the `LOG_ServiceReceived` interaction is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+Both the `LOG_SupplyComplete` and the`LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
 
-If the service delivery is controlled by the Consumer then the providing entity shall issue a `LOG_SupplyComplete` or `LOG_StorageComplete` in response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered as complete once the `LOG_SupplyComplete` or `LOG_StorageComplete` is issued. The `LOG_SupplyComplete` or `LOG_StorageComplete` interaction informs of the amount, by type, of supplies transferred.
+If the service delivery is controlled by the consumer then the providing shall respond with a `LOG_ServiceComplete` to any `LOG_ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `LOG_ServiceComplete` is sent. Both `LOG_SupplyComplete` and `LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
 
-Early termination of the service request or delivery is possible by either the Consumer or Provider by a cancellation of the service. On early termination, no materials will be transferred. 
+Early termination of the service request or during delivery is possible and can be initiated by either the consumer or the provider using `LOG_CancelService`. On termination before delivery started, no materiel will be transferred. 
 
-Rejection of a service offer is allowed. In this case, no material will be transferred.
+Rejection of a service offer is allowed and no supplies will be transferred if an offer is rejected.
 
+## Supply Service
 
-### Supply Service
-Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` interaction and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` interaction.
+Supplies are transferred after the offer is accepted and the service delivery has started. 
 
-Figure 9-3 
+<img src="./images/log_supply_sequence.svg" width="550px"/>
 
-To request supplies a `LOG_RequestSupply` interaction is used. The amount and type of requested materials are included as parameters. _In this request, the Consumer specifies a preference for whether the service delivery is controlled by the Provider (default) or by the Consumer._
+<!--```
+DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+Consumer->Provider: LOG_RequestSupply(SuppliesData, Appointment, LoadingDoneByProvider)
+Provider->Consumer: LOG_OfferSupply(Offer, SuppliesData, Appointment)
+Consumer->Provider: LOG_AcceptOffer
+Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Consumer->Provider: LOG_ServiceReceived
+```-->
 
-A `LOG_OfferSupply` interaction is used by potential supplies to provide an offer, including the amount and type of offered materials, as a response to the requested supplies. _In this offer the provider can agree with the Consumer's choice of service delivery control or make a counter-offer._
+Figure: Provider supplies consumer successfully
 
+To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested materiel are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
-`LOG_ReadyToReceiveSupply` is used by a Consumer to indicate that supply delivery can start.
+A `LOG_OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer the provider can also propose a change to service delivery control.
 
-If the transfer is controlled by the Provider then `LOG_SupplyComplete` is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a `LOG_ServiceReceived` in response to the `LOG_SupplyComplete` interaction. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is issued.
+The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` message. The `LOG_ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
 
-If the transfer is controlled by the Consumer then `LOG_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` in response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered complete once the `LOG_StorageComplete` is issued.
+If the transfer is controlled by the provider then `LOG_SupplyComplete` is used by to inform the Consumer that the transfer is complete. The consuming entity sends a `LOG_ServiceReceived` in response to the `LOG_SupplyComplete` message. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is sent.
 
-The transfer may only be a part of the offered materials (partial transfer); the actual transferred supplies are specified in SuppliesData parameter of the `LOG_SupplyComplete` interaction. If requested materials are only partially transferred, the consumer may start another `LOG_RequestSupply` in order to obtain all desired supplies.
+If the transfer is controlled by the consumer then `LOG_ServiceReceived` is used to inform the Provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` in response to the `LOG_ServiceReceived` message. Transfer of supplies is considered complete once the `LOG_StorageComplete` is sent.
 
-If the `LOG_CancelService` occurs between `LOG_ServiceStarted` and `LOG_SupplyComplete`, the Provider shall inform the Consumer of the amount of supplies transferred using `LOG_SupplyComplete` parameter `SuppliesData`. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during resupply, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
- 
-Figure 9-4: OK Transfer of Resources, Provider Controls the Service Delivery.
+The service can be cancelled by either the provider or consumer using `LOG_CancelService`. If the service is cancelled before service delivery has started, the service transaction is terminated. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_SupplyComplete` message. The actual supply amount must be less than or equal to the amount offered.
 
-The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
- 
-Figure 9-5: Early Cancellation, here by the Provider. Service is terminated.
+<img src="./images/log_supply_cancellation.svg" width="400px"/>
 
-If the service is cancelled during service delivery, the provider must inform the consumer of the amount and type of material transferred.
- 
-Figure 9-6: Cancellation by the Provider After the Service 
-has Started, Provider Controls the Service Delivery.
+<!--```
+DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+Consumer->Provider: ...
+Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_CancelService(Reason)
+Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Consumer->Provider: LOG_ServiceReceived
+```-->
 
-The consumer can reject an offer from the provider and no more negotiations shall be done in the rejected service.
- 
-Figure 9-7: Consumer Rejects the Offer from the Provider.
-
-The provider can inform the Consumer that it is not able to fulfil the required supply data.
- 
-Figure 9-8: Provider Sends a Negative Offer to the Consumer.
+Figure: Cancellation by the Provider 
 
 
-### Storage Service
-Materials will be transferred after the offer is accepted and the service is started. This service allows partial transfers. This implies that only some of the materials described in the service contract are transferred. The final requested amount of stored supplies, by type, is specified in the `ReadyToReceiveStorage` interaction and shall not exceed the amount of supplies, by type, specified in the `OfferStorage` interaction.
+## Storage Service
 
-Figure 9-9: Storage FOM Interaction Classes.
+The storage service os similar to the supply service but the actual transfer of supplies is reveresed and moves from consumer to supplier of the service.
 
-`RequestStorage` is used by a Consumer to initiate a request for storage of supplies. Amount and type of materials are included in the request.
+***Figure:Storage FOM Interaction Classes.***
 
-`OfferStorage` is used by a Provider to indicate which (amount and type) of the requested materials can be stored.
+To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of materiel to be stored are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
-`ReadyToReceiveStorage` is used by a Consumer to indicate that supply delivery can start.
+A `LOG_OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer the provider can also propose a change to service delivery control.
 
-`LOG_ServiceStarted` is used by a Provider to indicate that the storage of requested materials has started.
+The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferStorage` message. The `LOG_ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
 
-If the transfer is controlled by the Provider then `StorageComplete` is used by the Provider to inform the Consumer that the transfer is complete. The consuming entity shall send a `LOG_ServiceReceived` in response to the StorageComplete interaction. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is issued.
+Supplies will be transferred to the service provider once the `LOG_ServiceStarted`is sent. 
 
 If the transfer is controlled by the Consumer then `LOG_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a StorageComplete as response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered complete once the `StorageComplete` is issued.
 
-The transfer may only be part of the offered materials (partial transfer); the actual transferred supplies are specified in `SuppliesData` parameter of the `StorageComplete` interaction. If requested materials are only partially transferred, the consumer may start another `RequestStorage` in order to transfer all desired supplies.
+If the transfer is controlled by the provider then a `LOG_StorageComplete` message is used by to inform the Consumer that the transfer is complete. The consuming entity sends a `LOG_ServiceReceived` message in response to the `LOG_StorageComplete`. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is sent.
 
-If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `StorageComplete`, the Provider shall inform the Consumer of the amount of supplies transferred using StorageComplete parameter `SuppliesData`. This allows for supply pattern interruptions due to operational necessity, death/destruction of either the consumer or provider during storage actions, etc. Note that the updated supply amount(s) are subject to the constraint that the amount(s), by type, must be less than or equal to the amount(s), by type, of offered supplies.
- 
-Figure 9-10: OK Transfer of Resources, Provider Controls the Service Delivery.
+If the transfer is controlled by the consumer then `LOG_ServiceReceived` is used to inform the provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` message in response to the `LOG_ServiceReceived`. Transfer of supplies is considered complete once the `LOG_StorageComplete` is sent.
 
-The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before the service delivery has started, the service transaction is terminated.
- 
-Figure 9-11: Early Cancellation, here by the Consumer. The service is terminated.
+The service can be cancelled by either the provider or consumer using `LOG_CancelService`. If the service is cancelled before service delivery has started, the service transaction is terminated. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_StorageComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_StorageComplete` message. The actual supply amount must be less than or equal to the amount offered.
 
-If the service is cancelled during service delivery, the provider must inform the consumer of the amount and type of material transferred.
- 
-Figure 9-12: Cancellation by the Consumer After the Service has Started, Provider Controls the Service Delivery.
+<img src="./images/log_storage_sequence.svg" width="550px"/>
+<!--```
+DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+Consumer->Provider: LOG_RequestStorage(SuppliesData, Appointment, LoadingDoneByProvider)
+Provider->Consumer: LOG_OfferStorage(Offer, SuppliesData, Appointment)
+Consumer->Provider: LOG_AcceptOffer
+Consumer->Provider: LOG_ReadyToReceiveStorage(SuppliesData)
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Consumer->Provider: LOG_ServiceReceived
+```-->
+***Figure: Storage of Supplies***
 
-The consumer can reject an offer from the provider and no more negotiations shall be done in the rejected service.
- 
-Figure 9-13: Consumer Rejects the Offer from the Provider.
-
-The provider can inform the Consumer that it is not able to fulfil the required supply data.
- 
-Figure 9-14: Provider Sends a Negative Offer to the Consumer.
-
-
-## Maintenance and Repair Services
+# Maintenance and Repair Services
 Repair service can be performed on equipment (i.e. non-consumables items such as platforms). Damaged platforms can be delivered to maintenance location or maintenance equipment can be moved to the requesting equipment. Providers of this service are facilities capable of performing requested repairs. The required effort for the repair of damaged material is determined by the providing model. It is calculated, based on the degree of damage to the material. If the consuming entity is an aggregate entity, its damaged equipment has to be listed in a platform list to get repaired.
  
 Figure 9-15: Repair FOM Interaction Classes.
@@ -201,8 +228,6 @@ The consuming entity shall send a `LOG_ServiceReceived` as a response to the `Re
 If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done.
 
 If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `RepairComplete`, the Provider shall inform the Consumer of the amount of repair done using `RepairComplete` parameter `RepairData`. This allows for interruptions due to operational necessity, e.g. death/destruction of either the consumer or provider during repair actions.
-
-By default the Maintenance Pattern does not include a transfer of modelling responsibility of the damaged platform to the application with modelling responsibility for the repairing facility, but could be included in the service delivery if applications are aware of the Transfer of Modelling Responsibility (TMR) pattern.
  
 Figure 9-16: OK Repair.
 
@@ -216,27 +241,27 @@ Figure 9-19: Service Offer Rejected.
  
 Figure 9-20: Provider Sends a Negative Offer to the Consumer.
 
-###	Repair Types
+##	Repair Types
 The `NETN_RepairTypeEnum16` enumerated data type is defined in the NETN-Repair FOM and identifies a large set of repair types. These enumerations are also defined in the RPR-Enumerations FOM module. DIS does not define the enumerated values as part of the core specification.
 
 In the RPR FOM modules values are defined as a fixed part of some enumerated data types. In order not to violate the modular FOM merging rules, the NETN Logistics FOM modules does not define any extensions to these data types as part of the FOM module. A separate table for adding values to the existing range of enumerations defined in the RPR FOM modules is allowed instead. This table shall be part of any federation specific agreements where extensions to an enumerated data type are required. It is also recommended but not required that any additional enumerated values added to this data type shall be submitted as Change Requests to the SISO RPR-FOM Product Development Group. All existing enumerators in RPR FOM modules and their values are reserved. Additional repair types are documented in the federation specific agreements.
 
  
-## Transport
+# Transport Service
 
-Transport services are used when there are needs to transport non-consumable materials such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. 
+Transport services are used when there are needs to transport non-consumable materiel such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. 
 
 Services for Transport include:
-* Transport service provided by a facility, a unit or entity with transportation capability of storing and delivering non-consumable materials.
-* Embarkment service provided by a facility, a unit or entity with transportation capability of storing non-consumable materials.
-* Disembarkment service provided by a facility, a unit or entity with transportation capability of delivering non-consumable materials.
+* Transport service provided by a facility, a unit or entity with transportation capability of storing and delivering non-consumable materiel.
+* Embarkment service provided by a facility, a unit or entity with transportation capability of storing non-consumable materiel.
+* Disembarkment service provided by a facility, a unit or entity with transportation capability of delivering non-consumable materiel.
 
 Transport services differ in terms of the flow of units between service consumer and service provider:
 * In Disembarkment service, units are transferred from a service provider to a service consumer.
 * In Embarkment service, units are transferred from a service consumer to a service provider.
 * The Transport service consists of both Embarkment and Disembarkment service.
 
-The Embarkment and Disembarkment services could also be extended to management of facilities; with the capability of delivering and storing non-consumable materials to/from other facilities, units or battlefield entities. The Transport pattern includes an optional Transfer of Modelling Responsibility mechanism between a service consumer and a service provider (see Transfer of Modelling Responsibility).
+The Embarkment and Disembarkment services could also be extended to management of facilities; with the capability of delivering and storing non-consumable materiel to/from other facilities, units or battlefield entities. The Transport pattern includes an optional Transfer of Modelling Responsibility mechanism between a service consumer and a service provider (see Transfer of Modelling Responsibility).
  
 Figure 9-21: Transport FOM Module.
 
@@ -299,13 +324,13 @@ Figure 9-24: Cancellation of the Transport Service after Disembarkment is Starte
  
 Figure 9-25: The Consumer Requests a New Transport Service, Disembarkment of Transported Units after a Cancellation of a Previous Transport Service.
  
-###	Disaggregation of Units for Transportation 
+##	Disaggregation of Units for Transportation 
 
 In the case when a unit is too large for transportation on one transporter, e.g. echelon size does not permit a unit to be transported in a single transportation, the consumer of the service shall disaggregate the large unit in to a number of subunits, which shall be indivisible. The originating unit is set as inactive if it is fully disaggregated according to the definitions in 1278.1a-1998 document, otherwise it shall remain active. All subunits are then included in a transport request, and any offer may then be accepted or rejected.
 
 When a unit is disaggregated for transport these subunits are embarked on more than one transporter or one transporter used repeatedly. At disembarkment, a temporary Bridgehead unit is activated at the disembarkment location, together with disembarked subunits. The bridgehead unit shall be assigned the callsign from the originating aggregate unit with an additional "-bh" to indicate that the unit represents a bridgehead. When all subunits are disembarked the originating unit is aggregated and set as active at the disembarkment location and subunits are then either deleted or set as inactive. The bridgehead is either deleted or set as inactive.
 
-### Warfare Interactions Against Transporter 
+## Warfare Interactions Against Transporter 
 
 Whenever a transport service provider receives warfare interactions (e.g. MunitionDetonation), damage on the transporter is calculated. If the transporter is destroyed then units on board the transporter shall also be destroyed.
 
@@ -318,7 +343,7 @@ If a transport service consists of one embarkment and one disembarkment event:
 else:
 * If a transporter is destroyed with transported units on board, transport service continues with remaining transporters until service is completed. Units on destroyed transporter are deleted or set as inactive for the remainder of the federation execution.
  
-###	Embarkment Service 
+##	Embarkment Service 
 
 A Consumer makes a request for embarkment with the following data:
 * List with units to embark.
@@ -371,7 +396,7 @@ If a Disembarkment service is cancelled:
 Variations:
 * Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (`LOG_OfferService`), without processing the query phase (RequestTansport).
 
-### Transport Services and Attrition 
+## Transport Services and Attrition 
 
 The TransportDestroyedEntities interaction can take place at any time between the start of the service (`LOG_ServiceStarted` interaction) and the end of the service (`LOG_ServiceComplete` interaction). Impact on the transport service pattern could be the following example.
 
@@ -386,7 +411,7 @@ Second rotation: Vessel 2 embark units	Provider send: TransportEmbarkmentStatus 
 During transport, service Provider receives MunitionDetonation; Vessel 2 is destroyed	Provider send: TransportDestroyedEntities (list3)
 End of service or Cancel	
 
-### Scenario Initialization Phase 
+## Scenario Initialization Phase 
 
 Units can start as embarked units and have a planned disembarkment location. The transporters attribute EmbeddedUnitList shall identify these units with their UniqueId (UUID) which is specified in the scenario (MSDL) file for the initialization of the federation execution. Embarked units shall be published by the consumer during the scenario preparation/initialization phase.
 

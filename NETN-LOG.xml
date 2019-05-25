@@ -1,22 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelIdentification>
-        <name>NETN-Logistics</name>
+    <modelIdentification notes="netn-log_1">
+        <name>NETN LOG</name>
         <type>FOM</type>
-        <version>1.0</version>
-        <modificationDate>2018-08-13</modificationDate>
-        <securityClassification>unclassified</securityClassification>
-        <purpose></purpose>
+        <version>2.0.0</version>
+        <modificationDate>2019-05-25</modificationDate>
+        <securityClassification>Not Classified</securityClassification>
+        <releaseRestriction>Copyright (C) 2019 NATO/OTAN</releaseRestriction>
+        <releaseRestriction>This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</releaseRestriction>
+        <purpose>
+The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
-        <description>A combined module of the NETN2 modules, NETN-Transport, NETN-Supply, NETN-Storage and NETN-Repair.</description>
-        <useLimitation></useLimitation>
-        <useHistory>v1.0.0 - LO: First version of the merged FOM module.  </useHistory>
-        <useHistory>v2.0.0-RC1 - LO: Added LOG_Facility and added prefix (LOG_) to interacrtions</useHistory>
+        <description>The NATO Education and Training Network (NETN) Logistics FOM Module.
+
+This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.</description>
+        <useLimitation>
+The NETN Logistics module covers the following services:
+
+* Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service.
+* Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service.
+* Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark.
+* Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
+
+Examples of use:
+
+* Refuelling of aircraft at an airbase or in the air
+* Transport of supplies between facilities
+* Repair of damaged platforms in facility or by unit
+* Transport of units, platforms, and humans by train, ship, or aircraft
+* Embarkment and disembarkment of units on platforms
+        </useLimitation>
+        <useHistory>v1.0.0 - First version of the merged FOM module.  </useHistory>
+        <useHistory>v2.0.0-RC1 Added LOG_Facility and added prefix (LOG_) to interacrtions</useHistory>
         <poc>
             <pocType>Primary author</pocType>
             <pocName>Lennart Olsson</pocName>
             <pocOrg>Pitch Technologies</pocOrg>
-            <pocEmail>lennart.olsson@pitch.se</pocEmail>
+            <pocTelephone>+46134705500</pocTelephone>
+            <pocEmail>lennart.olsson@pitchtechnologies.com</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Björn Löfstrand</pocName>
+            <pocOrg>Pitch Technologies</pocOrg>
+            <pocTelephone>+46702475152</pocTelephone>
+            <pocEmail>bjorn.lofstrand@pitchtechnologies.com</pocEmail>
         </poc>
         <other></other>
     </modelIdentification>
@@ -25,10 +53,12 @@
             <name>HLAobjectRoot</name>
             <objectClass>
                 <name>EmbeddedSystem</name>
-                <objectClass notes="COPY-COPY-rpr2base_7">
+                <objectClass>
                     <name>LOG_Facility</name>
                     <sharing>PublishSubscribe</sharing>
-                    <semantics>Logistics LOG_Facility dedicated for supplying, storaging, reparing, and other services.</semantics>
+                    <semantics>The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
+ 
+The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.</semantics>
                     <attribute>
                         <name>IsOperational</name>
                         <dataType>HLAboolean</dataType>
@@ -42,14 +72,14 @@
                     </attribute>
                     <attribute>
                         <name>StorageList</name>
-                        <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                        <dataType>ArrayOfSupplyStruct</dataType>
                         <updateType>Conditional</updateType>
                         <updateCondition>On change</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>List of the material contained in the facility</semantics>
+                        <semantics>List of the material located in the facility.</semantics>
                     </attribute>
                     <attribute>
                         <name>UniqueID</name>
@@ -88,7 +118,7 @@
                 <semantics>The LOG_Service interaction class is the base class for all NETN Service Consumer-Provider Pattern and logistics interactions. It contains the basic required parameters (not optional) that are always sent.</semantics>
                 <parameter>
                     <name>ServiceID</name>
-                    <dataType>NETN_ServiceIdentifier</dataType>
+                    <dataType>ServiceIdentifier</dataType>
                     <semantics>Unique identifier for a service</semantics>
                 </parameter>
                 <parameter>
@@ -142,7 +172,7 @@
                         <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of material is included in the request.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
@@ -164,7 +194,7 @@
                         <semantics>LOG_RequestSupply is used by a consumer to initiate a request for supply from a supply service provider. The amount and type of material is included in the request. In this request the consumer propose whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>List of type and quantity of supplies requested.</semantics>
                         </parameter>
                         <parameter>
@@ -233,7 +263,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested material can be stored.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
@@ -255,7 +285,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <semantics>LOG_OfferSupply is used by a supply service provider to indicate which of the requested materials (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
                         </parameter>
                         <parameter>
@@ -327,7 +357,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         <semantics>This interaction is sent by the provider when the supply is delivered to the consumer</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>The amount of supplies, by type, that were transferred from provider to consumer.</semantics>
                         </parameter>
                     </interactionClass>
@@ -339,7 +369,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         <semantics>This interaction is sent by the provider when the supply is delivered to the provider</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>This interaction is sent by the provider when all supply is received by the provider</semantics>
                         </parameter>
                     </interactionClass>
@@ -418,7 +448,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                         <semantics>This interaction is sent when the consumer is ready to receive the supply. (At same location as the provider)</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>The amount of supplies, by type, that the consumer is able to accept at the time it declares ReadyToReceive.</semantics>
                         </parameter>
                     </interactionClass>
@@ -431,7 +461,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
 (At same location as the provider)</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>This interaction is sent when the consumer is ready to transfer the supply. (At same location as the provider)</semantics>
                         </parameter>
                     </interactionClass>
@@ -913,6 +943,13 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                 <semantics>List of repair types</semantics>
             </arrayData>
             <arrayData>
+                <name>ArrayOfSupplyStruct</name>
+                <dataType>SupplyStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+            <arrayData>
                 <name>ServiceDescription</name>
                 <dataType>HLAunicodeChar</dataType>
                 <cardinality>Dynamic</cardinality>
@@ -988,7 +1025,22 @@ When date and time is set to zero (0), implies no date-time specification</seman
                 </field>
             </fixedRecordData>
             <fixedRecordData>
-                <name>NETN_ServiceIdentifier</name>
+                <name>SupplyStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>Same as defined in RPR2 Logistics FOM Module.</semantics>
+                <field>
+                    <name>SupplyType</name>
+                    <dataType>EntityTypeStruct</dataType>
+                    <semantics>The type of supply (as described in the Bit Encoded Values for Use with Protocols for Distributed Interactive Simulation Applications)</semantics>
+                </field>
+                <field>
+                    <name>Quantity</name>
+                    <dataType>QuantityFloat32</dataType>
+                    <semantics>The number of units of the supply type.  The unit measure depends on the supply type and shall use the SI units of measurement used for such supplies.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>ServiceIdentifier</name>
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>An ID associated with the service, shall be unique in the federation execution. 
 E.g. generate the federate id as a string and use this in the ServiceDescription.</semantics>
@@ -1036,10 +1088,10 @@ In the case where all possible values are exhausted, the numbers may be reused b
     </dataTypes>
     <notes>
         <note>
-            <label>COPY-COPY-rpr2base_7</label>
-            <semantics>Federates shall send the time at which the data is valid in the user defined tag with every attribute values update and interaction.  The time shall be in the first 8 bytes (octets) of the user defined tag, using the DIS timestamp field format (see section 5.2.31 of IEEE 1278.1-1995) converted into hexadecimal ASCII character representation (0-9 and A-F).  The ordering of the characters shall be in accordance with section 5.1.1 of IEEE 1278.1-1995, that is most significant octet first, with the most significant bits first (i.e. the character for bits 4-7 precedes the character for bits 0-3). 
+            <label>netn-log_1</label>
+            <semantics>All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
  
-All federates shall transmit this field, even if they do not use it themselves, so that other federates can use its value to compensate for network transport delays.</semantics>
+The NETN LOG FOM module extends RPR-FOM v2.0 FOM. Datatypes are re-used and extensions to object classes are defined.</semantics>
         </note>
     </notes>
 </objectModel>
