@@ -42,7 +42,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
 |Attribute|Datatype|Description|
 |---|---|---|
 |IsOperational|HLAboolean|The operational status of the facility (true = is operational)| 
-|StorageList|ArrayOfSupplyStruct|List of the material located in the facility.| 
+|StorageList|ArrayOfSupplyStruct|List of the materiel located in the facility.| 
 |UniqueID|UuidArrayOfHLAbyte16|The unique identifier for the facility| 
 |ServiceCapability|LOG_ServiceTypeEnum8|Describes the service capability of the LOG_Facility instance.| 
 
@@ -76,14 +76,11 @@ The Logistics Service pattern is used for modelling request, negotiation and del
 
 Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transaction. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
 
+<img src="./images/log_interactionclasses.png">
+
 The base classes for the Logistics Service Pattern are extended with subclasses in order to provide more detail information required for specific logistics services.
 
-<img src="./images/log_scp_interactions.png" width="75%">
-
 The logistics service pattern is divided into three phases:
-1.	**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
-2.	**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
-3.	**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
 <img src="./images/log_scp_phases.svg" width="400px"/>
 
@@ -98,40 +95,60 @@ Provider->Consumer: LOG_ServiceComplete
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
+**Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 1. The consumer initiates negotiation by requesting a service using `LOG_RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `LOG_CancelService`.
 2. Offers are sent by provider using `LOG_OfferService`. The provider notify the consumer of its ability to deliver the service using the `IsOffering`attribute and `RequestTimeOut` indicates how long the offer is valid.
-3. The consumer accepts an offer using `LOG_AcceptOffer`and the `LOG_ServiceStarted` is used to indicate that service delivery has started. A consumer can also reject an offer from a provider using `LOG_RejectOffer`and then no more negotiation is performed with that provider.
-4. The modelling responsibility of the service consumer and/or provider could change during service delivery by using NETN TMR.
-5. When service delivery is complete a `LOG_ServiceComplete` message is sent and the consumer sends a `LOG_ServiceReceived`message to conclude the service pattern.
+3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
+
+**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+
+4. The `LOG_ServiceStarted` is used to indicate that service delivery has started.
+5. The modelling responsibility of the service consumer and/or provider could change during service delivery by using NETN TMR.
+
+**Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
+
+6. When service delivery is complete a `LOG_ServiceComplete` message is sent and the consumer sends a `LOG_ServiceReceived`message to conclude the service pattern.
 
 # Transfer of Supplies
 
-Facilities can have supply and/or storage capabilities that can be offered as supply and storage services. Both of these services involves the transfer of materiel from one simulated entity to antoher. When such transfer of supplies occur between entites modelled in different distributed federated systems, the transaction is managed by the NETN Supply and Storage Services. 
+Facilities can have the capability to supply and/or storage supplies. These capabilities can be offered as supply and storage services. The supply and storage services involves the transfer of materiel from one simulated entity to antoher.
 
 Supply and storage services are different in terms of flow of materiel between service consumer and provider. 
 
 * Supply Service: Supplies are transferred from the provider to the consumer of the service.
 * Storage Services: Supplies are transferred from the consumer to the provider of the service.
 
-The definition of the type of the supply is based on the SISO-REF-010 standard. Additional supply types can be defined and documented in federation specific agreements.
+The type of supplies is based on the SISO-REF-010 standard. Additional supply types can be defined and documented in federation specific agreements.
 
 The supply and storage service are based on the general NETN Logistics Services Pattern but with specific extensions for supplies.
 
-___Figure: SUPPLY & Storage INTERACTION CLASSES___
+During service negotiation `Appointment` information is used decide where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the provider can also change this and propose an alternative `Appointmnet` in the service offer.
 
-Both the Supply and Storage services can use `Appointment` information to negotiate where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the Provider can also change this and propose an alternative `Appointmnet` in the service offer.
+The `LoadingDoneByProvider` parameter is used to indicate if the transfer of suplies is performed by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
 
-___The `LoadingDoneByProvider` parameter is a request that the loading of suplies should be controlled by the provider of the service. This is an agreement between the parties and is specified in the offer from the Provider, which is accepted by the Consumer; the Provider can agree or disagree with the Consumer's proposal. By default the service delivery is controlled by the Provider.___
+* If the transfer of supplies is controlled by the provider then the consumer shall respond with a `LOG_ServiceReceived` to any `LOG_ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `LOG_ServiceReceived` message is sent. 
+* If the service delivery is controlled by the consumer then the providing shall respond with a `LOG_ServiceComplete` to any `LOG_ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `LOG_ServiceComplete` is sent. 
 
-If the service delivery is controlled by the provider then the consumer shall respond with a `LOG_ServiceReceived` to any `LOG_ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `LOG_ServiceReceived` message is sent. 
+Both `LOG_SupplyComplete` and `LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
 
-Both the `LOG_SupplyComplete` and the`LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
+Early termination of the service request or during delivery is possible and can be initiated by either the consumer or the provider using `LOG_CancelService`. 
 
-If the service delivery is controlled by the consumer then the providing shall respond with a `LOG_ServiceComplete` to any `LOG_ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `LOG_ServiceComplete` is sent. Both `LOG_SupplyComplete` and `LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
+<img src="./images/log_supply_cancellation.svg" width="400px"/>
 
-Early termination of the service request or during delivery is possible and can be initiated by either the consumer or the provider using `LOG_CancelService`. On termination before delivery started, no materiel will be transferred. 
+<!--```
+DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+Consumer->Provider: ...
+Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_CancelService(Reason)
+Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Consumer->Provider: LOG_ServiceReceived
+```-->
 
-Rejection of a service offer is allowed and no supplies will be transferred if an offer is rejected.
+Figure: Cancellation by the Provider 
+* If the service is cancelled before service delivery has started, the service transaction is terminated. 
+* If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_SupplyComplete` or `LOG_StorageComplete`message. The actual supply amount must be less than or equal to the amount offered.
+
 
 ## Supply Service
 
@@ -152,54 +169,21 @@ Consumer->Provider: LOG_ServiceReceived
 
 Figure: Provider supplies consumer successfully
 
-To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested materiel are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
+1. To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested supplies are provided. The optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
-A `LOG_OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer the provider can also propose a change to service delivery control.
+2. A `LOG_OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer the provider can also propose a change to service delivery control.
 
-The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` message. The `LOG_ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
+3. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` message. 
 
-If the transfer is controlled by the provider then `LOG_SupplyComplete` is used by to inform the Consumer that the transfer is complete. The consuming entity sends a `LOG_ServiceReceived` in response to the `LOG_SupplyComplete` message. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is sent.
+4. The `LOG_ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
 
-If the transfer is controlled by the consumer then `LOG_ServiceReceived` is used to inform the Provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` in response to the `LOG_ServiceReceived` message. Transfer of supplies is considered complete once the `LOG_StorageComplete` is sent.
+5. Supplies can be transferred to the service consumer once the `LOG_ServiceStarted`message is sent. 
 
-The service can be cancelled by either the provider or consumer using `LOG_CancelService`. If the service is cancelled before service delivery has started, the service transaction is terminated. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_SupplyComplete` message. The actual supply amount must be less than or equal to the amount offered.
-
-<img src="./images/log_supply_cancellation.svg" width="400px"/>
-
-<!--```
-DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
-Consumer->Provider: ...
-Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
-Provider->Consumer: LOG_ServiceStarted
-Provider->Consumer: LOG_CancelService(Reason)
-Provider->Consumer: LOG_ServiceComplete(SuppliesData)
-Consumer->Provider: LOG_ServiceReceived
-```-->
-
-Figure: Cancellation by the Provider 
-
+6. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
 
 ## Storage Service
 
 The storage service os similar to the supply service but the actual transfer of supplies is reveresed and moves from consumer to supplier of the service.
-
-***Figure:Storage FOM Interaction Classes.***
-
-To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of materiel to be stored are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
-
-A `LOG_OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer the provider can also propose a change to service delivery control.
-
-The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferStorage` message. The `LOG_ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
-
-Supplies will be transferred to the service provider once the `LOG_ServiceStarted`is sent. 
-
-If the transfer is controlled by the Consumer then `LOG_ServiceReceived` is used by the Consumer to inform the Provider that the transfer is complete. The providing entity shall send a StorageComplete as response to the `LOG_ServiceReceived` interaction. Transfer of supplies is considered complete once the `StorageComplete` is issued.
-
-If the transfer is controlled by the provider then a `LOG_StorageComplete` message is used by to inform the Consumer that the transfer is complete. The consuming entity sends a `LOG_ServiceReceived` message in response to the `LOG_StorageComplete`. Transfer of supplies is considered complete once the `LOG_ServiceReceived` is sent.
-
-If the transfer is controlled by the consumer then `LOG_ServiceReceived` is used to inform the provider that the transfer is complete. The providing entity shall send a `LOG_StorageComplete` message in response to the `LOG_ServiceReceived`. Transfer of supplies is considered complete once the `LOG_StorageComplete` is sent.
-
-The service can be cancelled by either the provider or consumer using `LOG_CancelService`. If the service is cancelled before service delivery has started, the service transaction is terminated. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_StorageComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_StorageComplete` message. The actual supply amount must be less than or equal to the amount offered.
 
 <img src="./images/log_storage_sequence.svg" width="550px"/>
 <!--```
@@ -212,18 +196,33 @@ Provider->Consumer: LOG_ServiceStarted
 Provider->Consumer: LOG_ServiceComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
-***Figure: Storage of Supplies***
 
-# Maintenance and Repair Services
-Repair service can be performed on equipment (i.e. non-consumables items such as platforms). Damaged platforms can be delivered to maintenance location or maintenance equipment can be moved to the requesting equipment. Providers of this service are facilities capable of performing requested repairs. The required effort for the repair of damaged material is determined by the providing model. It is calculated, based on the degree of damage to the material. If the consuming entity is an aggregate entity, its damaged equipment has to be listed in a platform list to get repaired.
- 
-Figure 9-15: Repair FOM Interaction Classes.
+1. To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of supplies to be stored are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
-The service is initiated with a `RequestRepair` interaction, sent by a federate with modelling responsibility of damaged equipment (for example damaged platforms). The service provider offers the repair service by sending the `OfferRepair` interaction. The NETN Service Consumer-Provider interactions are used to complete the service.
+2. A `LOG_OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer the provider can also propose a change to service delivery control.
+
+3. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferStorage` message. 
+
+4. The `LOG_ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
+
+5. Supplies can be transferred to the service provider once the `LOG_ServiceStarted`message is sent. 
+
+6. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
+
+
+
+# Transport and Repair
+
+## Repair Service
+Repair service can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units with repair capability can move to the damaged platform to provide repair services on location.
+
+The required effort for the repair of damaged materiel is determined by the providing model. It is calculated, based on the degree of damage to the materiel. If the consuming entity is an aggregate entity, its damaged equipment has to be listed in a platform list to get repaired.
+
+1. The service is initiated with a `LOG_RequestRepair` interaction, sent by a federate with modelling responsibility of damaged equipment (for example damaged platforms). The service provider offers the repair service by sending the `OfferRepair` interaction. The NETN Service Consumer-Provider interactions are used to complete the service.
 
 The `RepairData`parameter in the request interaction is a list of equipment and type of repairs. The list of offered repairs may be different from the list of requested repairs. If the HLA object (equipment to be repaired) has a damaged state, the list of requested repairs could be empty. The providing federate models the efforts to repair a damaged platform.
 
-The consuming entity shall send a `LOG_ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
+2. The consuming entity shall send a `LOG_ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
 
 If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done.
 
@@ -247,7 +246,7 @@ The `NETN_RepairTypeEnum16` enumerated data type is defined in the NETN-Repair F
 In the RPR FOM modules values are defined as a fixed part of some enumerated data types. In order not to violate the modular FOM merging rules, the NETN Logistics FOM modules does not define any extensions to these data types as part of the FOM module. A separate table for adding values to the existing range of enumerations defined in the RPR FOM modules is allowed instead. This table shall be part of any federation specific agreements where extensions to an enumerated data type are required. It is also recommended but not required that any additional enumerated values added to this data type shall be submitted as Change Requests to the SISO RPR-FOM Product Development Group. All existing enumerators in RPR FOM modules and their values are reserved. Additional repair types are documented in the federation specific agreements.
 
  
-# Transport Service
+## Transport Service
 
 Transport services are used when there are needs to transport non-consumable materiel such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. 
 

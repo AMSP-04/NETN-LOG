@@ -7,7 +7,7 @@
         <modificationDate>2019-05-25</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction>Copyright (C) 2019 NATO/OTAN</releaseRestriction>
-        <releaseRestriction>This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</releaseRestriction>
+        <releaseRestriction>This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.</releaseRestriction>
         <purpose>
 The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
@@ -79,7 +79,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>List of the material located in the facility.</semantics>
+                        <semantics>List of the materiel located in the facility.</semantics>
                     </attribute>
                     <attribute>
                         <name>UniqueID</name>
@@ -169,7 +169,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of material is included in the request.</semantics>
+                        <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of materiel is included in the request.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>ArrayOfSupplyStruct</dataType>
@@ -178,7 +178,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <parameter>
                             <name>LoadingDoneByProvider</name>
                             <dataType>HLAboolean</dataType>
-                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the material. Default value is true.</semantics>
+                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
@@ -191,7 +191,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>LOG_RequestSupply is used by a consumer to initiate a request for supply from a supply service provider. The amount and type of material is included in the request. In this request the consumer propose whether the loading is done by the provider or by the consumer.</semantics>
+                        <semantics>LOG_RequestSupply is used by a consumer to initiate a request for supply from a supply service provider. The amount and type of materiel is included in the request. In this request the consumer propose whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>ArrayOfSupplyStruct</dataType>
@@ -200,7 +200,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <parameter>
                             <name>LoadingDoneByProvider</name>
                             <dataType>HLAboolean</dataType>
-                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the material. Default value is true.</semantics>
+                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
@@ -260,7 +260,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested material can be stored.</semantics>
+                        <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested materiel can be stored.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>ArrayOfSupplyStruct</dataType>
@@ -269,7 +269,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <parameter>
                             <name>LoadingDoneByProvider</name>
                             <dataType>HLAboolean</dataType>
-                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the material.  Default value is true.</semantics>
+                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
@@ -282,7 +282,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>LOG_OfferSupply is used by a supply service provider to indicate which of the requested materials (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
+                        <semantics>LOG_OfferSupply is used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>ArrayOfSupplyStruct</dataType>
@@ -291,7 +291,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <parameter>
                             <name>LoadingDoneByProvider</name>
                             <dataType>HLAboolean</dataType>
-                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the material.  Default value is true.</semantics>
+                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
@@ -961,16 +961,16 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
             <fixedRecordData>
                 <name>RepairStruct</name>
                 <encoding>HLAfixedRecord</encoding>
-                <semantics>Repairs associated with a specific material</semantics>
+                <semantics>Repairs associated with a specific materiel</semantics>
                 <field>
-                    <name>MaterialID</name>
+                    <name>MaterielID</name>
                     <dataType>UuidArrayOfHLAbyte16</dataType>
-                    <semantics>UUID for the material.</semantics>
+                    <semantics>UUID for the materiel.</semantics>
                 </field>
                 <field>
                     <name>Repairs</name>
                     <dataType>ArrayOfRepairTypeEnum</dataType>
-                    <semantics>List of the types of repair associated with the material.</semantics>
+                    <semantics>List of the types of repair associated with the materiel.</semantics>
                 </field>
             </fixedRecordData>
             <fixedRecordData>

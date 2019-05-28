@@ -28,4 +28,5 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Renamed datatype `NETN_ArrayOfSupplyStruct` to `ArrayOfSupplyStruct`
 * Renamed datatype `NETN_SupplyStruct` to `SupplyStruct`
 * Renamed datatype `NETN_ServiceIdentifier` to `ServiceIdentifier`
+* Renamed field `MaterialID` of datatype `RepairStruct` to `MaterielID`
 
