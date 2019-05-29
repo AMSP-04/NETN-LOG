@@ -172,7 +172,7 @@ Consumer->Provider: LOG_ServiceReceived
 
 Supplies are transferred after the offer is accepted and the service delivery has started. 
 
-1. To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested supplies are provided. The optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
+1. To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested supplies are provided as `SuppliesData`. The optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
 2. A `LOG_OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer the provider can also propose a change to service delivery control.
 
@@ -201,7 +201,7 @@ Consumer->Provider: LOG_ServiceReceived
 
 The storage service os similar to the supply service but the actual transfer of supplies is reveresed and moves from consumer to supplier of the service.
 
-1. To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of supplies to be stored are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
+1. To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of supplies to be stored are provided as `SuppliesData`. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
 2. A `LOG_OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer the provider can also propose a change to service delivery control.
 
@@ -215,12 +215,9 @@ The storage service os similar to the supply service but the actual transfer of 
 
 
 
-# Transport and Repair
+# Repair and Transport
 
 ## Repair Service
-Repair service can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units with repair capability can move to the damaged platform to provide repair services on location.
-
-The required effort for the repair of damaged materiel is determined by the provider based on the degree of damage to the materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list to get repaired.
 
 <img src="./images/log_repair_sequence.svg" width="400px"/>
 
@@ -233,35 +230,21 @@ Provider->Consumer: LOG_ServiceStarted
 Provider->Consumer: LOG_RepairComplete(RepairData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
+**Figure: Repair Service**
 
-1. The service is initiated with a `LOG_RequestRepair` interaction, sent by a federate with modelling responsibility of damaged equipment (for example damaged platforms). 
-2. The service provider offers the repair service by sending the `LOG_OfferRepair` message. 
+Repair can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units capable of providing repair services can move to the location of a damaged platform deliver repair services.
 
-The `RepairData`parameter in the request interaction is a list of equipment and type of repairs. The list of offered repairs may be different from the list of requested repairs. If the HLA object (equipment to be repaired) has a damaged state, the list of requested repairs could be empty. The providing federate models the efforts to repair a damaged platform.
+1. To request repair, the consumer sends a `LOG_RequestRepair` message. The `RepairData`parameter is a list of materiel and an associated list of the type of repairs for that materiel.
 
-2. The consuming entity shall send a `LOG_ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
+2. The service provider offers the repair service by sending the `LOG_OfferRepair` message. The list of offered repairs may be different from the list of requested repairs.
 
-If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done.
+3. The final requested repair is specified in the `LOG_ReadyToReceiveRepair` message as `RepairData` and shall be a equal to or a subset of the offered repairs. 
 
-If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `RepairComplete`, the Provider shall inform the Consumer of the amount of repair done using `RepairComplete` parameter `RepairData`. This allows for interruptions due to operational necessity, e.g. death/destruction of either the consumer or provider during repair actions.
+4. The consuming entity shall send a `LOG_ServiceReceived` as a response to the `LOG_RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
+
+If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_RepairComplete`, the provider shall inform the consumer of the amount of repair done using a `LOG_RepairComplete` message with `RepairData`.
  
-Figure 9-16: OK Repair.
-
-The service can be cancelled by both the provider and the consumer with the `LOG_CancelService` interaction. If the service is cancelled before service delivery has started, the service transaction is terminated.
- 
-Figure 9-17: Early Cancellation by the Provider.
- 
-Figure 9-18: Service Cancelled by the Consumer After Service Started.
- 
-Figure 9-19: Service Offer Rejected.
- 
-Figure 9-20: Provider Sends a Negative Offer to the Consumer.
-
-##	Repair Types
-The `NETN_RepairTypeEnum16` enumerated data type is defined in the NETN-Repair FOM and identifies a large set of repair types. These enumerations are also defined in the RPR-Enumerations FOM module. DIS does not define the enumerated values as part of the core specification.
-
-In the RPR FOM modules values are defined as a fixed part of some enumerated data types. In order not to violate the modular FOM merging rules, the NETN Logistics FOM modules does not define any extensions to these data types as part of the FOM module. A separate table for adding values to the existing range of enumerations defined in the RPR FOM modules is allowed instead. This table shall be part of any federation specific agreements where extensions to an enumerated data type are required. It is also recommended but not required that any additional enumerated values added to this data type shall be submitted as Change Requests to the SISO RPR-FOM Product Development Group. All existing enumerators in RPR FOM modules and their values are reserved. Additional repair types are documented in the federation specific agreements.
-
+The required effort in making repairs is determined by the provider, based on the degree of damage to the materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list.
  
 ## Transport Service
 
