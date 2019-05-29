@@ -2,7 +2,7 @@
 
 ## Identification information
 ### CPR identifier
-NETN-Logistics-CPR-1
+NETN-LOG-CPR-1
 
 ### Title
 Merge the NETN-SCP-Base, NETN-Transport, NETN-Supply, NETN-Storage and NETN-Repair MSDL FOM modules to one FOM module, NETN-Logistics.

@@ -40,26 +40,25 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
 
 <img src="./images/log_facility.png" width="500px"/>
 
-|Attribute|Datatype|Description|
-|---|---|---|
-|IsOperational|HLAboolean|The operational status of the facility (true = is operational)| 
-|StorageList|ArrayOfSupplyStruct|List of the materiel located in the facility.| 
-|UniqueID|UuidArrayOfHLAbyte16|The unique identifier for the facility| 
-|ServiceCapability|LOG_ServiceTypeEnum8|Describes the service capability of the LOG_Facility instance.| 
+A `LOG_Facility` object has the following attributes:
+
+* `UniqueID` is a unique identifier for the facility used for initialization and reference. 
+* `IsOperational` indicate the operational status of the facility (true = is operational).
+* `StorageList` defines the list of materiel located in the facility. Each item in the list specifies the `SupplyType` and `Quantity` of the materiel.
+* `ServiceCapability` describes the capability of the facility to provide a specific service. Only one capability per `LOG_Facility` object is allowed.
 
 
 ## Materiel
 Materiel are classified as:
 * Consumable Supplies
-    * Piece Goods
-        * Ammunition
-        * Mines
-        * Medical materiel
-        * Spare parts
-    * Bulk Goods
-        * Fuel (Diesel, Gas, Aviation fuel, etc.)
-        * Water
-        * Food
+    * Ammunition
+    * Mines
+    * Medical materiel
+    * Spare parts
+    * NBC Materiel
+    * Fuel (Diesel, Gas, Aviation fuel, etc.)
+    * Water
+    * Food
 * Non-consumable materiel
     * Platforms
     * Humans
@@ -69,8 +68,6 @@ Materiel are classified as:
 
 Transfer of supplies can be requested as a number of items, as cubic meters for liquid bulk goods and in kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not considered.
 
-***Transport of non-consumable materiel*** 
-
 ## Logistics Service Pattern
 
 The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. 
@@ -79,9 +76,9 @@ Entities participating in the service transaction are considered as either a con
 
 <img src="./images/log_interactionclasses.png">
 
-The base classes for the Logistics Service Pattern are extended with subclasses in order to provide more detail information required for specific logistics services.
+**Figure: Logistics Services Interaction Classes**
 
-The logistics service pattern is divided into three phases:
+The base classes for the Logistics Service Pattern are extended with subclasses in order to provide more detail information required for specific logistics services.
 
 <img src="./images/log_scp_phases.svg" width="400px"/>
 
@@ -98,7 +95,9 @@ Provider->Consumer: LOG_ServiceComplete
 space
 Consumer->Provider: LOG_ServiceReceived
 ```-->
+**Figure: Phases of the Logistics Service Pattern**
 
+The logistics service pattern is divided into three phases:
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 1. The consumer initiates negotiation by requesting a service using `LOG_RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `LOG_CancelService`.
 2. Offers are sent by provider using `LOG_OfferService`. The provider notifies the consumer of its ability to deliver the service using the `IsOffering` attribute and `RequestTimeOut` indicates how long the offer is valid.
@@ -115,7 +114,7 @@ Consumer->Provider: LOG_ServiceReceived
 
 # Transfer of Supplies
 
-Facilities can have the capability to supply and/or storage supplies. These capabilities can be offered as supply and storage services. The supply and storage services involves the transfer of materiel from one simulated entity to antoher.
+Facilities can have the capability to supply and/or storage supplies. These capabilities can be offered as supply and storage services. The supply and storage services involve the transfer of materiel from one simulated entity to antoher.
 
 Supply and storage services are different in terms of flow of materiel between service consumer and provider. 
 
@@ -130,12 +129,10 @@ During service negotiation `Appointment` information is used decide where and wh
 
 The `LoadingDoneByProvider` parameter is used to indicate if the transfer of suplies is performed by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
 
-* If the transfer of supplies is controlled by the provider then the consumer shall respond with a `LOG_ServiceReceived` to any `LOG_ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `LOG_ServiceReceived` message is sent. 
-* If the service delivery is controlled by the consumer then the providing shall respond with a `LOG_ServiceComplete` to any `LOG_ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `LOG_ServiceComplete` is sent. 
+* If the transfer of supplies is controlled by the provider, then the consumer shall respond with a `LOG_ServiceReceived` to any `LOG_ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `LOG_ServiceReceived` message is sent. 
+* If the service delivery is controlled by the consumer, then the providing shall respond with a `LOG_ServiceComplete` to any `LOG_ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `LOG_ServiceComplete` is sent. 
 
 Both `LOG_SupplyComplete` and `LOG_StorageComplete` messages include information on the actual amount of transferred supplies.
-
-Early termination of the service request or during delivery is possible and can be initiated by either the consumer or the provider using `LOG_CancelService`. 
 
 <img src="./images/log_supply_cancellation.svg" width="400px"/>
 
@@ -148,14 +145,16 @@ Provider->Consumer: LOG_SupplyComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
-Figure: Cancellation by the Provider 
+**Figure: Service Cancellation**
+
+Early termination of the service request or during delivery is possible and can be initiated by either the consumer or the provider using `LOG_CancelService`. 
+
 * If the service is cancelled before service delivery has started, the service transaction is terminated. 
-* If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the  `LOG_SupplyComplete` or `LOG_StorageComplete`message. The actual supply amount must be less than or equal to the amount offered.
+* If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the `LOG_SupplyComplete` or `LOG_StorageComplete`message. The actual supply amount must be less than or equal to the amount offered.
 
 
 ## Supply Service
 
-Supplies are transferred after the offer is accepted and the service delivery has started. 
 
 <img src="./images/log_supply_sequence.svg" width="550px"/>
 
@@ -169,7 +168,9 @@ Provider->Consumer: LOG_SupplyComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
-Figure: Provider supplies consumer successfully
+**Figure: Supply Service**
+
+Supplies are transferred after the offer is accepted and the service delivery has started. 
 
 1. To request supplies, the consumer sends a `LOG_RequestSupply` message. The amount and type of requested supplies are provided. The optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
@@ -185,8 +186,6 @@ Figure: Provider supplies consumer successfully
 
 ## Storage Service
 
-The storage service os similar to the supply service but the actual transfer of supplies is reveresed and moves from consumer to supplier of the service.
-
 <img src="./images/log_storage_sequence.svg" width="550px"/>
 <!--```
 Consumer->Provider: LOG_RequestStorage(SuppliesData, Appointment, LoadingDoneByProvider)
@@ -197,6 +196,10 @@ Provider->Consumer: LOG_ServiceStarted
 Provider->Consumer: LOG_StorageComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
+
+**Figure: Storage Service**
+
+The storage service os similar to the supply service but the actual transfer of supplies is reveresed and moves from consumer to supplier of the service.
 
 1. To request storage, the consumer sends a `LOG_RequestStorage` message. The amount and type of supplies to be stored are provided. An optional `LoadingDoneByProvider`parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
