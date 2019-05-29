@@ -2,6 +2,7 @@
 
 The NATO Education and Training Network (NETN) Logistics FOM Module.
 
+## Description
 This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.
 
 ## Purpose
@@ -15,7 +16,7 @@ The NETN Logistics module covers the following services:
 * Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service.
 * Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service.
 * Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark.
-* Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
+* Repair Service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
 
 Examples of use:
 
@@ -29,13 +30,13 @@ Examples of use:
 # Overview
 All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
  
-The NETN LOG FOM module extends RPR-FOM v2.0 FOM. Datatypes are re-used and extensions to object classes are defined.
+The NETN LOG FOM module extends RPR-FOM v2.0. Datatypes are re-used and extensions to object classes are defined.
 
 ## Facility
 
-The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
+The facility concept is central, and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
  
-The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
+The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with an RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
 
 <img src="./images/log_facility.png" width="500px"/>
 
@@ -85,19 +86,22 @@ The logistics service pattern is divided into three phases:
 <img src="./images/log_scp_phases.svg" width="400px"/>
 
 <!--```
-DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
+DIAGRAM GENERATED IN https://sequencediagram.org/
 Consumer->Provider: LOG_RequestService(RequestTimeOut)
+
 Provider->Consumer: LOG_OfferService(IsOffering, RequestTimeOut)
 Consumer->Provider: LOG_AcceptOffer
+space
 Consumer->Provider: LOG_ReadyToReceiveService
 Provider->Consumer: LOG_ServiceStarted
 Provider->Consumer: LOG_ServiceComplete
+space
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 1. The consumer initiates negotiation by requesting a service using `LOG_RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `LOG_CancelService`.
-2. Offers are sent by provider using `LOG_OfferService`. The provider notify the consumer of its ability to deliver the service using the `IsOffering`attribute and `RequestTimeOut` indicates how long the offer is valid.
+2. Offers are sent by provider using `LOG_OfferService`. The provider notifies the consumer of its ability to deliver the service using the `IsOffering` attribute and `RequestTimeOut` indicates how long the offer is valid.
 3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
 **Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
@@ -136,12 +140,11 @@ Early termination of the service request or during delivery is possible and can 
 <img src="./images/log_supply_cancellation.svg" width="400px"/>
 
 <!--```
-DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
 Consumer->Provider: ...
 Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
 Provider->Consumer: LOG_ServiceStarted
 Provider->Consumer: LOG_CancelService(Reason)
-Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Provider->Consumer: LOG_SupplyComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
@@ -157,13 +160,12 @@ Supplies are transferred after the offer is accepted and the service delivery ha
 <img src="./images/log_supply_sequence.svg" width="550px"/>
 
 <!--```
-DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
 Consumer->Provider: LOG_RequestSupply(SuppliesData, Appointment, LoadingDoneByProvider)
-Provider->Consumer: LOG_OfferSupply(Offer, SuppliesData, Appointment)
+Provider->Consumer: LOG_OfferSupply(SuppliesData, Appointment)
 Consumer->Provider: LOG_AcceptOffer
 Consumer->Provider: LOG_ReadyToReceiveSupply(SuppliesData)
 Provider->Consumer: LOG_ServiceStarted
-Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Provider->Consumer: LOG_SupplyComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
@@ -187,13 +189,12 @@ The storage service os similar to the supply service but the actual transfer of 
 
 <img src="./images/log_storage_sequence.svg" width="550px"/>
 <!--```
-DIAGRAM GENERATED IN https://bramp.github.io/js-sequence-diagrams/
 Consumer->Provider: LOG_RequestStorage(SuppliesData, Appointment, LoadingDoneByProvider)
-Provider->Consumer: LOG_OfferStorage(Offer, SuppliesData, Appointment)
+Provider->Consumer: LOG_OfferStorage(SuppliesData, Appointment)
 Consumer->Provider: LOG_AcceptOffer
 Consumer->Provider: LOG_ReadyToReceiveStorage(SuppliesData)
 Provider->Consumer: LOG_ServiceStarted
-Provider->Consumer: LOG_ServiceComplete(SuppliesData)
+Provider->Consumer: LOG_StorageComplete(SuppliesData)
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 
@@ -216,9 +217,22 @@ Consumer->Provider: LOG_ServiceReceived
 ## Repair Service
 Repair service can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units with repair capability can move to the damaged platform to provide repair services on location.
 
-The required effort for the repair of damaged materiel is determined by the providing model. It is calculated, based on the degree of damage to the materiel. If the consuming entity is an aggregate entity, its damaged equipment has to be listed in a platform list to get repaired.
+The required effort for the repair of damaged materiel is determined by the provider based on the degree of damage to the materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list to get repaired.
 
-1. The service is initiated with a `LOG_RequestRepair` interaction, sent by a federate with modelling responsibility of damaged equipment (for example damaged platforms). The service provider offers the repair service by sending the `OfferRepair` interaction. The NETN Service Consumer-Provider interactions are used to complete the service.
+<img src="./images/log_repair_sequence.svg" width="400px"/>
+
+<!--```
+Consumer->Provider: LOG_RequestRepair(RepairData, Appointment)
+Provider->Consumer: LOG_OfferRepair(RepairData, Appointment)
+Consumer->Provider: LOG_AcceptOffer
+Consumer->Provider: LOG_ReadyToReceiveRepair(RepairData)
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_RepairComplete(RepairData)
+Consumer->Provider: LOG_ServiceReceived
+```-->
+
+1. The service is initiated with a `LOG_RequestRepair` interaction, sent by a federate with modelling responsibility of damaged equipment (for example damaged platforms). 
+2. The service provider offers the repair service by sending the `LOG_OfferRepair` message. 
 
 The `RepairData`parameter in the request interaction is a list of equipment and type of repairs. The list of offered repairs may be different from the list of requested repairs. If the HLA object (equipment to be repaired) has a damaged state, the list of requested repairs could be empty. The providing federate models the efforts to repair a damaged platform.
 
