@@ -59,10 +59,10 @@ Materiel are classified as:
     * Fuel (Diesel, Gas, Aviation fuel, etc.)
     * Water
     * Food
-* Non-consumable materiel
+* Non-consumable Entities
     * Platforms
     * Humans
-    * Aggregates
+    * Units
     * Reconnaissance and Artillery systems (Radar)
     * Missile
 
@@ -99,8 +99,11 @@ Consumer->Provider: LOG_ServiceReceived
 
 The logistics service pattern is divided into three phases:
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
+
 1. The consumer initiates negotiation by requesting a service using `LOG_RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `LOG_CancelService`.
+
 2. Offers are sent by provider using `LOG_OfferService`. The provider notifies the consumer of its ability to deliver the service using the `IsOffering` attribute and `RequestTimeOut` indicates how long the offer is valid.
+
 3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
 **Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
@@ -176,13 +179,15 @@ Supplies are transferred after the offer is accepted and the service delivery ha
 
 2. A `LOG_OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer the provider can also propose a change to service delivery control.
 
-3. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` message. 
+4. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
-4. The `LOG_ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
+5. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferSupply` message. 
 
-5. Supplies can be transferred to the service consumer once the `LOG_ServiceStarted`message is sent. 
+6. The `LOG_ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
 
-6. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
+7. Supplies can be transferred to the service consumer once the `LOG_ServiceStarted`message is sent. 
+
+8. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
 
 ## Storage Service
 
@@ -205,17 +210,17 @@ The storage service os similar to the supply service but the actual transfer of 
 
 2. A `LOG_OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer the provider can also propose a change to service delivery control.
 
-3. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferStorage` message. 
+3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
-4. The `LOG_ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
+4. The final requested amount of supplies, by type, is specified in the `LOG_ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `LOG_OfferStorage` message. 
 
-5. Supplies can be transferred to the service provider once the `LOG_ServiceStarted`message is sent. 
+5. The `LOG_ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
 
-6. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
+6. Supplies can be transferred to the service provider once the `LOG_ServiceStarted`message is sent. 
 
+7. A `LOG_ServiceComplete` message from the provider and a `LOG_ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
 
-
-# Repair and Transport
+# Transfer and Repair of Entities
 
 ## Repair Service
 
@@ -234,81 +239,86 @@ Consumer->Provider: LOG_ServiceReceived
 
 Repair can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units capable of providing repair services can move to the location of a damaged platform deliver repair services.
 
-1. To request repair, the consumer sends a `LOG_RequestRepair` message. The `RepairData`parameter is a list of materiel and an associated list of the type of repairs for that materiel.
+1. To request repair, the consumer sends a `LOG_RequestRepair` message. The `RepairData`parameter is a list of materiel and an associated list of the type of repairs for that materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list.
 
 2. The service provider offers the repair service by sending the `LOG_OfferRepair` message. The list of offered repairs may be different from the list of requested repairs.
 
-3. The final requested repair is specified in the `LOG_ReadyToReceiveRepair` message as `RepairData` and shall be a equal to or a subset of the offered repairs. 
+3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
-4. The consuming entity shall send a `LOG_ServiceReceived` as a response to the `LOG_RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
+4. The final requested repair is specified in the `LOG_ReadyToReceiveRepair` message as `RepairData` and shall be a equal to or a subset of the offered repairs. 
+
+5. The repair service starts when the consumer sends a `LOG_ServiceStarted` message. The required effort in making repairs is determined by the provider, based on the degree of damage to the materiel. 
+
+6. The consuming entity shall send a `LOG_ServiceReceived` as a response to the `LOG_RepairComplete` interaction. The repair is considered as complete once the `LOG_ServiceReceived` is sent.
 
 If the `LOG_CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done. If the `LOG_CancelService` occurs during `LOG_ServiceStarted` and `LOG_RepairComplete`, the provider shall inform the consumer of the amount of repair done using a `LOG_RepairComplete` message with `RepairData`.
  
-The required effort in making repairs is determined by the provider, based on the degree of damage to the materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list.
+
  
 ## Transport Service
 
-Transport services are used when there are needs to transport non-consumable materiel such as platforms, units or battlefield entities. The providing federate models the transport. The Transport pattern follows the basic NETN Service Consumer-Provider pattern for establishing a service contract and a service delivery. 
+A logistics transport service is used when there is a need to move non-consumable entities such as platforms, units humans or other battlefield objects using means of transportation simulated in another federated system.
 
-Services for Transport include:
-* Transport service provided by a facility, a unit or entity with transportation capability of storing and delivering non-consumable materiel.
-* Embarkment service provided by a facility, a unit or entity with transportation capability of storing non-consumable materiel.
-* Disembarkment service provided by a facility, a unit or entity with transportation capability of delivering non-consumable materiel.
+The transport service consists of the following phases in which the change of control over the entities differ:
 
-Transport services differ in terms of the flow of units between service consumer and service provider:
-* In Disembarkment service, units are transferred from a service provider to a service consumer.
-* In Embarkment service, units are transferred from a service consumer to a service provider.
-* The Transport service consists of both Embarkment and Disembarkment service.
+* Embarkment is the process of mounting, loading and storing entities in a facility, e.g. truck, convoy, ship etc. Control over the entities is transferred from service consumer to transport service provider.
 
-The Embarkment and Disembarkment services could also be extended to management of facilities; with the capability of delivering and storing non-consumable materiel to/from other facilities, units or battlefield entities. The Transport pattern includes an optional Transfer of Modelling Responsibility mechanism between a service consumer and a service provider (see Transfer of Modelling Responsibility).
- 
-Figure 9-21: Transport FOM Module.
+* Transport is the process of the transport moving entities from a point of departure to its destination. The provider of the transport service have the control over the entities being transported. 
 
-The following interaction classes are extensions of the NETN Service Consumer-Provider base interactions:
-* RequestTransport interaction is used by the consumer to initiate a request of transport to a transport service provider. Units and appointment data are included in the request. The appointment data specifies when and where embarkment and disembarkment shall take place.
-* OfferTransport interaction is used by the transport service provider to indicate which of the requested units can be transported. In the offer, the provider can also change the appointment data specified in the request.
+* Disembarkment is the process of dismounting or unloading of entities from a facility. Control over materiel is transferred from transport service provider back to the service consumer. 
 
-During execution of transport services, the service provider shall inform the service consumer about the service progress using the following interactions:
-* TransportEmbarkmentStatus interaction is used by the service provider to indicate precisely when units are embarked.
-* TransportDisembarkmentStatus interaction is used by a service provider to indicate precisely when units are disembarked.
-* TransportDestroyedEntities interaction is used by a service provider to indicate the damage state of units during the transport.
+If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
-The following NETN Service Consumer-Provider base interactions are also used in the Transport Pattern:
-* `LOG_OfferService`.
-* `LOG_ReadyToReceiveService`.
-* `LOG_ServiceStarted`.
-* `LOG_ServiceComplete`.
-* `LOG_ServiceReceived`.
-* `LOG_CancelService`.
- 
-Figure 9-22: Transport Service Requested and Delivered.
+<img src="./images/log_transport_service.svg" width="400px"/>
 
-A Consumer makes a request for transport with the following data in a RequestTransport interaction:
-* List with units to transport; and
-* Time and location for embarkment and disembarkment.
+<!--```
+Consumer->Provider: LOG_RequestTransport(TransportData)
+Provider->Consumer: LOG_OfferTransport(TransportData, OfferType, Transporters)
+Consumer->Provider: LOG_AcceptOffer
+Consumer->Provider: LOG_ReadyToReceiveService
+Provider->Consumer: LOG_ServiceStarted
+Provider->Consumer: LOG_RepairComplete
+Consumer->Provider: LOG_ServiceReceived
+```-->
+**Figure: Transport Service**
 
-A Provider offers a response to the consumer request with an OfferTransport interaction with the following parameters which may be modified from the originating request:
-* List with units that the provider can transport;
-* Time and location for embarkment and disembarkment; and
-* List of units that will execute the transport.
+Negotiation, delivery and acceptance of transport service is based on the Logistics Service Pattern:
 
-An offer is accepted with the interaction `LOG_OfferService` or rejected with the interaction `LOG_RejectOffer` by the Consumer. The offer is accepted when both service Consumer and Provider have agreed about the conditions for delivery of the service. To achieve the transport service, the units listed for transport must be present on time at the embarkment location in order to embark and declare it with the `LOG_ReadyToReceiveService` interaction.
 
-During the execution of the transport service, each transporting unit enters a loop where:
-* It publishes a list of embarked units.
-* It publishes a list of disembarked entities. If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).
+1. To request a transport, the consumer sends a `LOG_RequestTransport` message that include `TransportData` information specifying the entities to transport and the time and location for embarkment and disembarkment.
 
-Both TransportEmbarkmentStatus and TransportDisembarkmentStatus interactions can be repeated as much as needed, if transportation needs to be realized in several iterations. Unit management during delivery of services:
+2. A `LOG_OfferTransport` message is used by potential service providers to make an offer for transport. The offer includes information regarding which of the requested entities can be transported and appointment information for embarkment and disembarkment. This offered `TransportData` information can that potentially differ from the requested `TransportData`. The offer also include `Transporters` - a list of entities that will conduct the transport. The `OfferType` information indicates if the offer is positive, negative (no offer) or have some restrictions as specified in the `TransportData` information.
+
+3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
+
+4. At the time of embarkment as specified in the offer `TransportData` information, all entities to be transported must be at the agreed embarkment location. A `LOG_ReadyToReceiveService` message is sent by the consumer to initiate the transport service delivery.
+
+5. The delivery of the transport service starts when the provider sends a `LOG_ServiceStarted` message. During delivery of the transport services, the provider informs the service consumer about the progress using the following messages (can be sent multiple times):
+    * `LOG_TransportEmbarkmentStatus` is used to inform the consumer which entities are emarked on which transport.
+    * `LOG_TransportDisembarkmentStatus` is used to inform the consumer which entities have disemarked from which transport.
+    * `LOG_TransportDestroyedEntities` is used to inform the consumer about entities that have been lost or destroyed during transport.
+
+6. The consumer sends a `LOG_ServiceReceived` as a response to the `LOG_ServiceComplete` interaction. The transport service is considered as complete once the `LOG_ServiceReceived` is sent.
+
+
+___During the execution of the transport service, each transporting unit enters a loop where:
+    * It publishes a list of embarked units.
+    * It publishes a list of disembarked entities. 
+If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).___
+
+Unit management during delivery of services:
+
 * When Embarkment: Federate with modelling responsibility for the embarked units shall set these units as inactive. The unit is no more taken into account in simulation execution.
+
 * During Transport: The modelling responsibility of spatial attributes for the units specified in this list can be transferred to the Provider until disembarkment (see Transfer of Modelling Responsibility) or the consumer shall update the Spatial attribute or IsPartOf and RelativeSpatial attributes.
+
 * When Disembarkment: Federate with modelling responsibility for the disembarked units shall set these units as active and assign their location to the disembarkment location.
 
-A Transport service is considered as closed:
-* When the Consumer receives a `LOG_ServiceComplete` interaction and sends a `LOG_ServiceReceived` interaction.
-* When a `LOG_RejectOffer` is issued by the service Consumer.
-* When a `LOG_CancelService` is issued by either the service Provider or service Consumer.
+A Transport service is considered as finished:
+* when the consumer sends a `LOG_ServiceReceived` in response to a `LOG_ServiceComplte`, or
+* when a `LOG_RejectOffer` is issued by the service Consumer, or
+* when a `LOG_CancelService` is issued by either the service Provider or service Consumer.
  
-Figure 9-23: Early Cancellation of the Service, here by the Provider. The service transaction is terminated.
 
 If a Transport service is cancelled:
 * During negotiation phase (before service delivery start):
@@ -319,9 +329,6 @@ If a Transport service is cancelled:
 * During delivery phase (after disembarkment has started and before complete):
     * All units already disembarked or partially disembarked are kept by the service Consumer. The service Provider needs a Cancellation of the transport service after it is started, and transported units will remain on the transporter.
  
-Figure 9-24: Cancellation of the Transport Service after Disembarkment is Started, Units not yet Disembarked will Remain on the Transporter.
- 
-Figure 9-25: The Consumer Requests a New Transport Service, Disembarkment of Transported Units after a Cancellation of a Previous Transport Service.
  
 ##	Disaggregation of Units for Transportation 
 
