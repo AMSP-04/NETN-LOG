@@ -269,7 +269,7 @@ The transport service consists of the following phases in which the change of co
 
 If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
-<img src="./images/log_transport_service.svg" width="400px"/>
+<img src="./images/log_transport_service.svg" width="450px"/>
 
 <!--```
 Consumer->Provider: LOG_RequestTransport(TransportData)
@@ -277,13 +277,12 @@ Provider->Consumer: LOG_OfferTransport(TransportData, OfferType, Transporters)
 Consumer->Provider: LOG_AcceptOffer
 Consumer->Provider: LOG_ReadyToReceiveService
 Provider->Consumer: LOG_ServiceStarted
-Provider->Consumer: LOG_RepairComplete
+Provider->Consumer: LOG_ServiceComplete
 Consumer->Provider: LOG_ServiceReceived
 ```-->
 **Figure: Transport Service**
 
 Negotiation, delivery and acceptance of transport service is based on the Logistics Service Pattern:
-
 
 1. To request a transport, the consumer sends a `LOG_RequestTransport` message that include `TransportData` information specifying the entities to transport and the time and location for embarkment and disembarkment.
 
@@ -291,7 +290,7 @@ Negotiation, delivery and acceptance of transport service is based on the Logist
 
 3. The consumer accepts an offer using `LOG_AcceptOffer` or rejects an offer from a provider using `LOG_RejectOffer`.
 
-4. At the time of embarkment as specified in the offer `TransportData` information, all entities to be transported must be at the agreed embarkment location. A `LOG_ReadyToReceiveService` message is sent by the consumer to initiate the transport service delivery.
+4. At the time of embarkment, as specified in the offer `TransportData` information, all entities to be transported must be at the agreed embarkment location. A `LOG_ReadyToReceiveService` message is sent by the consumer to initiate the transport service delivery.
 
 5. The delivery of the transport service starts when the provider sends a `LOG_ServiceStarted` message. During delivery of the transport services, the provider informs the service consumer about the progress using the following messages (can be sent multiple times):
     * `LOG_TransportEmbarkmentStatus` is used to inform the consumer which entities are emarked on which transport.
@@ -300,54 +299,32 @@ Negotiation, delivery and acceptance of transport service is based on the Logist
 
 6. The consumer sends a `LOG_ServiceReceived` as a response to the `LOG_ServiceComplete` interaction. The transport service is considered as complete once the `LOG_ServiceReceived` is sent.
 
-
 ___During the execution of the transport service, each transporting unit enters a loop where:
     * It publishes a list of embarked units.
     * It publishes a list of disembarked entities. 
 If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).___
 
-Unit management during delivery of services:
+Entities enbarked on transport shall be considered as inactive during the transportation until disembarked. Federate with modelling responsibility for the embarked entities either set the simulated entity as inactive or updates its location during the transport to correspond to the transporter location. E.g if the embarked entity is represented in the simulation as a `NETN_GroundVehicle` then the `Status` attribute should be set to `Inactive` during the transport. The modelleing responsibility of embarked entities can be transferred using NETN TMR FOM Module.
 
-* When Embarkment: Federate with modelling responsibility for the embarked units shall set these units as inactive. The unit is no more taken into account in simulation execution.
+After disembarkment the transported entities should be active again and their new location should be the location of disembarkment. Any transferred modelling reponsibility can also be returend using NETN TMR FOM Module.
 
-* During Transport: The modelling responsibility of spatial attributes for the units specified in this list can be transferred to the Provider until disembarkment (see Transfer of Modelling Responsibility) or the consumer shall update the Spatial attribute or IsPartOf and RelativeSpatial attributes.
+A if a `LOG_CancelService` is sent by either consumer or provider, before `LOG_ReadyToReceiveService` and `LOG_ServiceStarted` has been sent, then the transport service delivery will not start and all involved entities remain in their current state.
 
-* When Disembarkment: Federate with modelling responsibility for the disembarked units shall set these units as active and assign their location to the disembarkment location.
+If a `LOG_CancelService` is sent during delivery of the service but before starting to disembark, all entities already embarked or partially embarked remain on the transport. A new embark, disembark or transport service can be used to continue embarking, disembarking already loaded entities or perform transport with the entities already embarked.
 
-A Transport service is considered as finished:
-* when the consumer sends a `LOG_ServiceReceived` in response to a `LOG_ServiceComplte`, or
-* when a `LOG_RejectOffer` is issued by the service Consumer, or
-* when a `LOG_CancelService` is issued by either the service Provider or service Consumer.
- 
-
-If a Transport service is cancelled:
-* During negotiation phase (before service delivery start):
-    * The transaction between service Consumer and Provider is considered as closed without delivery of service.
-* During delivery phase (after service start and before disembarkment has started):
-    * All units already embarked or partially embarked are kept by the service Provider. The service Provider needs a new Request to continue, either to embark remaining units or to disembark the already embarked units.
+If a `LOG_CancelService` is sent during delivery of the service after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. A new embark, disembark or transport service can be used to complete or continue a new transport activity.
  
-* During delivery phase (after disembarkment has started and before complete):
-    * All units already disembarked or partially disembarked are kept by the service Consumer. The service Provider needs a Cancellation of the transport service after it is started, and transported units will remain on the transporter.
- 
- 
-##	Disaggregation of Units for Transportation 
+### Transport of Aggregate Units
 
-In the case when a unit is too large for transportation on one transporter, e.g. echelon size does not permit a unit to be transported in a single transportation, the consumer of the service shall disaggregate the large unit in to a number of subunits, which shall be indivisible. The originating unit is set as inactive if it is fully disaggregated according to the definitions in 1278.1a-1998 document, otherwise it shall remain active. All subunits are then included in a transport request, and any offer may then be accepted or rejected.
+If an `NETN_Aggregate` unit is too large for transport, e.g. size of a unit requires multiple transports to be conducted, then the service consumer may require the unit to be deaggregated into subunits before requesting transport, using e.g. the NETN MRM FOM Module. If multiple transports are required, the consumer can create a temporary `NETN_Aggregate` entity to represent a bridgehead on the disembarkment location. The `Callsign`of the bridgehead should be the same as the aggregate being transported with a "-bh" suffix. 
 
-When a unit is disaggregated for transport these subunits are embarked on more than one transporter or one transporter used repeatedly. At disembarkment, a temporary Bridgehead unit is activated at the disembarkment location, together with disembarked subunits. The bridgehead unit shall be assigned the callsign from the originating aggregate unit with an additional "-bh" to indicate that the unit represents a bridgehead. When all subunits are disembarked the originating unit is aggregated and set as active at the disembarkment location and subunits are then either deleted or set as inactive. The bridgehead is either deleted or set as inactive.
+When all subunits have embarked on transports the `Status` of the original `NETN_Aggregate` unit can be set to `Inactive` until all subunits have disembarked. 
 
-## Warfare Interactions Against Transporter 
+When all subunits have disembarked from their transports the `Status`of the original `NETN_Aggregate` unit can be set to `Active` and the location set to the disembarkment position. Any bridgehead unit can be removed or status set to `Inactive`.
 
-Whenever a transport service provider receives warfare interactions (e.g. MunitionDetonation), damage on the transporter is calculated. If the transporter is destroyed then units on board the transporter shall also be destroyed.
+### Damage during Transport
 
-If the transporter is not destroyed then damage is assessed against embarked units.
-
-The transport service provider sends a list of destroyed units to the service consumer. The transport service consumer can use this list to update its situation or to cancel a transaction in progress. A transport service provider shall use the TransportDestroyedEntities interaction to define destroyed transported units during the service delivery.
-
-If a transport service consists of one embarkment and one disembarkment event:
-* If the transporter is destroyed, the consumer service is cancelled and the transported unit(s) is never reactivated.
-else:
-* If a transporter is destroyed with transported units on board, transport service continues with remaining transporters until service is completed. Units on destroyed transporter are deleted or set as inactive for the remainder of the federation execution.
+During transport the service provider is responsible to model any damage to the transported entities. E.g. effect of `MunitionDetonation` on a transport. If the transporter vehicle or unit is destroyed then all embarked entities will be destroyed, otherwise damage is individually calculated for each embarked entity. The `LOG_TransportDestroyedEntities` message is used to inform the consumer about entities that have been lost or destroyed during transport. The transport service will continue delivery as long as there are vechicles or units able to perform transport. If all means of transport have been destroyed the service is cancelled. 
  
 ##	Embarkment Service 
 
@@ -400,22 +377,7 @@ If a Disembarkment service is cancelled:
     * All embarked units are kept by the service Provider. The service Provider needs a new Request to continue, either to disembark remaining units or to embark the already disembarked units.
 
 Variations:
-* Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (`LOG_OfferService`), without processing the query phase (RequestTansport).
-
-## Transport Services and Attrition 
-
-The TransportDestroyedEntities interaction can take place at any time between the start of the service (`LOG_ServiceStarted` interaction) and the end of the service (`LOG_ServiceComplete` interaction). Impact on the transport service pattern could be the following example.
-
-Vessel « 1 » and « 2 » are transporters. Some units need to be transported in two rotations on each Vessel. We study the case where Vessel « 1 » is destroyed during its first rotation and Vessel « 2 » is destroyed during its second rotation:
-
-Event	Interaction
-Negotiation phase and start of the service	…
-First rotation: Vessel 1 and Vessel 2 embark units	Provider send: TransportEmbarkmentStatus (list1, Vessel1) TransportEmbarkmentStatus (list2, Vessel2)
-During transport, service Provider receives MunitionDetonation; Vessel 1 is destroyed	Provider send: TransportDestroyedEntities (list1)
-Vessel 2 disembark his units	Provider send: TransportDisembarkmentStatus (list2, Vessel2)
-Second rotation: Vessel 2 embark units	Provider send: TransportEmbarkmentStatus (list3, Vessel2)
-During transport, service Provider receives MunitionDetonation; Vessel 2 is destroyed	Provider send: TransportDestroyedEntities (list3)
-End of service or Cancel	
+* Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (`LOG_OfferService`), without processing the query phase (RequestTansport).	
 
 ## Scenario Initialization Phase 
 
