@@ -9,8 +9,6 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Documentation NETN Logistics updated to reflect new structure and NETN LOG FOM Module.
 * Documentation of NETN Logistics module simplified, aligned with other NETN modules and the language used reviewed and updated.
 
-* All interaction classes renamed with prefix LOG_
-
 * Updated releaseRestriction, purpose, description and useLimitation
 * Changed securityClassification from Unclassified to Not Classified
 * Added note for modelIdentification to provide additional description of FOM module

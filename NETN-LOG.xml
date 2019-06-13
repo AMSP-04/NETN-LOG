@@ -59,57 +59,80 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
         <objectClass>
             <name>HLAobjectRoot</name>
             <objectClass>
-                <name>EmbeddedSystem</name>
-                <objectClass>
-                    <name>LOG_Facility</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics>The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
+                <name>LOG_ServiceCapability</name>
+                <sharing>PublishSubscribe</sharing>
+                <semantics>The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
  
 The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.</semantics>
-                    <attribute>
-                        <name>IsOperational</name>
-                        <dataType>HLAboolean</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>The operational status of the facility (true = is operational)</semantics>
-                    </attribute>
+                <attribute>
+                    <name>IsOperational</name>
+                    <dataType>HLAboolean</dataType>
+                    <updateType>Conditional</updateType>
+                    <updateCondition>On change</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAbestEffort</transportation>
+                    <order>Receive</order>
+                    <semantics>The operational status of the facility (true = is operational)</semantics>
+                </attribute>
+                <attribute>
+                    <name>OperatedBy</name>
+                    <dataType>UuidArrayOfHLAbyte16</dataType>
+                    <updateType>NA</updateType>
+                    <updateCondition></updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics></semantics>
+                </attribute>
+                <attribute>
+                    <name>UsedBy</name>
+                    <dataType>ArrayOfUuid</dataType>
+                    <updateType>NA</updateType>
+                    <updateCondition></updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics></semantics>
+                </attribute>
+                <attribute>
+                    <name>ServiceType</name>
+                    <dataType>LOG_ServiceTypeEnum8</dataType>
+                    <updateType>NA</updateType>
+                    <updateCondition></updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics></semantics>
+                </attribute>
+                <objectClass>
+                    <name>RepairCapability</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics></semantics>
+                </objectClass>
+                <objectClass>
+                    <name>SupplyCapability</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics></semantics>
                     <attribute>
                         <name>StorageList</name>
                         <dataType>ArrayOfSupplyStruct</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
+                        <updateType>NA</updateType>
+                        <updateCondition></updateCondition>
                         <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>List of the materiel located in the facility.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>N/A</updateCondition>
-                        <ownership>NoTransfer</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>The unique identifier for the facility</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>ServiceCapability</name>
-                        <dataType>LOG_ServiceTypeEnum8</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>When changed</updateCondition>
-                        <ownership>NoTransfer</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Describes the service capability of the LOG_Facility instance.</semantics>
+                        <semantics></semantics>
                     </attribute>
+                </objectClass>
+                <objectClass>
+                    <name>TransportCapability</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics></semantics>
                 </objectClass>
             </objectClass>
         </objectClass>
@@ -144,7 +167,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                     <semantics>Enumerated value describing the type of service</semantics>
                 </parameter>
                 <interactionClass>
-                    <name>LOG_RequestService</name>
+                    <name>RequestService</name>
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -155,7 +178,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         <semantics>Wallclock time. The timeout time in seconds after 1 January 1970.</semantics>
                     </parameter>
                     <interactionClass>
-                        <name>LOG_RequestRepair</name>
+                        <name>RequestRepair</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -172,7 +195,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_RequestStorage</name>
+                        <name>RequestStorage</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -194,7 +217,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_RequestSupply</name>
+                        <name>RequestSupply</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -216,7 +239,7 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_RequestTransport</name>
+                        <name>RequestTransport</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -230,7 +253,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                     </interactionClass>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_OfferService</name>
+                    <name>OfferService</name>
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -246,7 +269,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <semantics>Wallclock time. The timeout time in seconds after 1 January 1970.</semantics>
                     </parameter>
                     <interactionClass>
-                        <name>LOG_OfferRepair</name>
+                        <name>OfferRepair</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -263,7 +286,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_OfferStorage</name>
+                        <name>OfferStorage</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -285,7 +308,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_OfferSupply</name>
+                        <name>OfferSupply</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -307,7 +330,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_OfferTransport</name>
+                        <name>OfferTransport</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -331,7 +354,7 @@ The LOG_OfferTransport interaction shall be sent by the service providing federa
                     </interactionClass>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_AcceptOffer</name>
+                    <name>AcceptOffer</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -340,7 +363,7 @@ The LOG_OfferTransport interaction shall be sent by the service providing federa
 The LOG_AcceptOffer interaction does not define any additional parameters but subclasses may include parameters with additional information.</semantics>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_ServiceStarted</name>
+                    <name>ServiceStarted</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -349,7 +372,7 @@ The LOG_AcceptOffer interaction does not define any additional parameters but su
 The SCP_ServiceStarted interaction does not define any additional parameters.</semantics>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_ServiceComplete</name>
+                    <name>ServiceComplete</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -357,7 +380,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
  
 The LOG_ServiceCompleted interaction does not define any additional parameters.</semantics>
                     <interactionClass>
-                        <name>LOG_SupplyComplete</name>
+                        <name>SupplyComplete</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -369,7 +392,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_StorageComplete</name>
+                        <name>StorageComplete</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -381,7 +404,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_RepairComplete</name>
+                        <name>RepairComplete</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -394,7 +417,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                     </interactionClass>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_ServiceReceived</name>
+                    <name>ServiceReceived</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -403,7 +426,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
 TheLOG_ ServiceReceived interaction does not define any additional parameters.</semantics>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_RejectOffer</name>
+                    <name>RejectOffer</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -415,7 +438,7 @@ TheLOG_ ServiceReceived interaction does not define any additional parameters.</
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_CancelService</name>
+                    <name>CancelService</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -427,7 +450,7 @@ TheLOG_ ServiceReceived interaction does not define any additional parameters.</
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_ReadyToReceiveService</name>
+                    <name>ReadyToReceiveService</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -435,7 +458,7 @@ TheLOG_ ServiceReceived interaction does not define any additional parameters.</
  
 The LOG_ReadyToReceiveService interaction does not define any additional parameters.</semantics>
                     <interactionClass>
-                        <name>LOG_ReadyToReceiveRepair</name>
+                        <name>ReadyToReceiveRepair</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -448,7 +471,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_ReadyToReceiveSupply</name>
+                        <name>ReadyToReceiveSupply</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -460,7 +483,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>LOG_ReadyToReceiveStorage</name>
+                        <name>ReadyToReceiveStorage</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
@@ -474,7 +497,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                     </interactionClass>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_TransportDestroyedEntities</name>
+                    <name>TransportDestroyedEntities</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -486,7 +509,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_TransportDisembarkmentStatus</name>
+                    <name>TransportDisembarkmentStatus</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -503,7 +526,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>LOG_TransportEmbarkmentStatus</name>
+                    <name>TransportEmbarkmentStatus</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>

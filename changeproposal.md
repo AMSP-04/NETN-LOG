@@ -15,6 +15,7 @@ Lennart Olsson (Sweden) and Bjorn Lofstrand (Sweden)|
 |----|----|----|
 |v3|2018-11-06|Approved by MSG-163 for implementation|
 |v4|2019-05-25|Moved to GitHub|
+|v5|2019-06-12|Updated for removal of LOG_ prefix|
 
 ## Proposed change / detected problem
 
@@ -23,10 +24,10 @@ The following table lists the effected Configuration Items (CIs) and a summary o
 |CI identification|Version|Change/problem description|
 |---|---|---|
 |NETN-SCP-Base|v1.1.3|The object class SCP_Facility shall be moved from PRPv2 BaseEntity to RPRv2 EmbeddedSystem and renamed to LOG_Facility. An entity can offer more than one services, e.g. both transport and supply, this implies that an entity can have more than one facility as embedded systems.|
-|NETN-Supply|v1.1.2|The module will be merged into one module that manage Logistics. The name of the interactions does not follow NETN naming convention, add prefix LOG_.|
-|NETN-Storage|v1.2.2|The module will be merged into one module that manage Logistics. The name of the interactions does not follow NETN naming convention, add prefix LOG_.|
-|NETN-Repair|v1.2.1|The module will be merged into one module that manage Logistics. The name of the interactions does not follow NETN naming convention, add prefix LOG_.|
-|NETN-Transport|v1.1.2|The module will be merged into one module that manage Logistics. The name of the interactions does not follow NETN naming convention, add prefix LOG_.|
+|NETN-Supply|v1.1.2|The module will be merged into one module that manage Logistics. |
+|NETN-Storage|v1.2.2|The module will be merged into one module that manage Logistics.|
+|NETN-Repair|v1.2.1|The module will be merged into one module that manage Logistics. |
+|NETN-Transport|v1.1.2|The module will be merged into one module that manage Logistics. |
 
 ## Reason for change / cause of problem
 The following items are change reasons.
