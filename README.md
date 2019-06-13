@@ -24,11 +24,10 @@ Examples of use:
 
 ## [Changelog](changelog.md)
 
-## Copyright
-Copyright (C) 2019 NATO/OTAN. All rights reserved.
-
 ## [License](LICENSE.md)
 
 This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
+
+Copyright (C) 2019 NATO/OTAN. All rights reserved.
 
 ## [Documentation](NETN-LOG.md)
