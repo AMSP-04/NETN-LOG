@@ -15,7 +15,7 @@ The NETN FOM FOM module is available as a XML file for use in HLA based federati
 
 ## Purpose
 
-The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g a simulator models the transport of a unit modelled in another simulator.
+The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
 
 ## Scope
 
@@ -31,12 +31,10 @@ Examples of use:
 * Refuelling of aircraft at an airbase or in the air
 * Transport of supplies between facilities
 * Repair of damaged platforms in facility or by unit
-* Transport of units, platforms, and humans by train, ship, or aircraft
-* Embarkment and disembarkment of units on platforms
-        	
-	
+* Transport of units, platforms, and humans by train, ship, or aircraft   		
 # Overview
-All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
+All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. 
+The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
 
 ## Materiel
 Materiel are classified as:
@@ -60,9 +58,7 @@ Transfer of supplies can be requested as a number of items, as cubic meters for 
 
 ## Logistics Service Pattern
 
-The Logistics Service pattern is used for modelling request, negotiation and delivery of logistics services in a distributed federated simulation. 
-
-Entities participating in the service transaction are considered as either a consumer or a service provider. When modelled in different simulation systems the consumer and provider use HLA interactions defined in the NETN LOG module to model the service transaction. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
+Federates participating in the logistics service transaction are considered as either a service consumer or a service provider. The NETN LOG FOM module defines the HLA interactions used to model the service transactions. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
 
 <img src="./images/log_interactionclasses.png">
 
@@ -96,20 +92,25 @@ Consumer->Provider: ServiceReceived
 The logistics service pattern is divided into three phases:
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 
-1. The consumer initiates negotiation by requesting a service using `RequestService`. If the time specified in the `RequestTimeOut` parameter pass without an offer is made, the consumer shall cancel the service using `CancelService`.
+1. The consumer initiates negotiation by requesting a service using `RequestService`. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is made, the consumer shall cancel the service using `CancelService`.
 
 2. Offers are sent by provider using `OfferService`. The provider notifies the consumer of its ability to deliver the service using the `IsOffering` attribute and `RequestTimeOut` indicates how long the offer is valid.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-**Service Delivery**: the consumer indicates that the deliver process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
+**Service Delivery**: the consumer indicates that the delivery process can start, and the selected provider starts to deliver, continuing until all the services has been delivered.
 
-4. The `ServiceStarted` is used to indicate that service delivery has started.
-5. The modelling responsibility of the service consumer and/or provider could change during service delivery by using NETN TMR.
+4.  The consumer sends a `ReadyToReceiveService` 
+
+5. The `ServiceStarted` is used to indicate that service delivery has started.
+
+_During service delivery, the modelling responsibility of simulated entities involved in the service transaction could change using NETN TMR._
 
 **Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-6. When service delivery is complete a `ServiceComplete` message is sent and the consumer sends a `ServiceReceived`message to conclude the service pattern.
+6. When service delivery is complete the provider sends a `ServiceComplete` message.
+
+7. When the completed service delivery is accepted the consumer sends a `ServiceReceived`message.
 
 # Transfer of Supplies
 
