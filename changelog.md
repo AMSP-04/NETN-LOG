@@ -12,15 +12,9 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Updated releaseRestriction, purpose, description and useLimitation
 * Changed securityClassification from Unclassified to Not Classified
 * Added note for modelIdentification to provide additional description of FOM module
+* Added glyph
 
-* `SCP_Facility` changed to be subclass of RPR-FOM `EmbeddedSystem` objectClass
-* `SCP_Facility` renamed to `LOG_Facility`
-* Updated semantics for `LOG_Facility`
-* Added attribute `ServiceCapability` to `LOG_Facility` – Defines the service that the facility can offer
-* Removed attribute `DamageState`from `LOG_Facility` – Attribute is defined by RPR host entity
-* Removed attribtue `Callsign`from `LOG_Facility` – Attribute is defined by NETN host entity
-* Removed attribute `ForceIdentifier` from `LOG_Facility`-  Attribute is defined by RPR host entity
-* Removed attribute `PlatformList` from `LOG_Facility` - Attribute (EmbeddedUnitList) is defined by NETN host entity
+* `SCP_Facility` removed
 
 * Added datatypes `NETN_ArrayOfSupplyStruct` and `NETN_SupplyStruct` - Moved from NETN-BASE
 * Renamed datatype `NETN_ArrayOfSupplyStruct` to `ArrayOfSupplyStruct`

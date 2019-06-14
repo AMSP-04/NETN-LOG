@@ -3,17 +3,11 @@
 The NATO Education and Training Network (NETN) Logistics FOM Module.
 
 ## Background
-Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including:
-
-* Design, development, acquisition, storage, distribution, maintenance, evacuation, and disposition of materiel
-* Transport of personnel
-* Acquisition or construction, maintenance, operation, and disposition of facilities
-* Acquisition or furnishing of services
-* Medical and health service support
+Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
 ## Description
 
-This module is a specification of how to model logistics services between participants in a federated distributed simulation. 
+This module is a specification of how to model logistics services in a federated distributed simulation. 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. 
 
@@ -21,7 +15,7 @@ The NETN FOM FOM module is available as a XML file for use in HLA based federati
 
 ## Purpose
 
-The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.	
+The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g a simulator models the transport of a unit modelled in another simulator.
 
 ## Scope
 
@@ -43,24 +37,6 @@ Examples of use:
 	
 # Overview
 All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
- 
-The NETN LOG FOM module extends RPR-FOM v2.0. Datatypes are re-used and extensions to object classes are defined.
-
-## Facility
-
-The facility concept is central, and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
- 
-The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with an RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.
-
-<img src="./images/log_facility.png" width="500px"/>
-
-A `LOG_Facility` object has the following attributes:
-
-* `UniqueID` is a unique identifier for the facility used for initialization and reference. 
-* `IsOperational` indicate the operational status of the facility (true = is operational).
-* `StorageList` defines the list of materiel located in the facility. Each item in the list specifies the `SupplyType` and `Quantity` of the materiel.
-* `ServiceCapability` describes the capability of the facility to provide a specific service. Only one capability per `LOG_Facility` object is allowed.
-
 
 ## Materiel
 Materiel are classified as:
@@ -98,15 +74,21 @@ The base classes for the Logistics Service Pattern are extended with subclasses 
 
 <!--```
 DIAGRAM GENERATED IN https://sequencediagram.org/
-Consumer->Provider: RequestService(RequestTimeOut)
+Consumer->Provider: RequestService
 
-Provider->Consumer: OfferService(IsOffering, RequestTimeOut)
+Provider->Consumer: OfferService
 Consumer->Provider: AcceptOffer
-space
+parallel 
+box over Consumer:Get ready for\nreceiving service
+box over Provider:Conduct preparations \nfor service delivery
+parallel off
 Consumer->Provider: ReadyToReceiveService
 Provider->Consumer: ServiceStarted
+parallel 
+box over Consumer:Receive Service
+box over Provider:Deliver Service
+parallel off
 Provider->Consumer: ServiceComplete
-space
 Consumer->Provider: ServiceReceived
 ```-->
 **Figure: Phases of the Logistics Service Pattern**
@@ -131,7 +113,7 @@ The logistics service pattern is divided into three phases:
 
 # Transfer of Supplies
 
-Facilities can have the capability to supply and/or storage supplies. These capabilities can be offered as supply and storage services. The supply and storage services involve the transfer of materiel from one simulated entity to antoher.
+Federates can have the capability to provide and/or store supplies. These capabilities can be offered as supply and storage services to other federates. The supply and storage services involve the transfer of materiel from a simulated entity modelled in one federate to antoher entity modelled in another federate.
 
 Supply and storage services are different in terms of flow of materiel between service consumer and provider. 
 
@@ -234,7 +216,7 @@ The storage service os similar to the supply service but the actual transfer of 
 
 7. A `ServiceComplete` message from the provider and a `ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are send depend on whether the service delivery is controlled by the provider (default) or by the consumer.
 
-# Transfer and Repair of Entities
+# Transport and Repair of Entities
 
 ## Repair Service
 
@@ -275,11 +257,11 @@ A logistics transport service is used when there is a need to move non-consumabl
 
 The transport service consists of the following phases in which the change of control over the entities differ:
 
-* Embarkment is the process of mounting, loading and storing entities in a facility, e.g. truck, convoy, ship etc. Control over the entities is transferred from service consumer to transport service provider.
+* Embarkment is the process of mounting, loading and storing entities in a truck, convoy, ship etc. Control over the entities is transferred from service consumer to transport service provider.
 
 * Transport is the process of the transport moving entities from a point of departure to its destination. The provider of the transport service have the control over the entities being transported. 
 
-* Disembarkment is the process of dismounting or unloading of entities from a facility. Control over materiel is transferred from transport service provider back to the service consumer. 
+* Disembarkment is the process of dismounting or unloading of entities. Control over materiel is transferred from transport service provider back to the service consumer. 
 
 If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
@@ -340,7 +322,7 @@ When all subunits have disembarked from their transports the `Status`of the orig
 
 During transport the service provider is responsible to model any damage to the transported entities. E.g. effect of `MunitionDetonation` on a transport. If the transporter vehicle or unit is destroyed then all embarked entities will be destroyed, otherwise damage is individually calculated for each embarked entity. The `TransportDestroyedEntities` message is used to inform the consumer about entities that have been lost or destroyed during transport. The transport service will continue delivery as long as there are vechicles or units able to perform transport. If all means of transport have been destroyed the service is cancelled. 
  
-##	Embarkment Service 
+##	Embarkment 
 
 A Consumer makes a request for embarkment with the following data:
 * List with units to embark.
@@ -364,7 +346,7 @@ If an Embarkment service is cancelled:
 * During delivery phase (after service start and before service completed):
     * All units already embarked are kept by the service Provider. The service Provider needs a new Request to continue, either to embark remaining units or to disembark the already embarked units.
 
-### Disembarkment Service 
+### Disembarkment 
 
 A Consumer makes a request for disembarkment with the following data:
 * List with units to disembark.

@@ -4,33 +4,16 @@
         <name>NETN LOG</name>
         <type>FOM</type>
         <version>2.0.0</version>
-        <modificationDate>2019-05-25</modificationDate>
+        <modificationDate>2019-06-13</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
-        <purpose>
-The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
+        <purpose> The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
         <description>The NATO Education and Training Network (NETN) Logistics FOM Module.
 
 This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.</description>
-        <useLimitation>
-The NETN Logistics module covers the following services:
-
-* Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service.
-* Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service.
-* Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark.
-* Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
-
-Examples of use:
-
-* Refuelling of aircraft at an airbase or in the air
-* Transport of supplies between facilities
-* Repair of damaged platforms in facility or by unit
-* Transport of units, platforms, and humans by train, ship, or aircraft
-* Embarkment and disembarkment of units on platforms
-        </useLimitation>
-        <useHistory>v1.0.0 - First version of the merged FOM module.  </useHistory>
-        <useHistory>v2.0.0-RC1 Added LOG_Facility and added prefix (LOG_) to interacrtions</useHistory>
+        <useLimitation> The NETN Logistics module covers the following services:  * Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service. * Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service. * Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark. * Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.  Examples of use:  * Refuelling of aircraft at an airbase or in the air * Transport of supplies between facilities * Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft * Embarkment and disembarkment of units on platforms         </useLimitation>
+        <useHistory>v2.0.0 - Merged separate LOG FOM modules into single NETN-LOG module.  </useHistory>
         <poc>
             <pocType>Primary author</pocType>
             <pocName>Lennart Olsson</pocName>
@@ -47,7 +30,7 @@ Examples of use:
         </poc>
         <reference>
             <type>Dependency</type>
-            <identification>NETN-BASE v2.0</identification>
+            <identification>NETN-BASE</identification>
         </reference>
         <other>
 Copyright © 2019 by NATO/OTAN. All rights reserved.
@@ -58,83 +41,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
     <objects>
         <objectClass>
             <name>HLAobjectRoot</name>
-            <objectClass>
-                <name>LOG_ServiceCapability</name>
-                <sharing>PublishSubscribe</sharing>
-                <semantics>The facility concept is central and all logistics services are provided through facilities. Facilities can be railway stations, storage tanks depot, port, etc. and a facility can also be part of a unit or platform. 
- 
-The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a subclass and can therefore be associated with a RPR-FOM 2.0 entity using the `HostObjectIdentifier` and `RelativePosition` attributes. E.g. a facility can be placed on a surface vessel and act as a provider of supply and repair services.</semantics>
-                <attribute>
-                    <name>IsOperational</name>
-                    <dataType>HLAboolean</dataType>
-                    <updateType>Conditional</updateType>
-                    <updateCondition>On change</updateCondition>
-                    <ownership>DivestAcquire</ownership>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAbestEffort</transportation>
-                    <order>Receive</order>
-                    <semantics>The operational status of the facility (true = is operational)</semantics>
-                </attribute>
-                <attribute>
-                    <name>OperatedBy</name>
-                    <dataType>UuidArrayOfHLAbyte16</dataType>
-                    <updateType>NA</updateType>
-                    <updateCondition></updateCondition>
-                    <ownership>DivestAcquire</ownership>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics></semantics>
-                </attribute>
-                <attribute>
-                    <name>UsedBy</name>
-                    <dataType>ArrayOfUuid</dataType>
-                    <updateType>NA</updateType>
-                    <updateCondition></updateCondition>
-                    <ownership>DivestAcquire</ownership>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics></semantics>
-                </attribute>
-                <attribute>
-                    <name>ServiceType</name>
-                    <dataType>LOG_ServiceTypeEnum8</dataType>
-                    <updateType>NA</updateType>
-                    <updateCondition></updateCondition>
-                    <ownership>DivestAcquire</ownership>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics></semantics>
-                </attribute>
-                <objectClass>
-                    <name>RepairCapability</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics></semantics>
-                </objectClass>
-                <objectClass>
-                    <name>SupplyCapability</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics></semantics>
-                    <attribute>
-                        <name>StorageList</name>
-                        <dataType>ArrayOfSupplyStruct</dataType>
-                        <updateType>NA</updateType>
-                        <updateCondition></updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics></semantics>
-                    </attribute>
-                </objectClass>
-                <objectClass>
-                    <name>TransportCapability</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics></semantics>
-                </objectClass>
-            </objectClass>
         </objectClass>
     </objects>
     <interactions>
@@ -195,28 +101,6 @@ The `LOG_Facility` extends the RPR-FOM v2.0 object class `EmbeddedSystem` as a s
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>RequestStorage</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of materiel is included in the request.</semantics>
-                        <parameter>
-                            <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
-                            <semantics>Specifies the supply (type and quantity)</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>Appointment</name>
-                            <dataType>AppointmentStruct</dataType>
-                            <semantics>The time and location for the exchange of the service. Optional</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
                         <name>RequestSupply</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
@@ -251,6 +135,28 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                             <semantics>Data for the transport. Transported units and appointment data</semantics>
                         </parameter>
                     </interactionClass>
+                    <interactionClass>
+                        <name>RequestStorage</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of materiel is included in the request.</semantics>
+                        <parameter>
+                            <name>SuppliesData</name>
+                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <semantics>Specifies the supply (type and quantity)</semantics>
+                        </parameter>
+                        <parameter>
+                            <name>LoadingDoneByProvider</name>
+                            <dataType>HLAboolean</dataType>
+                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
+                        </parameter>
+                        <parameter>
+                            <name>Appointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>The time and location for the exchange of the service. Optional</semantics>
+                        </parameter>
+                    </interactionClass>
                 </interactionClass>
                 <interactionClass>
                     <name>OfferService</name>
@@ -283,28 +189,6 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
                             <semantics>Time and location for the exchenge of the service. Optional</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>OfferStorage</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested materiel can be stored.</semantics>
-                        <parameter>
-                            <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
-                            <semantics>Specifies the supply (type and quantity)</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>Appointment</name>
-                            <dataType>AppointmentStruct</dataType>
-                            <semantics>The time and location for the exchange of the service. Optional</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -352,6 +236,28 @@ The LOG_OfferTransport interaction shall be sent by the service providing federa
                             <semantics>Platform list with transporters</semantics>
                         </parameter>
                     </interactionClass>
+                    <interactionClass>
+                        <name>OfferStorage</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested materiel can be stored.</semantics>
+                        <parameter>
+                            <name>SuppliesData</name>
+                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <semantics>Specifies the supply (type and quantity)</semantics>
+                        </parameter>
+                        <parameter>
+                            <name>LoadingDoneByProvider</name>
+                            <dataType>HLAboolean</dataType>
+                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
+                        </parameter>
+                        <parameter>
+                            <name>Appointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>The time and location for the exchange of the service. Optional</semantics>
+                        </parameter>
+                    </interactionClass>
                 </interactionClass>
                 <interactionClass>
                     <name>AcceptOffer</name>
@@ -392,18 +298,6 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>StorageComplete</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>This interaction is sent by the provider when the supply is delivered to the provider</semantics>
-                        <parameter>
-                            <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
-                            <semantics>This interaction is sent by the provider when all supply is received by the provider</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
                         <name>RepairComplete</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
@@ -413,6 +307,18 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
                             <semantics>List of the type of repairs done. May be different from the list of requested repairs.</semantics>
+                        </parameter>
+                    </interactionClass>
+                    <interactionClass>
+                        <name>StorageComplete</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>This interaction is sent by the provider when the supply is delivered to the provider</semantics>
+                        <parameter>
+                            <name>SuppliesData</name>
+                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <semantics>This interaction is sent by the provider when all supply is received by the provider</semantics>
                         </parameter>
                     </interactionClass>
                 </interactionClass>
