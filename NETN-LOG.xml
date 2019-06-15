@@ -108,7 +108,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <semantics>LOG_RequestSupply is used by a consumer to initiate a request for supply from a supply service provider. The amount and type of materiel is included in the request. In this request the consumer propose whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>List of type and quantity of supplies requested.</semantics>
                         </parameter>
                         <parameter>
@@ -143,7 +143,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <semantics>LOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of materiel is included in the request.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
@@ -199,7 +199,7 @@ The request to transport, embark or disembark a platform is initiated by a LOG_R
                         <semantics>LOG_OfferSupply is used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
                         </parameter>
                         <parameter>
@@ -244,7 +244,7 @@ The LOG_OfferTransport interaction shall be sent by the service providing federa
                         <semantics>LOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested materiel can be stored.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
@@ -293,7 +293,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         <semantics>This interaction is sent by the provider when the supply is delivered to the consumer</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>The amount of supplies, by type, that were transferred from provider to consumer.</semantics>
                         </parameter>
                     </interactionClass>
@@ -317,7 +317,7 @@ The LOG_ServiceCompleted interaction does not define any additional parameters.<
                         <semantics>This interaction is sent by the provider when the supply is delivered to the provider</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>This interaction is sent by the provider when all supply is received by the provider</semantics>
                         </parameter>
                     </interactionClass>
@@ -384,7 +384,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                         <semantics>This interaction is sent when the consumer is ready to receive the supply. (At same location as the provider)</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>The amount of supplies, by type, that the consumer is able to accept at the time it declares ReadyToReceive.</semantics>
                         </parameter>
                     </interactionClass>
@@ -397,7 +397,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
 (At same location as the provider)</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>ArrayOfSupplyStruct</dataType>
+                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>This interaction is sent when the consumer is ready to transfer the supply. (At same location as the provider)</semantics>
                         </parameter>
                     </interactionClass>
@@ -533,13 +533,7 @@ The LOG_ReadyToReceiveService interaction does not define any additional paramet
                 <encoding>HLAvariableArray</encoding>
                 <semantics>List of repair types</semantics>
             </arrayData>
-            <arrayData>
-                <name>ArrayOfSupplyStruct</name>
-                <dataType>SupplyStruct</dataType>
-                <cardinality>Dynamic</cardinality>
-                <encoding>HLAvariableArray</encoding>
-                <semantics></semantics>
-            </arrayData>
+            
             <arrayData>
                 <name>ServiceDescription</name>
                 <dataType>HLAunicodeChar</dataType>
@@ -615,21 +609,7 @@ When date and time is set to zero (0), implies no date-time specification</seman
                     <semantics>Location of the appointment</semantics>
                 </field>
             </fixedRecordData>
-            <fixedRecordData>
-                <name>SupplyStruct</name>
-                <encoding>HLAfixedRecord</encoding>
-                <semantics>Same as defined in RPR2 Logistics FOM Module.</semantics>
-                <field>
-                    <name>SupplyType</name>
-                    <dataType>EntityTypeStruct</dataType>
-                    <semantics>The type of supply (as described in the Bit Encoded Values for Use with Protocols for Distributed Interactive Simulation Applications)</semantics>
-                </field>
-                <field>
-                    <name>Quantity</name>
-                    <dataType>QuantityFloat32</dataType>
-                    <semantics>The number of units of the supply type.  The unit measure depends on the supply type and shall use the SI units of measurement used for such supplies.</semantics>
-                </field>
-            </fixedRecordData>
+       
             <fixedRecordData>
                 <name>ServiceIdentifier</name>
                 <encoding>HLAfixedRecord</encoding>

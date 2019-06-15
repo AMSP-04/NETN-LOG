@@ -1,6 +1,6 @@
 # NETN LOG
 
-The NATO Education and Training Network (NETN) Logistics FOM Module.
+The NATO Education and Training Network Logistics Module (NETN LOG).
 
 ## Background
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
@@ -9,17 +9,15 @@ Military logistics is the discipline of planning and carrying out the movement a
 
 This module is a specification of how to model logistics services in a federated distributed simulation. 
 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. 
-
-The NETN FOM FOM module is available as a XML file for use in HLA based federations.
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN LOG FOM module is available as a XML file for use in HLA based federations.
 
 ## Purpose
 
-The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
+NETN LOG provides a common standard interface for negotiation, delivery and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
 
 ## Scope
 
-The NETN Logistics module covers the following services:
+NETN LOG covers the following services:
 
 * Supply Service offered by a federate capable of simulating transfer of supplies to the consumer.
 * Storage Service offered by a federate capable of simulating receiving transfer of supplies from consumer.
@@ -33,9 +31,7 @@ Examples of use:
 * Repair of damaged platforms in facility or by unit
 * Transport of units, platforms, and humans by train, ship, or aircraft   		
 # Overview
-All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. 
-The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
-
+ 
 ## Materiel
 Materiel are classified as:
 * Consumable Supplies
@@ -57,20 +53,21 @@ Materiel are classified as:
 Transfer of supplies can be requested as a number of items, as cubic meters for liquid bulk goods and in kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not considered.
 
 ## Logistics Service Pattern
+All NETN LOG services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. Federates participating in the logistics service transaction are either a service Consumer or a service Provider. 
 
-Federates participating in the logistics service transaction are considered as either a service consumer or a service provider. The NETN LOG FOM module defines the HLA interactions used to model the service transactions. The interaction patterns required for different types of services may vary but the basic principles and interaction class definitions are the same. 
+The pattern defines sequences of service transactions between federates. These transactions are defined in the NETN LOG FOM Module as sub-classes of the `LOG_Service` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
 
 <img src="./images/log_interactionclasses.png">
 
 **Figure: Logistics Services Interaction Classes**
 
-The base classes for the Logistics Service Pattern are extended with subclasses in order to provide more detail information required for specific logistics services.
+The interactions defined for the Logistics Service Pattern are extended by subclassing in order to provide more detail information required for specific logistics services.
 
 <img src="./images/log_scp_phases.svg" width="400px"/>
 
 <!--```
 DIAGRAM GENERATED IN https://sequencediagram.org/
-Consumer->Provider: RequestService
+Consumer->Provider: RequestService(RequestTimeOut)
 
 Provider->Consumer: OfferService
 Consumer->Provider: AcceptOffer
@@ -114,7 +111,7 @@ _During service delivery, the modelling responsibility of simulated entities inv
 
 # Transfer of Supplies
 
-Federates can have the capability to provide and/or store supplies. These capabilities can be offered as supply and storage services to other federates. The supply and storage services involve the transfer of materiel from a simulated entity modelled in one federate to antoher entity modelled in another federate.
+Federates can have the capability to provide and/or store supplies. These capabilities can be offered as services to other federates and involve the transfer of materiel from a simulated entity modelled in one federate to antoher entity modelled in another federate.
 
 Supply and storage services are different in terms of flow of materiel between service consumer and provider. 
 
