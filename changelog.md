@@ -20,9 +20,14 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Renamed datatype `NETN_ServiceIdentifier` to `ServiceIdentifier`
 * Renamed field `MaterialID` of datatype `RepairStruct` to `MaterielID`
 
-* Removed NETN_RepairTypeEnum16
+* Removed `NETN_RepairTypeEnum16`
 * Introduced dependency to RPR-Enumeration v2.0
-* Changed datatype of ArrayOfRepairTypeEnum from NETN_RepairTypeEnum16 to RepairTypeEnum16 (from RPR_Enumeration). 
+* Changed datatype of `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16` (from RPR_Enumeration). 
+* Change datatype of attribute `LOG_Service.Provider` from `Callsign` to `UuidArrayOfHLAbyte16`
+* Change datatype of attribute `LOG_Service.Consumer` from `Callsign` to `UuidArrayOfHLAbyte16`.
+
+* Change datatype of `LOG_Service.ServiceID` to `TransactionID` defined in NETN-BASE.
+* Remove parameter `LOG_Service.ServiceType`.
 
 ### Previous structure
 

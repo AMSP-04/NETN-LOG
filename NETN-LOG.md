@@ -70,7 +70,7 @@ The interactions defined for the Logistics Service Pattern are extended by subcl
 
 <!--```
 DIAGRAM GENERATED IN https://sequencediagram.org/
-Consumer->Provider: RequestService(RequestTimeOut)
+Consumer->Provider: RequestService(ServiceID, RequestTimeOut)
 
 Provider->Consumer: OfferService
 Consumer->Provider: AcceptOffer
@@ -218,6 +218,7 @@ The storage service os similar to the supply service but the actual transfer of 
 7. A `ServiceComplete` message from the provider and a `ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are sent depends on whether the service delivery is controlled by the provider (default) or by the consumer.
 
 # Transport and Repair of Entities
+Non-consumable materiel and personnel represented as entities in a federated distributed simulation can be transported and subject to repair activities. Services provided by one simulation system can be used to transport and repair units, platforms and other entities represented in another simulation system.
 
 ## Repair Service
 
