@@ -1,26 +1,35 @@
 # NETN LOG
-The NATO Education and Training Network (NETN) Logistics FOM Module.
 
-This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.
+The NATO Education and Training Network Logistics Module (NETN LOG).
+
+## Background
+Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
+
+## Description
+
+This module is a specification of how to model logistics services in a federated distributed simulation. 
+
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN LOG FOM module is available as an XML file for use in HLA based federations.
 
 ## Purpose
-The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.
+
+NETN LOG provides a common standard interface for negotiation, delivery, and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
 
 ## Scope
-The NETN Logistics module covers the following services:
 
-* Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service.
-* Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service.
-* Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark.
-* Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.
+NETN LOG covers the following services:
+
+* Supply Service offered by a federate capable of simulating the transfer of supplies to the consumer.
+* Storage Service offered by a federate capable of simulating receiving the transfer of supplies from the consumer.
+* Transport Service offered by a federate capable of simulating loading, transport and/or unloading of non-consumable materiel.
+* Repair Service offered by a federate capable of simulating repair of consumer provided non-consumable materiel, e.g platforms.
 
 Examples of use:
 
 * Refuelling of aircraft at an airbase or in the air
 * Transport of supplies between facilities
-* Repair of damaged platforms in facility or by unit
-* Transport of units, platforms, and humans by train, ship, or aircraft
-* Embarkment and disembarkment of units on platforms
+* Repair of damaged platforms in a facility or by unit
+* Transport of units, platforms, and humans by train, ship, or aircraft   		
 
 ## [Changelog](changelog.md)
 
