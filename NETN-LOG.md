@@ -2,6 +2,9 @@
 
 The NATO Education and Training Network Logistics Module (NETN LOG).
 
+Copyright (C) 2019 NATO/OTAN.
+This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENSE.md).
+
 ## Background
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
