@@ -38,6 +38,8 @@ This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 In
 
 The work includes the [NETN-LOG.xml](NETN-LOG.xml) FOM Module and documentation NETN-LOG.md.
 
+Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference and including neccessary scaffolding classes. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group. 
+
 ## Versions, updates and extentions
 
 All updates and versioning of this work is coordinated by the NATO Modelleing and Simulation Coordination Office (MSCO), managed by the NATO Modelling and Simulation Group (NMSG) and performed as NATO Science and Technology Organization (STO) technical activities in support of the NMSG Modelling and Simulation Standards Subgroup (MS3).
@@ -58,10 +60,6 @@ Version numbering of the NETN LOG FOM Module and associated documentation is bas
 |v2.0.0 (Planned) |Initial merged version of NETN-LOG FOM Module. This version replaces NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. |
 
 [Changelog](changelog.md)
-
-Extensions to the NETN-LOG FOM module can be defined in your own separate FOM Module including neccessary scaffolding classes from NETN-LOG. 
-
-
 
 ## Documentation
 

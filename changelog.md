@@ -23,11 +23,17 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed `NETN_RepairTypeEnum16`
 * Introduced dependency to RPR-Enumeration v2.0
 * Changed datatype of `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16` (from RPR_Enumeration). 
-* Change datatype of attribute `LOG_Service.Provider` from `Callsign` to `UuidArrayOfHLAbyte16`
-* Change datatype of attribute `LOG_Service.Consumer` from `Callsign` to `UuidArrayOfHLAbyte16`.
 
 * Change datatype of `LOG_Service.ServiceID` to `TransactionID` defined in NETN-BASE.
 * Remove parameter `LOG_Service.ServiceType`.
+
+* Move and rename parameter `LOG_Service.Consumer` to `LOG_Service.RequestService.ConsumerEntity` and change datatype from `Callsign` to `UuidArrayOfHLAbyte16`
+* Move and rename parameter `LOG_Service.Provider` to `LOG_Service.RequestService.ProviderEntity` and `LOG_Service.OfferService.ProviderEntity` and change datatype from `Callsign` to `UuidArrayOfHLAbyte16`
+* Add parameter `LOG_Service.OfferService.OfferID` with datatype `TransactionID` defined in NETN-BASE.
+* Add parameter `LOG_Service.AcceptOffer.OfferID` with datatype `TransactionID` defined in NETN-BASE.
+* Change parameter `LOG_Service.OfferService.IsOffering` to Optional with default value TRUE.
+* Rename parameter `LOG_Service.OfferService.RequestTimeOut` to `LOG_Service.OfferService.OfferTimeOut`
+* Add interaction class `LOG_Service.CancelOffer` to allow providers to withdraw offers before they are accepted when `OfferTimeOut` has been reached.
 
 ### Previous structure
 

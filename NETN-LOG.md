@@ -55,6 +55,8 @@ Materiel are classified as:
 
 Amount of supplies can be specified as a number of items, in cubic meters for liquid bulk goods and in kilograms for solid bulk goods. The type of packaging (fuel in canisters, water in bottles, etc.) is not included.
 
+The type of supplies is based on the SISO-REF-010 standard. Additional supply types can be defined and documented in federation specific agreements.
+
 ## Logistics Service Pattern
 All NETN LOG services are based on a Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
 
@@ -66,92 +68,115 @@ The pattern defines sequences of service transactions between federates. These t
 
 The interactions defined for the Logistics Service Pattern are extended by subclassing in order to provide more detail information required for specific logistics services.
 
-<img src="./images/log_scp_phases.svg" width="400px"/>
+<img src="./images/log_scp_phases.svg" width="1000px"/>
 
 <!--```
 DIAGRAM GENERATED IN https://sequencediagram.org/
-Consumer->Provider: RequestService(ServiceID, RequestTimeOut)
+autonumber 1
+space
+parallel 
+Consumer->Provider: RequestService(ServiceID, ConsumerEntity, ProviderEntity, RequestTimeOut)
+note right of Provider:Multiple potential Providers \ncan receive the ServiceRequest.
+parallel off
+space
+break time >= RequestTimeOut & no service offer
+Consumer->Provider: CancelService(ServiceID)
+end
+space
+parallel 
+Provider->Consumer: OfferService(ServiceID, OfferID, ProviderEntity, IsOffering, OfferTimeOut)
+note right of Provider:Multiple offers from the same and/or \ndifferent Providers are possible.
+parallel off
+space
+opt time >= OfferTimeOut & offer not accepted
+Provider->Consumer: CancelOffer(ServiceID, OfferID)
+end
+space
+alt offer accepted
+Consumer->Provider: AcceptOffer(ServiceID, OfferID)
+else offer rejected
+Consumer->Provider: RejectOffer(ServiceID, OfferID, Reason)
+end
+space
+break Cancel before Delivery
+Consumer<->Provider:CancelService(ServiceID, Reason)
+end
 
-Provider->Consumer: OfferService
-Consumer->Provider: AcceptOffer
-parallel 
-box over Consumer:Get ready for\nreceiving service
-box over Provider:Conduct preparations \nfor service delivery
-parallel off
-Consumer->Provider: ReadyToReceiveService
-Provider->Consumer: ServiceStarted
-parallel 
-box over Consumer:Receive Service
-box over Provider:Deliver Service
-parallel off
-Provider->Consumer: ServiceComplete
-Consumer->Provider: ServiceReceived
+space
+abox over Consumer, Provider:Prepare for service Delivery
+space
+Consumer->Provider: ReadyToReceiveService(ServiceID)
+Provider->Consumer: ServiceStarted(ServiceID)
+space
+loop Delivery of Service
+abox over Consumer, Provider: Delivery of Service
+break Cancel during Delivery
+
+Consumer<->Provider:CancelService(ServiceID, Reason)
+else Cancel by Provider
+end
+end
+space
+Provider->Consumer: ServiceComplete(ServiceID)
+Consumer->Provider: ServiceReceived(ServiceID)
+autonumber off
 ```-->
 **Figure: Phases of the Logistics Service Pattern**
 
 The logistics service pattern is divided into three phases:
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 
-1. The consumer initiates negotiation using `RequestService`. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is made, the consumer shall cancel the service using `CancelService`.
+1. A consumer federate initiates service negotiation using `RequestService`. A unique ServiceID and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional.
 
-2. Offers are sent by the provider using `OfferService`. The provider notifies the consumer of its ability to deliver the service using the `IsOffering` attribute and `RequestTimeOut` indicates how long the offer is valid.
+    Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.
 
-3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
+2. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is received, the consumer shall cancel the service using `CancelService`. A `ServiceID` parameter is required to indicate which service is cancelled. After the cancellation the logistics service pattern is terminated.
+
+3. Offers are sent by potential providers using `OfferService` with a required parameter `ServiceID` referenceing the requested service. The provider can indicate if an offer is made or not using the optional parameter `IsOffering`. If set to false, no offer is provided and no other attributes are required in the offer. If set to true (default if no parameter is provided), a unique `OfferID` must be provided. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
+
+4. The provider can cancel an offer using `CancelOffer` as long as it has not been accepted. Required parameters are the `ServiceID` and `OfferID`.
+
+5. The consumer accepts an offer using `AcceptOffer` or 
+
+6. Rejects an offer from a provider using `RejectOffer`. An optional `Reason` information can be provided.
+
+7. Both consumer and provider can cancel the service before service delivery has started using `CancelService` with `ServiceID` and on optional `Reason` parameter. If cancelled the logistics pattern will also terminate.
 
 **Service Delivery**: the consumer indicates that the delivery process can start, and the selected provider starts to deliver, continuing until all the services have been delivered.
 
-4.  The consumer sends a `ReadyToReceiveService` 
+8.  The consumer sends a `ReadyToReceiveService` message with `ServiceID` parameter to indicate readiness to start receiving the service. I.e, all neccesary preparations have been made to allow the `ConsumingEntity` to receive the service.
 
-5. The `ServiceStarted` is used to indicate that service delivery has started.
+9. The provider sends a `ServiceStarted` message with `ServiceID` parameter to indicate that service delivery has started. This is sent only after receiving a `ReadyToReceiveService` notification from the consumer and after all preparations for have been made to allow the `ProvidingEntity` to deliver the service according to the offer.
 
-_During service delivery, the modelling responsibility of simulated entities involved in the service transaction could change using NETN TMR._
+10. Both consumer and provider can cancel the service during service delivery using `CancelService` with `ServiceID` and on optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service have been delivered.
 
 **Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 
-6. When service delivery is complete the provider sends a `ServiceComplete` message.
+11. When service delivery is cancelled or completed the provider sends a `ServiceComplete` message with any additional parameters specifying the completeness of the delivery, e.g. if only part of a service was delivered.
 
-7. When the completed service delivery is accepted the consumer sends a `ServiceReceived`message.
+12. When the service delivery has been accepted by the consumer a `ServiceReceived` message is sent.
 
 # Transfer of Supplies
 
-Federates can have the capability to provide and/or store supplies. These capabilities can be offered as services to other federates and involve the transfer of materiel from a simulated entity modelled in one federate to another entity modelled in another federate.
+Federates can have the capability to provide and/or store supplies. These capabilities can be offered as services to other federates and involve the transfer of materiel between a `ConsumerEntity` and `ProviderEntity` modelled in two different federates.
 
-Supply and storage services are different in terms of the flow of materiel between service consumer and provider. 
+Supply and storage services are different in terms of the flow of materiel between consumer and provider. 
 
 * Supply Service: Supplies are transferred from the provider to the consumer of the service.
 * Storage Services: Supplies are transferred from the consumer to the provider of the service.
 
-The type of supplies is based on the SISO-REF-010 standard. Additional supply types can be defined and documented in federation specific agreements.
-
-The supply and storage services are based on the general NETN Logistics Services Pattern but with specific extensions for supplies.
+The supply and storage services are based on the general Logistics Services Pattern but with specific extensions for supplies.
 
 During service negotiation, `Appointment` information is used to decide where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the provider can also change this and propose an alternative `Appointment` in the service offer.
 
 The `LoadingDoneByProvider` parameter is used to indicate if the transfer of supplies is performed by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
 
 * If the transfer of supplies is controlled by the provider, then the consumer shall respond with a `ServiceReceived` to any `ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `ServiceReceived` message is sent. 
-* If the service delivery is controlled by the consumer, then the providing shall respond with a `ServiceComplete` to any `ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `ServiceComplete` is sent. 
+* If the service delivery is controlled by the consumer, then the provider shall respond with a `ServiceComplete` to any `ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `ServiceComplete` is sent.
 
-Both `SupplyComplete` and `StorageComplete` messages include information on the actual amount of transferred supplies.
 
-<img src="./images/log_supply_cancellation.svg" width="400px"/>
-
-<!--```
-Consumer->Provider: ...
-Consumer->Provider: ReadyToReceiveSupply(SuppliesData)
-Provider->Consumer: ServiceStarted
-Provider->Consumer: CancelService(Reason)
-Provider->Consumer: SupplyComplete(SuppliesData)
-Consumer->Provider: ServiceReceived
-```-->
-
-**Figure: Service Cancellation**
-
-Early termination of the service request or termination during delivery is possible and can be initiated by either the consumer or the provider using `CancelService`. 
-
-* If the service is cancelled before service delivery has started, the service transaction is terminated. 
-* If the `CancelService` occurs during `ServiceStarted` and `SupplyComplete`, the provider shall inform the consumer of the amount of supplies transferred using `SuppliesData` information in the `SupplyComplete` or `StorageComplete`message. The actual supply amount must be less than or equal to the amount offered.
-
+If a `CancelService` occurs during delivery of supply services, the provider shall inform the consumer of the actual amount of supplies transferred.
+Both `SupplyComplete` and `StorageComplete` messages requires information on the actual amount of transferred supplies. The actual supply amount must be less than or equal to the amount offered.
 
 ## Supply Service
 
@@ -159,22 +184,30 @@ Early termination of the service request or termination during delivery is possi
 <img src="./images/log_supply_sequence.svg" width="550px"/>
 
 <!--```
-Consumer->Provider: RequestSupply(SuppliesData, Appointment, LoadingDoneByProvider)
-Provider->Consumer: OfferSupply(SuppliesData, Appointment)
-Consumer->Provider: AcceptOffer
+autonumber 
+Consumer->Provider:RequestSupply(\n   ServiceID, \n   ConsumerEntity, ProviderEntity, RequestTimeOut, \n   SuppliesData, Appointment, LoadingDoneByProvider )
+Provider->Consumer:OfferSupply(..., SuppliesData, Appointment)
+Consumer->Provider:AcceptOffer(...)
 Consumer->Provider: ReadyToReceiveSupply(SuppliesData)
-Provider->Consumer: ServiceStarted
-Provider->Consumer: SupplyComplete(SuppliesData)
-Consumer->Provider: ServiceReceived
+Provider->Consumer:ServiceStarted(...)
+alt Loading done by Provider
+Provider->Consumer:SupplyComplete(..., SuppliesData)
+Consumer->Provider:ServiceReceived(...)
+else Loading done by Consumer
+Consumer->Provider:ServiceReceived(...)
+Provider->Consumer:SupplyComplete(..., SuppliesData)
+end
+
+autonumber off
 ```-->
 
 **Figure: Supply Service**
 
 Supplies are transferred after the offer is accepted and the service delivery has started. 
 
-1. To request supplies, the consumer sends a `RequestSupply` message. The amount and type of requested supplies are provided as `SuppliesData`. The optional `LoadingDoneByProvider` parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
+1. The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The optional `LoadingDoneByProvider` parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer. An optional parameter `Appointment` specifies when and where the service delivery is expected.
 
-2. An `OfferSupply` message is used by potential providers to offer supplies. The offer includes the amount and type of supplies. In the offer, the provider can also propose a change to service delivery control.
+2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify and alternate `Appointment` in the offer.
 
 4. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
