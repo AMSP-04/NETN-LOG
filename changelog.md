@@ -1,6 +1,6 @@
 ## Changelog
 
-### Changes in v2.0.0 
+### Changes in v2.0.0
 
 Version 2.0.0 is the initial version of the new combined NETN LOG FOM module based on previous Logistics related NETN modules.
 The NETN LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
@@ -22,3 +22,15 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed NETN_RepairTypeEnum16
 * Introduced dependency to RPR-Enumeration v2.0
 * Changed datatype of ArrayOfRepairTypeEnum from NETN_RepairTypeEnum16 to RepairTypeEnum16 (from RPR_Enumeration). 
+
+### Previous structure
+
+Before merged into a single FOM Module, several FOM modules were used to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
+
+Modules released by MSG-106 and included in AMSP-04 Ed. A. NATO Education and Training Network Federation Architecture and FOM Design (NETN FAFD) were:
+* NETN-SCP-BASE v1.1.3
+* NETN-Supply v1.1.2
+* NETN-Storage v1.2.2
+* NETN-Repair v 1.2.1
+* NETN-Transport v1.1.2
+
