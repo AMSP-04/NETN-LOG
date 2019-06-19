@@ -314,13 +314,34 @@ The transport service consists of the following phases in which the change of co
 <img src="./images/log_transport_service.svg" width="500px"/>
 
 <!--```
-Consumer->Provider: RequestTransport(TransportData)
-Provider->Consumer: OfferTransport(TransportData, OfferType, Transporters)
-Consumer->Provider: AcceptOffer
-Consumer->Provider: ReadyToReceiveService
-Provider->Consumer: ServiceStarted
-Provider->Consumer: ServiceComplete
-Consumer->Provider: ServiceReceived
+autonumber 
+Consumer->Provider:RequestTransport(..., TransportData, \nEmbarkmentAppointment, DisembarkmentAppointment)
+Provider->Consumer:OfferTransport(..., TransportData, \nEmbarkmentAppointment, DisembarkmentAppointment, \nTransporters)
+Consumer->Provider: AcceptOffer(...)
+opt if EmbarkmentAppointment provided
+abox over Provider, Consumer: Prepare for Embarkment
+end
+Consumer->Provider: ReadyToReceiveService(...)
+Provider->Consumer: ServiceStarted(...)
+opt if EmbarkmentAppointment provided
+loop until all entities embarked
+Provider->Consumer: TransportEmbarkmentStatus(..., EmbarkedObjects, TransportUnitIdentifier)
+end
+end
+opt if DisembarkmentAppointment provided
+loop until at DisembarkmentAppointment
+abox over Provider, Consumer: Move Transport 
+opt if TransportUnitDestroyed
+Provider->Consumer: TransportDestroyedEntities(..., DestroyedObjects)
+end
+end
+loop until all entities disembarked
+Provider->Consumer: TransportDisembarkmentStatus(..., DisembarkedObjects, TransportUnitIdentifier)
+end
+end
+Provider->Consumer: ServiceComplete(...)
+Consumer->Provider: ServiceReceived(...)
+autonumber off
 ```-->
 **Figure: Transport Service**
 

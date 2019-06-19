@@ -89,12 +89,12 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <parameter>
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
-                            <semantics>List of all requested repairs.</semantics>
+                            <semantics>Required: List of all requested repairs.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Time and location for the exchenge of the service. Optional</semantics>
+                            <semantics>Optional: Time and location for the exchenge of the service.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -106,12 +106,12 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>List of type and quantity of supplies requested.</semantics>
+                            <semantics>Required: List of type and quantity of supplies requested.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Time and location for the exchange of the service. Optional</semantics>
+                            <semantics>Optional: Time and location for the exchange of the service.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -123,8 +123,18 @@ Requests for specific types of services are defined as subclasses to `RequestSer
 The request to transport, embark or disembark a platform is initiated by a RequestTransport interaction;</semantics>
                         <parameter>
                             <name>TransportData</name>
-                            <dataType>TransportStruct</dataType>
-                            <semantics>Data for the transport. Transported units and appointment data</semantics>
+                            <dataType>ArrayOfUuid</dataType>
+                            <semantics>Required: Entities to be transported./semantics>
+                        </parameter>
+                        <parameter>
+                            <name>EmbarkmentAppointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>Optional: Location and time for embarkment./semantics>
+                        </parameter>
+                        <parameter>
+                            <name>DisembarkmentAppointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>Optional: Location and time for disembarkment./semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -136,12 +146,12 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>Specifies the supply (type and quantity)</semantics>
+                            <semantics>Required: Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>The time and location for the exchange of the service. Optional</semantics>
+                            <semantics>Optional: The time and location for the exchange of the service.</semantics>
                         </parameter>
                     </interactionClass>
                 </interactionClass>
@@ -180,12 +190,12 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <parameter>
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
-                            <semantics>List of the type of repairs offered. May be different from the list of requested repairs. List of all offered repairs if isOffering = true otherwise Undefined</semantics>
+                            <semantics>Required: List of the type of repairs offered. May be different from the list of requested repairs. List of all offered repairs if isOffering = true otherwise Undefined</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Time and location for the exchenge of the service. Optional</semantics>
+                            <semantics>Optional: Time and location for the exchenge of the service.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -197,12 +207,12 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
+                            <semantics>Required: List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Time and location for the exchange of the service. Optional</semantics>
+                            <semantics>Optional: Time and location for the exchange of the service.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -213,8 +223,18 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <semantics>An Offer for a Transport support. The OfferTransport interaction shall be sent by the service providing federate in response to a RequestTransport interaction.</semantics>
                         <parameter>
                             <name>TransportData</name>
-                            <dataType>TransportStruct</dataType>
-                            <semantics>Data for the transport</semantics>
+                            <dataType>ArrayOfUuid</dataType>
+                            <semantics>Required: Entities to be transported./semantics>
+                        </parameter>
+                        <parameter>
+                            <name>EmbarkmentAppointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>Optional: Location and time for embarkment./semantics>
+                        </parameter>
+                        <parameter>
+                            <name>DisembarkmentAppointment</name>
+                            <dataType>AppointmentStruct</dataType>
+                            <semantics>Optional: Location and time for disembarkment./semantics>
                         </parameter>
                         <parameter>
                             <name>OfferType</name>
@@ -514,41 +534,8 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <semantics>List of the types of repair associated with the materiel.</semantics>
                 </field>
             </fixedRecordData>
-            <fixedRecordData>
-                <name>DataEDStruct</name>
-                <encoding>HLAfixedRecord</encoding>
-                <semantics>Defines the entities to transport, where and when for embarkment or disembarment</semantics>
-                <field>
-                    <name>ObjectsToManage</name>
-                    <dataType>ArrayOfUuid</dataType>
-                    <semantics>List with the units to be landing or boarding</semantics>
-                </field>
-                <field>
-                    <name>Appointment</name>
-                    <dataType>AppointmentStruct</dataType>
-                    <semantics>Expected location for the landing or boarding</semantics>
-                </field>
-            </fixedRecordData>
-            <fixedRecordData>
-                <name>DataTStruct</name>
-                <encoding>HLAfixedRecord</encoding>
-                <semantics>Defines the entities to transport, where and when for pickup and dropoff</semantics>
-                <field>
-                    <name>ObjectsToManage</name>
-                    <dataType>ArrayOfUuid</dataType>
-                    <semantics>List with the units to be Transport</semantics>
-                </field>
-                <field>
-                    <name>Appointment</name>
-                    <dataType>AppointmentStruct</dataType>
-                    <semantics>Expected location for the boarding</semantics>
-                </field>
-                <field>
-                    <name>FinalAppointment</name>
-                    <dataType>AppointmentStruct</dataType>
-                    <semantics>Expected location for the landing</semantics>
-                </field>
-            </fixedRecordData>
+            
+            
             <fixedRecordData>
                 <name>AppointmentStruct</name>
                 <encoding>HLAfixedRecord</encoding>
@@ -585,31 +572,6 @@ In the case where all possible values are exhausted, the numbers may be reused b
             </fixedRecordData>
         </fixedRecordDataTypes>
         <variantRecordDataTypes>
-            <variantRecordData>
-                <name>TransportStruct</name>
-                <discriminant>TransportType</discriminant>
-                <dataType>TransportTypeEnum32</dataType>
-                <alternative>
-                    <enumerator>Transport</enumerator>
-                    <name>DataTransport</name>
-                    <dataType>DataTStruct</dataType>
-                    <semantics>Data for transport</semantics>
-                </alternative>
-                <alternative>
-                    <enumerator>Embarkment</enumerator>
-                    <name>DataEmbarkment</name>
-                    <dataType>DataEDStruct</dataType>
-                    <semantics>Data for embarkment</semantics>
-                </alternative>
-                <alternative>
-                    <enumerator>Disembarkment</enumerator>
-                    <name>DataDisembarkment</name>
-                    <dataType>DataEDStruct</dataType>
-                    <semantics>Data for Disembarkment</semantics>
-                </alternative>
-                <encoding>HLAvariantRecord</encoding>
-                <semantics>Transport data</semantics>
-            </variantRecordData>
         </variantRecordDataTypes>
     </dataTypes>
     <notes>

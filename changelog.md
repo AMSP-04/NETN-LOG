@@ -40,6 +40,18 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Remove parameter `OfferStorage.LoadingDoneByProvider`. Loading will always be modelled by provider.
 * Remove parameter `OfferSupply.LoadingDoneByProvider`. Loading will always be modelled by provider.
 
+* Change datatype of parameter `RequestTransport.TransportData` to `ArrayOfUuid`.
+* Change datatype of parameter `OfferTransport.TransportData` to `ArrayOfUuid`.
+
+* Remove datatype `TransportStruct`.
+* Remove datatype `DataTStruct`.
+* Remove datatype `DataEDStruct`.
+
+* Add parameter `RequestTransport.EmbarkmentAppointment` specifying time and location for loading/embarking onto transport.
+* Add parameter `RequestTransport.DisembarkmentAppointment` specifying time and location for unloading/disembarking from transport.
+* Add parameter `OfferTransport.EmbarkmentAppointment` specifying time and location for loading/embarking onto transport.
+* Add parameter `OfferTransport.DisembarkmentAppointment` specifying time and location for unloading/disembarking from transport.
+
 
 ### Previous structure
 
