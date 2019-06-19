@@ -65,9 +65,11 @@
     </object>
    </void>
    <void method="add">
-    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule" id="PersistentProjectHelper$PersistentModule2">
+
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
      <string>NETN-Base</string>
-     <string>/Users/bjornlofstrand/Documents/GitHub/NETN-BASE/NETN-Base.xml</string>
+     <string>C:\Users\bjornl\Documents\GitHub\NETN-BASE\NETN-Base.xml</string>
+
      <boolean>false</boolean>
      <boolean>false</boolean>
      <boolean>true</boolean>
@@ -80,9 +82,11 @@
      <boolean>false</boolean>
      <boolean>false</boolean>
      <object class="java.awt.Color">
-      <int>251</int>
-      <int>128</int>
-      <int>114</int>
+
+      <int>255</int>
+      <int>255</int>
+      <int>179</int>
+
       <int>255</int>
      </object>
     </object>
@@ -101,11 +105,12 @@
       <string>INTERACTION_CLASS_TABLE</string>
      </object>
      <object idref="PersistentProjectHelper$PersistentModule1"/>
-     <int>2</int>
-     <int>50</int>
-     <int>1106</int>
-     <int>592</int>
-     <object class="java.util.Collections" method="emptySet"/>
+
+     <int>0</int>
+     <int>0</int>
+     <int>1153</int>
+     <int>887</int>
+     <object class="java.util.LinkedHashSet"/>
      <object class="java.util.LinkedHashSet"/>
     </object>
    </void>
@@ -114,12 +119,7 @@
    <void method="add">
     <object idref="PersistentProjectHelper$PersistentModule0"/>
    </void>
-   <void method="add">
-    <object idref="PersistentProjectHelper$PersistentModule1"/>
-   </void>
-   <void method="add">
-    <object idref="PersistentProjectHelper$PersistentModule2"/>
-   </void>
+
   </object>
   <boolean>false</boolean>
  </object>
