@@ -47,11 +47,19 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Remove datatype `DataTStruct`.
 * Remove datatype `DataEDStruct`.
 
-* Add parameter `RequestTransport.EmbarkmentAppointment` specifying time and location for loading/embarking onto transport.
-* Add parameter `RequestTransport.DisembarkmentAppointment` specifying time and location for unloading/disembarking from transport.
-* Add parameter `OfferTransport.EmbarkmentAppointment` specifying time and location for loading/embarking onto transport.
-* Add parameter `OfferTransport.DisembarkmentAppointment` specifying time and location for unloading/disembarking from transport.
+* Add parameter `RequestTransport.Embarkment` specifying time and location for loading/embarking onto transport.
+* Add parameter `RequestTransport.Disembarkment` specifying time and location for unloading/disembarking from transport.
+* Add parameter `OfferTransport.Embarkment` specifying time and location for loading/embarking onto transport.
+* Add parameter `OfferTransport.Disembarkment` specifying time and location for unloading/disembarking from transport.
 
+* Remove datatype `TransportTypeEnum32` - not used.
+* Remove datatype `ServiceIdentifier` - not used.
+* Remove datatype `LOG_ServiceTypeEnum8` - not used.
+* Remove datatype `ServiceDescription` - not used.
+
+
+* Remove parameter `OfferTransport.OfferType` (use IsOffering)
+* Remove datatype OfferTypeEnum32
 
 ### Previous structure
 

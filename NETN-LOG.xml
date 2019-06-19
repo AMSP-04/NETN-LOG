@@ -124,17 +124,17 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <parameter>
                             <name>TransportData</name>
                             <dataType>ArrayOfUuid</dataType>
-                            <semantics>Required: Entities to be transported./semantics>
+                            <semantics>Required: Entities to be transported.</semantics>
                         </parameter>
                         <parameter>
-                            <name>EmbarkmentAppointment</name>
+                            <name>Embarkment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for embarkment./semantics>
+                            <semantics>Optional: Location and time for embarkment.</semantics>
                         </parameter>
                         <parameter>
-                            <name>DisembarkmentAppointment</name>
+                            <name>Disembarkment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for disembarkment./semantics>
+                            <semantics>Optional: Location and time for disembarkment.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -224,27 +224,22 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                         <parameter>
                             <name>TransportData</name>
                             <dataType>ArrayOfUuid</dataType>
-                            <semantics>Required: Entities to be transported./semantics>
+                            <semantics>Required: Entities to be transported.</semantics>
                         </parameter>
                         <parameter>
-                            <name>EmbarkmentAppointment</name>
+                            <name>Embarkment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for embarkment./semantics>
+                            <semantics>Optional: Location and time for embarkment.</semantics>
                         </parameter>
                         <parameter>
-                            <name>DisembarkmentAppointment</name>
+                            <name>Disembarkment</name>
                             <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for disembarkment./semantics>
-                        </parameter>
-                        <parameter>
-                            <name>OfferType</name>
-                            <dataType>OfferTypeEnum32</dataType>
-                            <semantics>Provide high level information about the acceptance of the request (Partial, Full)</semantics>
+                            <semantics>Optional: Location and time for disembarkment.</semantics>
                         </parameter>
                         <parameter>
                             <name>Transporters</name>
                             <dataType>ArrayOfUuid</dataType>
-                            <semantics>Platform list with transporters</semantics>
+                            <semantics>Optional: Platform list with transporters</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -430,71 +425,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
     </interactions>
     <dataTypes>
         <simpleDataTypes/>
-        <enumeratedDataTypes>
-            <enumeratedData>
-                <name>TransportTypeEnum32</name>
-                <representation>HLAinteger32BE</representation>
-                <semantics>Type of action, transport, embark or disembark</semantics>
-                <enumerator>
-                    <name>Transport</name>
-                    <value>0</value>
-                </enumerator>
-                <enumerator>
-                    <name>Embarkment</name>
-                    <value>1</value>
-                </enumerator>
-                <enumerator>
-                    <name>Disembarkment</name>
-                    <value>2</value>
-                </enumerator>
-            </enumeratedData>
-            <enumeratedData>
-                <name>OfferTypeEnum32</name>
-                <representation>HLAinteger32BE</representation>
-                <semantics>Type of the offer (With restriction, positive, negative)</semantics>
-                <enumerator>
-                    <name>RequestAcknowledgeWithRestriction</name>
-                    <value>0</value>
-                </enumerator>
-                <enumerator>
-                    <name>RequestAcknowledgePositive</name>
-                    <value>1</value>
-                </enumerator>
-                <enumerator>
-                    <name>RequestAcknowledgeNegative</name>
-                    <value>2</value>
-                </enumerator>
-            </enumeratedData>
-            <enumeratedData>
-                <name>LOG_ServiceTypeEnum8</name>
-                <representation>HLAoctet</representation>
-                <semantics>Description of NETN services, extension of RPR2 ServiceTypeEnum8</semantics>
-                <enumerator>
-                    <name>Other</name>
-                    <value>0</value>
-                </enumerator>
-                <enumerator>
-                    <name>Resupply</name>
-                    <value>1</value>
-                </enumerator>
-                <enumerator>
-                    <name>Repair</name>
-                    <value>2</value>
-                </enumerator>
-                <enumerator>
-                    <name>Storage</name>
-                    <value>3</value>
-                </enumerator>
-                <enumerator>
-                    <name>Transport</name>
-                    <value>4</value>
-                </enumerator>
-                <enumerator>
-                    <name>CombatAdjudication</name>
-                    <value>5</value>
-                </enumerator>
-            </enumeratedData>
-        </enumeratedDataTypes>
+        <enumeratedDataTypes/>
         <arrayDataTypes>
             <arrayData>
                 <name>ArrayOfRepairStruct</name>
@@ -509,13 +440,6 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                 <cardinality>Dynamic</cardinality>
                 <encoding>HLAvariableArray</encoding>
                 <semantics>List of repair types</semantics>
-            </arrayData>
-            <arrayData>
-                <name>ServiceDescription</name>
-                <dataType>HLAunicodeChar</dataType>
-                <cardinality>Dynamic</cardinality>
-                <encoding>HLAvariableArray</encoding>
-                <semantics>A name associated with the service, e.g. name of the service, the issiuing federate or entity (Callsign).</semantics>
             </arrayData>
         </arrayDataTypes>
         <fixedRecordDataTypes>
@@ -534,8 +458,6 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <semantics>List of the types of repair associated with the materiel.</semantics>
                 </field>
             </fixedRecordData>
-            
-            
             <fixedRecordData>
                 <name>AppointmentStruct</name>
                 <encoding>HLAfixedRecord</encoding>
@@ -552,27 +474,8 @@ When date and time is set to zero (0), implies no date-time specification</seman
                     <semantics>Location of the appointment</semantics>
                 </field>
             </fixedRecordData>
-            <fixedRecordData>
-                <name>ServiceIdentifier</name>
-                <encoding>HLAfixedRecord</encoding>
-                <semantics>An ID associated with the service, shall be unique in the federation execution. 
-E.g. generate the federate id as a string and use this in the ServiceDescription.</semantics>
-                <field>
-                    <name>EventCount</name>
-                    <dataType>CounterInt32</dataType>
-                    <semantics>EventCount shall start at one (1) and then incremented by one (1) for a new NETN Service Provider event and service specified in field Service. 
- 
-In the case where all possible values are exhausted, the numbers may be reused beginning again at one.</semantics>
-                </field>
-                <field>
-                    <name>Service</name>
-                    <dataType>ServiceDescription</dataType>
-                    <semantics>A name associated with the service, e.g. name of the service, the issiuing federate or entity (Callsign).</semantics>
-                </field>
-            </fixedRecordData>
         </fixedRecordDataTypes>
-        <variantRecordDataTypes>
-        </variantRecordDataTypes>
+        <variantRecordDataTypes/>
     </dataTypes>
     <notes>
         <note>
@@ -580,10 +483,6 @@ In the case where all possible values are exhausted, the numbers may be reused b
             <semantics>All NETN Logistics services are based on a Logistics Service Pattern that include negotiation, delivery and acceptance of logistics services. The pattern is described below and is implemented as base classes in the NETN LOG FOM Module. 
  
 The NETN LOG FOM module extends RPR-FOM v2.0 FOM. Datatypes are re-used and extensions to object classes are defined.</semantics>
-        </note>
-        <note>
-            <label>netn-log_2</label>
-            <semantics>RPR-Enumerations: Reprinted with permission from SISO Inc.</semantics>
         </note>
     </notes>
 </objectModel>

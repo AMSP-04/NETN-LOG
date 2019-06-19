@@ -51,6 +51,9 @@
      <boolean>true</boolean>
      <object class="java.util.ArrayList">
       <void method="add">
+       <int>0</int>
+      </void>
+      <void method="add">
        <int>2</int>
       </void>
      </object>
@@ -65,11 +68,9 @@
     </object>
    </void>
    <void method="add">
-
-    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentModule" id="PersistentProjectHelper$PersistentModule2">
      <string>NETN-Base</string>
-     <string>C:\Users\bjornl\Documents\GitHub\NETN-BASE\NETN-Base.xml</string>
-
+     <string>/Users/bjornlofstrand/Documents/GitHub/NETN-BASE/NETN-Base.xml</string>
      <boolean>false</boolean>
      <boolean>false</boolean>
      <boolean>true</boolean>
@@ -82,11 +83,9 @@
      <boolean>false</boolean>
      <boolean>false</boolean>
      <object class="java.awt.Color">
-
       <int>255</int>
       <int>255</int>
       <int>179</int>
-
       <int>255</int>
      </object>
     </object>
@@ -105,13 +104,28 @@
       <string>INTERACTION_CLASS_TABLE</string>
      </object>
      <object idref="PersistentProjectHelper$PersistentModule1"/>
-
-     <int>0</int>
-     <int>0</int>
-     <int>1153</int>
-     <int>887</int>
+     <int>5</int>
+     <int>5</int>
+     <int>1255</int>
+     <int>646</int>
      <object class="java.util.LinkedHashSet"/>
      <object class="java.util.LinkedHashSet"/>
+    </object>
+   </void>
+   <void method="add">
+    <object class="se.pitch.vomt2.model.PersistentProjectHelper$PersistentView">
+     <boolean>true</boolean>
+     <object class="java.lang.Enum" method="valueOf">
+      <class>se.pitch.vomt2.model.TableType</class>
+      <string>SIMPLE_DATATYPE_TABLE</string>
+     </object>
+     <object idref="PersistentProjectHelper$PersistentModule2"/>
+     <int>5</int>
+     <int>25</int>
+     <int>1255</int>
+     <int>626</int>
+     <object class="java.util.Collections" id="Collections$EmptySet0" method="emptySet"/>
+     <object idref="Collections$EmptySet0"/>
     </object>
    </void>
   </object>
@@ -119,7 +133,6 @@
    <void method="add">
     <object idref="PersistentProjectHelper$PersistentModule0"/>
    </void>
-
   </object>
   <boolean>false</boolean>
  </object>
