@@ -263,34 +263,42 @@ Non-consumable materiel and personnel represented as entities in a federated dis
 <img src="./images/log_repair_sequence.svg" width="400px"/>
 
 <!--```
-Consumer->Provider: RequestRepair(RepairData, Appointment)
-Provider->Consumer: OfferRepair(RepairData, Appointment)
-Consumer->Provider: AcceptOffer
-Consumer->Provider: ReadyToReceiveRepair(RepairData)
-Provider->Consumer: ServiceStarted
-Provider->Consumer: RepairComplete(RepairData)
-Consumer->Provider: ServiceReceived
+autonumber 
+Consumer->Provider:RequestRepair(..., RepairData, Appointment)
+Provider->Consumer:OfferRepair(..., RepairData, Appointment)
+Consumer->Provider:AcceptOffer(...)
+Consumer->Provider: ReadyToReceiveService(...)
+Provider->Consumer:ServiceStarted(...)
+loop Delivery of Service
+abox over Provider, Consumer: Conduct Repair
+break Cancel during Delivery
+Consumer<->Provider: CancelService(...)
+end
+end
+Provider->Consumer:RepairComplete(..., RepairData)
+Consumer->Provider:ServiceReceived(...)
+autonumber off
 ```-->
 **Figure: Repair Service**
 
 A repair can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units capable of providing repair services can move to the location of a damaged platform deliver repair services.
 
-1. To request a repair, the consumer sends a `RequestRepair` message. The `RepairData`parameter is a list of materiel and an associated list of the type of repairs for that materiel. If the consumer is an aggregate entity, its damaged equipment must be represented in a platform list.
+1. The consumer sends a `RequestRepair` interaction to request repair service. The materiel to be repaired and type of repair is specified in the required `RepairData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
 
-2. The service provider offers the repair service by sending the `OfferRepair` message. The list of offered repairs may be different from the list of requested repairs.
+2. An `OfferRepair` interaction is used by potential providers of repair services. The `RepairData` parameter specifies the materiel and type of repair included in offer. The provider can also specify and alternate `Appointment` in the offer.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-4. The final requested repair is specified in the `ReadyToReceiveRepair` message as `RepairData` and shall be a equal to or a subset of the offered repairs. 
+4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that repairs can start. 
 
-5. The repair service starts when the consumer sends a `ServiceStarted` message. The required effort in making repairs is determined by the provider, based on the degree of damage to the materiel. 
+5. The `ServiceStarted` interaction is sent by the provider to notify that the repair has begun. 
 
-6. The consuming entity shall send a `ServiceReceived` as a response to the `RepairComplete` interaction. The repair is considered as complete once the `ServiceReceived` is sent.
+6. If a `CancelService` occurs during delivery of a repair services, the actual completed repairs can be different from what was agreed.
 
-If the `CancelService` is sent either by the Consumer or Provider, before the service has started, no repair of equipment is done. If the `CancelService` occurs during `ServiceStarted` and `RepairComplete`, the provider shall inform the consumer of the amount of repair done using a `RepairComplete` message with `RepairData`.
- 
+7. A `RepairComplete` interaction is sent when the repair is completed or after a cancellation. The actual completed repairs is provided as `RepairData` and should in the normal case be the same as agreed in the offer. 
 
- 
+8. The consumer sends a `ServiceReceived` interaction as a response to a `StorageComplete` from the provider. 
+
 ## Transport Service
 
 A logistics transport service is used when there is a need to move non-consumable entities such as platforms, units humans or other battlefield objects using means of transportation simulated in another federated system.

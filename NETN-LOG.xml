@@ -37,6 +37,7 @@ Copyright © 2019 by NATO/OTAN. All rights reserved.
 This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
 
 Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group.</other>
+        <glyph type="png" height="48" width="48" alt="">iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVGhD7Zi7ThVRGIUnoZAKY6Tw0tHY8woWgMoTWFmbWKAkXAoaXgCegnegkUaI9lRWXhqFgIkFGBNZ62TY+c/K3nPZ2X9isb/kS05m/XvtczhM5sw0lUqlUqm0PIPf4D9nuccyLM5XGNvQwy+wOLGNPC1ObBNPi+O9gXe/+wbe/e4baH+fZ/AIvoIzsBctKI32j/E9nIed6CKldD7WQ9j5TegCpXSe4xuYRIcV71x5Ao+hXfMLPoZR7CBVvPMYD+EltOsOYBQ7RBXvPMVrqGujv6V0SPHOU/DE/Qjt2s9wFk5hB6jinXexCP9Cu34XTmFDqnjnfexBu/4KLsCADaninfcxB/V+ZR8GbEAV73wIL6HtOIUBG9DSlOi/A23HNQzYgJamVH+yJxmAu3ATnsDzVl4lNyCzIZTqT/akgqeQhZrfyowzfei6W8b2ax6IBSvwD9RM5f9i35MGXUNy+jULaHAPfpdjXXKWa1LofG6/Hg9ooPLCsQYfQP7Ietsei83mmNsfiIXWd1BZh7HZHHP7A30PtvhXUXgsNptjTv/UAzKeJDwQG6T/2wfge12CSfRuaMhX/AEOxbu/2YZ2MU8obvKola/1JNuCQ/Hub+7Dn9AWdPkDcs1QvPsnvIB6IxGTM8/hWLz7J6zCCxgrprzU843k4t0/gU/FduAn+LuVr3ls9Ncawbu/UqlUXGiaG6HtCk/oIWIVAAAAAElFTkSuQmCC</glyph>
     </modelIdentification>
     <objects>
         <objectClass>
@@ -333,6 +334,11 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
                     <semantics>Used by provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.</semantics>
+                    <parameter>
+                        <name>OfferID</name>
+                        <dataType>TransactionId</dataType>
+                        <semantics></semantics>
+                    </parameter>
                 </interactionClass>
                 <interactionClass>
                     <name>CancelService</name>

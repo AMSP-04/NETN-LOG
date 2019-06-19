@@ -103,9 +103,9 @@
      <object idref="PersistentProjectHelper$PersistentModule1"/>
      <int>0</int>
      <int>0</int>
-     <int>1652</int>
+     <int>1153</int>
      <int>887</int>
-     <object class="java.util.Collections" method="emptySet"/>
+     <object class="java.util.LinkedHashSet"/>
      <object class="java.util.LinkedHashSet"/>
     </object>
    </void>
@@ -113,9 +113,6 @@
   <object class="java.util.LinkedHashSet">
    <void method="add">
     <object idref="PersistentProjectHelper$PersistentModule0"/>
-   </void>
-   <void method="add">
-    <object idref="PersistentProjectHelper$PersistentModule1"/>
    </void>
   </object>
   <boolean>false</boolean>
