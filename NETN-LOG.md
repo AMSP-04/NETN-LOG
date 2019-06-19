@@ -307,11 +307,9 @@ The transport service consists of the following phases in which the change of co
 
 * Embarkment is the process of mounting, loading and storing entities in a truck, convoy, ship, etc. Control over the entities is transferred from the service consumer to the transport service provider.
 
-* Transport is the process of the transport moving entities from a point of departure to its destination. The provider of the transport service has control over the entities being transported. 
+* Transport is the process of the transport moving entities from a point of departure to its destination. The provider of the transport service has control over the entities being transported. If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
 * Disembarkment is the process of dismounting or unloading of entities. Control over materiel is transferred from the transport service provider back to the service consumer. 
-
-If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
 <img src="./images/log_transport_service.svg" width="500px"/>
 
