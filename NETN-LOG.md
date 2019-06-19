@@ -170,7 +170,7 @@ The supply and storage services are based on the general Logistics Services Patt
 ## Supply Service
 
 
-<img src="./images/log_supply_sequence.svg" width="450px"/>
+<img src="./images/log_supply_sequence.svg" width="500px"/>
 
 <!--```
 autonumber 
@@ -210,7 +210,7 @@ autonumber off
 
 ## Storage Service
 
-<img src="./images/log_storage_sequence.svg" width="450px"/>
+<img src="./images/log_storage_sequence.svg" width="500px"/>
 
 <!--```
 autonumber 
@@ -260,7 +260,7 @@ Non-consumable materiel and personnel represented as entities in a federated dis
 
 ## Repair Service
 
-<img src="./images/log_repair_sequence.svg" width="400px"/>
+<img src="./images/log_repair_sequence.svg" width="500px"/>
 
 <!--```
 autonumber 
@@ -313,7 +313,7 @@ The transport service consists of the following phases in which the change of co
 
 If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR).
 
-<img src="./images/log_transport_service.svg" width="450px"/>
+<img src="./images/log_transport_service.svg" width="500px"/>
 
 <!--```
 Consumer->Provider: RequestTransport(TransportData)
