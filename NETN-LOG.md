@@ -108,7 +108,7 @@ space
 Consumer->Provider: ReadyToReceiveService(ServiceID)
 Provider->Consumer: ServiceStarted(ServiceID)
 space
-loop Delivery of Service
+loop until service delivered
 abox over Consumer, Provider: Delivery of Service
 break Cancel during Delivery
 
@@ -167,12 +167,12 @@ Supply and storage services are different in terms of the flow of materiel betwe
 
 The supply and storage services are based on the general Logistics Services Pattern but with specific extensions for supplies.
 
-During service negotiation, `Appointment` information is used to decide where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the provider can also change this and propose an alternative `Appointment` in the service offer.
+During service negotiation, additional `Appointment` information is used to decide where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the provider can also change this and propose an alternative `Appointment` in the service offer.
 
-The `LoadingDoneByProvider` parameter is used to indicate if the transfer of supplies is performed by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
+The `LoadingDoneByProvider` parameter is used to indicate if the actual transfer of supplies is modelled by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
 
-* If the transfer of supplies is controlled by the provider, then the consumer shall respond with a `ServiceReceived` to any `ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `ServiceReceived` message is sent. 
-* If the service delivery is controlled by the consumer, then the provider shall respond with a `ServiceComplete` to any `ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `ServiceComplete` is sent.
+* If the transfer of supplies is modelled by the provider, then the consumer shall respond with a `ServiceReceived` to any `ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `ServiceReceived` message is sent. 
+* If the service delivery is modelled by the consumer, then the provider shall respond with a `ServiceComplete` to any `ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `ServiceComplete` is sent.
 
 
 If a `CancelService` occurs during delivery of supply services, the provider shall inform the consumer of the actual amount of supplies transferred.
@@ -209,15 +209,20 @@ Supplies are transferred after the offer is accepted and the service delivery ha
 
 2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify and alternate `Appointment` in the offer.
 
-4. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
+3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-5. The final requested amount of supplies, by type, is specified in the `ReadyToReceiveSupply` message and shall not exceed the amount of supplies, by type, specified in the `OfferSupply` message. 
+4. The `ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start. The final requested amount of supplies, by type, is specified and shall not exceed the amount of supplies, by type, specified in the `OfferSupply` message. 
 
-6. The `ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start.
+5. Modelling of transfer of supplies starts when the `ServiceStarted` interaction is sent by the provider. 
 
-7. Supplies can be transferred to the service consumer once the `ServiceStarted` message is sent. 
+6. If loading is done by the provider, a `SupplyComplete` interaction is sent when the transfer of supplies is completed.
 
-8. A `ServiceComplete` message from the provider and a `ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are sent depends on whether the service delivery is controlled by the provider (default) or by the consumer.
+7. As a response to a `SupplyComplete` from the provider, the consumer sends a `ServiceReceived` interaction. 
+
+8. If loading is done by the consumer, a `ServiceReceived` interaction is sent when the transfer of supplies is completed.
+
+9. As a response to a `ServiceReceived` from the consumer, the provider sends a `SupplyComplete` interaction.
+
 
 ## Storage Service
 
