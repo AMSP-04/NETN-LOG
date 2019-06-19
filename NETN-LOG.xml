@@ -62,8 +62,8 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique ServiceID and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional.
-                    Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.</semantics>
+                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique ServiceID and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
+Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.</semantics>
                     <parameter>
                         <name>ConsumerEntity</name>
                         <dataType>UuidArrayOfHLAbyte16</dataType>
@@ -108,11 +108,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                             <semantics>List of type and quantity of supplies requested.</semantics>
                         </parameter>
                         <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
-                        </parameter>
-                        <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
                             <semantics>Time and location for the exchange of the service. Optional</semantics>
@@ -141,11 +136,6 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                             <name>SuppliesData</name>
                             <dataType>NETN_ArrayOfSupplyStruct</dataType>
                             <semantics>Specifies the supply (type and quantity)</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Proposes whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel. Default value is true.</semantics>
                         </parameter>
                         <parameter>
                             <name>Appointment</name>
@@ -209,11 +199,6 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                             <semantics>List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
                         </parameter>
                         <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
-                        </parameter>
-                        <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
                             <semantics>Time and location for the exchange of the service. Optional</semantics>
@@ -253,11 +238,6 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                             <semantics>Specifies the supply (type and quantity)</semantics>
                         </parameter>
                         <parameter>
-                            <name>LoadingDoneByProvider</name>
-                            <dataType>HLAboolean</dataType>
-                            <semantics>Determines whether the service provider (LoadingDoneByProvider = true) or the service consumer (LoadingDoneByProvider = false) takes care of the (un)loading of the materiel.  Default value is true.</semantics>
-                        </parameter>
-                        <parameter>
                             <name>Appointment</name>
                             <dataType>AppointmentStruct</dataType>
                             <semantics>The time and location for the exchange of the service. Optional</semantics>
@@ -270,11 +250,11 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
                     <semantics>The AcceptOffer is used to accept an offer made by a service providing entity as indicated in a OfferService interaction. By issuing a AcceptOffer interaction the service consuming entity enters a contract for service delivery with the service producing entity.</semantics>
-                        <parameter>
-                            <name>OfferID</name>
-                            <dataType>TransactionId</dataType>
-                            <semantics>Required: Unique offer identifier.</semantics>
-                        </parameter>
+                    <parameter>
+                        <name>OfferID</name>
+                        <dataType>TransactionId</dataType>
+                        <semantics>Required: Unique offer identifier.</semantics>
+                    </parameter>
                 </interactionClass>
                 <interactionClass>
                     <name>ServiceStarted</name>
@@ -372,43 +352,6 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
                     <semantics>Issued by a service consuming entity to indicate that the start of service delivery can start. The time of service delivery start may be significantly later then indicating ready for service delivery.</semantics>
-                    <interactionClass>
-                        <name>ReadyToReceiveRepair</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>This interaction is sent when the consumer is ready to receive the repair service.</semantics>
-                        <parameter>
-                            <name>RepairData</name>
-                            <dataType>ArrayOfRepairStruct</dataType>
-                            <semantics>The repairs, by type, that the consumer is able to accept at the time it declares ReadyToReceive.</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>ReadyToReceiveSupply</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>This interaction is sent when the consumer is ready to receive the supply. (At same location as the provider)</semantics>
-                        <parameter>
-                            <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>The amount of supplies, by type, that the consumer is able to accept at the time it declares ReadyToReceive.</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>ReadyToReceiveStorage</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>This interaction is sent when the consumer is ready to deliver the supply (receive storage). 
-(At same location as the provider)</semantics>
-                        <parameter>
-                            <name>SuppliesData</name>
-                            <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>This interaction is sent when the consumer is ready to transfer the supply. (At same location as the provider)</semantics>
-                        </parameter>
-                    </interactionClass>
                 </interactionClass>
                 <interactionClass>
                     <name>TransportDestroyedEntities</name>
@@ -541,7 +484,6 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                 <encoding>HLAvariableArray</encoding>
                 <semantics>List of repair types</semantics>
             </arrayData>
-            
             <arrayData>
                 <name>ServiceDescription</name>
                 <dataType>HLAunicodeChar</dataType>
@@ -617,7 +559,6 @@ When date and time is set to zero (0), implies no date-time specification</seman
                     <semantics>Location of the appointment</semantics>
                 </field>
             </fixedRecordData>
-       
             <fixedRecordData>
                 <name>ServiceIdentifier</name>
                 <encoding>HLAfixedRecord</encoding>

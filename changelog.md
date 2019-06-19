@@ -34,6 +34,12 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Change parameter `LOG_Service.OfferService.IsOffering` to Optional with default value TRUE.
 * Rename parameter `LOG_Service.OfferService.RequestTimeOut` to `LOG_Service.OfferService.OfferTimeOut`
 * Add interaction class `LOG_Service.CancelOffer` to allow providers to withdraw offers before they are accepted when `OfferTimeOut` has been reached.
+* Remove interaction classes `ReadyToReceiveRepair`, `ReadyToReceiveSupply` and `ReadyToReceiveStorage`. Change of accepted offer not allowed to be modified and therefore subclasses are not required.
+* Remove parameter `RequestStorage.LoadingDoneByProvider`. Loading will always be modelled by provider.
+* Remove parameter `RequestSupply.LoadingDoneByProvider`. Loading will always be modelled by provider.
+* Remove parameter `OfferStorage.LoadingDoneByProvider`. Loading will always be modelled by provider.
+* Remove parameter `OfferSupply.LoadingDoneByProvider`. Loading will always be modelled by provider.
+
 
 ### Previous structure
 

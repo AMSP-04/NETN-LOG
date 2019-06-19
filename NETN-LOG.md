@@ -167,93 +167,93 @@ Supply and storage services are different in terms of the flow of materiel betwe
 
 The supply and storage services are based on the general Logistics Services Pattern but with specific extensions for supplies.
 
-During service negotiation, additional `Appointment` information is used to decide where and when the transfer of the supplies shall take place. The consumer can request a service to be delivered at the `Appointment` but the provider can also change this and propose an alternative `Appointment` in the service offer.
-
-The `LoadingDoneByProvider` parameter is used to indicate if the actual transfer of supplies is modelled by the provider (default) or the consumer. This is an agreement between the parties and is specified in the offer.
-
-* If the transfer of supplies is modelled by the provider, then the consumer shall respond with a `ServiceReceived` to any `ServiceComplete` message sent by the provider. The transfer of supplies is considered complete once the `ServiceReceived` message is sent. 
-* If the service delivery is modelled by the consumer, then the provider shall respond with a `ServiceComplete` to any `ServiceReceived` message sent by the consumer. Transfer of supplies is considered complete once the `ServiceComplete` is sent.
-
-
-If a `CancelService` occurs during delivery of supply services, the provider shall inform the consumer of the actual amount of supplies transferred.
-Both `SupplyComplete` and `StorageComplete` messages requires information on the actual amount of transferred supplies. The actual supply amount must be less than or equal to the amount offered.
-
 ## Supply Service
 
 
-<img src="./images/log_supply_sequence.svg" width="550px"/>
+<img src="./images/log_supply_sequence.svg" width="450px"/>
 
 <!--```
 autonumber 
-Consumer->Provider:RequestSupply(\n   ServiceID, \n   ConsumerEntity, ProviderEntity, RequestTimeOut, \n   SuppliesData, Appointment, LoadingDoneByProvider )
+Consumer->Provider:RequestSupply(..., SuppliesData, Appointment)
 Provider->Consumer:OfferSupply(..., SuppliesData, Appointment)
 Consumer->Provider:AcceptOffer(...)
-Consumer->Provider: ReadyToReceiveSupply(SuppliesData)
+Consumer->Provider: ReadyToReceiveService(...)
 Provider->Consumer:ServiceStarted(...)
-alt Loading done by Provider
-Provider->Consumer:SupplyComplete(..., SuppliesData)
-Consumer->Provider:ServiceReceived(...)
-else Loading done by Consumer
-Consumer->Provider:ServiceReceived(...)
-Provider->Consumer:SupplyComplete(..., SuppliesData)
+loop Delivery of Service
+aboxleft over Provider, Consumer: Transfer Supplies
+break Cancel during Delivery
+Consumer<->Provider: CancelService(...)
 end
-
+end
+Provider->Consumer:SupplyComplete(..., SuppliesData)
+Consumer->Provider:ServiceReceived(...)
 autonumber off
 ```-->
 
 **Figure: Supply Service**
 
-Supplies are transferred after the offer is accepted and the service delivery has started. 
-
-1. The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The optional `LoadingDoneByProvider` parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer. An optional parameter `Appointment` specifies when and where the service delivery is expected.
+1. The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
 
 2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify and alternate `Appointment` in the offer.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-4. The `ReadyToReceiveSupply` message is used by a consumer to indicate that supply delivery can start. The final requested amount of supplies, by type, is specified and shall not exceed the amount of supplies, by type, specified in the `OfferSupply` message. 
+4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that supply delivery can start. 
 
-5. Modelling of transfer of supplies starts when the `ServiceStarted` interaction is sent by the provider. 
+5. The `ServiceStarted` interaction is sent by the provider to notify that the transfer of supplies has started. 
 
-6. If loading is done by the provider, a `SupplyComplete` interaction is sent when the transfer of supplies is completed.
+6. If a `CancelService` occurs during delivery of a supply services, the actual amounts transferred can be less than agreed.
 
-7. As a response to a `SupplyComplete` from the provider, the consumer sends a `ServiceReceived` interaction. 
+7. A `SupplyComplete` interaction is sent when the transfer of supplies is completed or after a cancellation. The actual amount of supplies transferred is provided as `SuppliesData` and should in the normal case be the same amounts as agreed in the offer. 
 
-8. If loading is done by the consumer, a `ServiceReceived` interaction is sent when the transfer of supplies is completed.
-
-9. As a response to a `ServiceReceived` from the consumer, the provider sends a `SupplyComplete` interaction.
-
+8. The consumer sends a `ServiceReceived` interaction as a response to a `SupplyComplete` from the provider. 
 
 ## Storage Service
 
-<img src="./images/log_storage_sequence.svg" width="550px"/>
+<img src="./images/log_storage_sequence.svg" width="450px"/>
+
 <!--```
-Consumer->Provider: RequestStorage(SuppliesData, Appointment, LoadingDoneByProvider)
-Provider->Consumer: OfferStorage(SuppliesData, Appointment)
-Consumer->Provider: AcceptOffer
-Consumer->Provider: ReadyToReceiveStorage(SuppliesData)
-Provider->Consumer: ServiceStarted
-Provider->Consumer: StorageComplete(SuppliesData)
-Consumer->Provider: ServiceReceived
+autonumber 
+Consumer->Provider:RequestStorage(..., SuppliesData, Appointment)
+Provider->Consumer:OfferStorage(..., SuppliesData, Appointment)
+Consumer->Provider:AcceptOffer(...)
+Consumer->Provider: ReadyToReceiveService(...)
+Provider->Consumer:ServiceStarted(...)
+
+loop Delivery of Service
+aboxright over Provider, Consumer: Transfer Supplies
+break Cancel during Delivery
+Consumer<->Provider: CancelService(...)
+end
+end
+Provider->Consumer:StorageComplete(..., SuppliesData)
+Consumer->Provider:ServiceReceived(...)
+
+
+autonumber off
 ```-->
 
 **Figure: Storage Service**
 
 The storage service os similar to the supply service but the actual transfer of supplies is reversed and moves from consumer to supplier of the service.
 
-1. To request storage, the consumer sends a `RequestStorage` message. The amount and type of supplies to be stored are provided as `SuppliesData`. An optional `LoadingDoneByProvider` parameter indicates whether the service delivery is controlled by the provider (default) or by the consumer.
 
-2. An `OfferStorage` message is used by potential services providers to make an offer for storing supplies. The offer includes the amount and type that can be stored. In the offer, the provider can also propose a change to service delivery control.
+1. The consumer sends a `RequestStorage` interaction to request storage of supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
+
+2. An `OfferStorage` interaction is used by potential providers to offer storage. The `SuppliesData` parameter specifies the amount and type of supplies included in the storage offer. The provider can also specify and alternate `Appointment` in the offer.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-4. The final requested amount of supplies, by type, is specified in the `ReadyToReceiveStroage` message and shall not exceed the amount of supplies, by type, specified in the `OfferStorage` message. 
+4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that supply delivery can start. 
 
-5. The `ReadyToReceiveStorage` message is used by a consumer to indicate that supply delivery can start.
+5. The `ServiceStarted` interaction is sent by the provider to notify that the transfer of supplies has started. 
 
-6. Supplies can be transferred to the service provider once the `ServiceStarted` message is sent. 
+6. If a `CancelService` occurs during delivery of a storage services, the actual amounts transferred can be less than agreed.
 
-7. A `ServiceComplete` message from the provider and a `ServiceReceived` message from the consumer indicate completion and acceptance of the service delivery. The order in which these messages are sent depends on whether the service delivery is controlled by the provider (default) or by the consumer.
+7. A `StorageComplete` interaction is sent when the transfer of supplies is completed or after a cancellation. The actual amount of supplies transferred is provided as `SuppliesData` and should in the normal case be the same amounts as agreed in the offer. 
+
+8. The consumer sends a `ServiceReceived` interaction as a response to a `StorageComplete` from the provider. 
+
 
 # Transport and Repair of Entities
 Non-consumable materiel and personnel represented as entities in a federated distributed simulation can be transported and subject to repair activities. Services provided by one simulation system can be used to transport and repair units, platforms and other entities represented in another simulation system.
