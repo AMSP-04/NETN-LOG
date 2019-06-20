@@ -306,64 +306,29 @@ Negotiation, delivery, and acceptance of transport service are based on the Logi
 
 5. The delivery of the transport service starts when the provider sends a `ServiceStarted` message. 
 
-6. During embarkment the provider informs the service consumer about the progress using `TransportEmbarkmentStatus` interactions indentifying which entities are embarked on which transport. 
+6. During embarkment the provider informs the service consumer about the progress using `TransportEmbarkmentStatus` interactions indentifying which entities are embarked on which transport.
 
-7. During transport the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. 
+7. During transport the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. All embarked entities must either be inactive or update their location/relative location during transport.
 
-8. During disembarkment, the provider send `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport.
+8. During disembarkment, the provider send `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport. Location of disembarked entities should be set to the location of `EndAppointment` and set to active.
 
-6. The consumer sends a `ServiceReceived` as a response to the `ServiceComplete` interaction. The transport service is considered as complete once the `ServiceReceived` is sent.
+9. The provider sends a `ServiceComplete` interaction after transport is complete and after any disembarkment of entities. 
 
-___During the execution of the transport service, each transporting unit enters a loop where:
-    * It publishes a list of embarked units.
-    * It publishes a list of disembarked entities. 
-If modelling responsibility has been transferred to the Provider; the responsibility of entities specified in this list is restored to the Consumer when disembarked (see Transfer of Modelling Responsibility).___
-
-Entities embarked on transport shall be considered as inactive during the transportation until disembarked. Federate with modelling responsibility for the embarked entities either set the simulated entity as inactive or updates its location during the transport to correspond to the transporter location. E.g if the embarked entity is represented in the simulation as a `NETN_GroundVehicle` then the `Status` attribute should be set to `Inactive` during the transport. The modelling responsibility of embarked entities can be transferred using the NETN TMR FOM Module.
-
-After disembarkment, the transported entities should be active again and their new location should be the location of disembarkment. Any transferred modelling responsibility can also be returned using the NETN TMR FOM Module.
+10. The consumer sends a `ServiceReceived` as a response to the `ServiceComplete` interaction.
 
 If a `CancelService` is sent by either consumer or provider, before `ReadyToReceiveService` and `ServiceStarted` has been sent, then the transport service delivery will not start and all involved entities remain in their current state.
 
-If a `CancelService` is sent during delivery of the service but before starting to disembark, all entities already embarked or partially embarked remain on the transport. A new embark, disembark or transport service can be used to continue embarking, disembarking already loaded entities or perform transport with the entities already embarked.
+If a `CancelService` is sent during delivery of the service but before starting to disembark, all entities already embarked or partially embarked remain on the transport. A new transport service can be used to continue embarking, and/or perform transport and disembarkment with the already embarked entities.
 
-If a `CancelService` is sent during delivery of the service after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. A new embark, disembark or transport service can be used to complete or continue a new transport activity.
- 
-### Transport of Aggregate Units
+If a `CancelService` is sent during delivery of the service after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. To complete disembarkment, a new transport service can be requested with only `EndAppointment` and list of the remaining entities to disembark.
+
+## Transport of Aggregate Units
 
 If a `NETN_Aggregate` unit is too large for transport, e.g. size of a unit requires multiple transports to be conducted, then the service consumer may require the unit to be disaggregated into subunits before requesting transport, using e.g. the NETN MRM FOM Module. If multiple transports are required, the consumer can create a temporary `NETN_Aggregate` entity to represent a bridgehead on the disembarkment location. The `Callsign`of the bridgehead should be the same as the aggregate being transported with a "-bh" suffix. 
 
 When all subunits have embarked on transports the `Status` of the original `NETN_Aggregate` unit can be set to `Inactive` until all subunits have disembarked. 
 
 When all subunits have disembarked from their transports the `Status` of the original `NETN_Aggregate` unit can be set to `Active` and the location set to the disembarkment position. Any bridgehead unit can be removed or status set to `Inactive`.
-
-### Damage during Transport
-
-During transport, the service provider is responsible to model any damage to the transported entities. E.g. effect of `MunitionDetonation` on transport. If the transporter vehicle or unit is destroyed then all embarked entities will be destroyed, otherwise, the damage is individually calculated for each embarked entity. The `TransportDestroyedEntities` message is used to inform the consumer about entities that have been lost or destroyed during transport. The transport service will continue delivery as long as there are vehicles or units able to perform transport. If all means of transport have been destroyed the service is cancelled. 
- 
-##	Embarkment 
-
-A Consumer makes a request for embarkment with the following data:
-* List with units to embark.
-* Time and location for embarkment.
-
-A Provider offers a response to the consumer request with the following parameters which may be modified from the originating request:
-* List with units that the provider can embark.
-* Time and location for embarkment.
-* List of units that will execute the embarking.
-
-An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve the embarkment service, the units listed for embarkment must be present on time at the embarkment location in order to embark and declare it with the `ReadyToReceiveService` interaction.
-
-The TransportEmbarkmentStatus interaction can be repeated as much as needed if embarkment needs to be realized in several iterations. During an Embarkment service execution, each transporter enters a loop publishing a list of embarked units. If the modelling responsibility is transferred to the application that provides the service then it shall remain there in this protocol. An Embarkment service is considered as closed:
-* When the service Consumer receives a `ServiceComplete` interaction and sends a `ServiceReceived` interaction.
-* When a `RejectOffer` is used by the service Consumer.
-* When a `CancelService` is used by the service Provider or Consumer.
-
-If an Embarkment service is cancelled:
-* During negotiation phase (before service delivery start):
-    * The transaction between the service Consumer and Provider is considered as closed without delivery of service.
-* During delivery phase (after service start and before service completed):
-    * All units already embarked are kept by the service Provider. The service Provider needs a new Request to continue, either to embark remaining units or to disembark the already embarked units.
 
 ### Disembarkment 
 
