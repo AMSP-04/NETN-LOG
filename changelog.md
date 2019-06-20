@@ -37,8 +37,8 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed parameter `RequestSupply.Appointment` - use `RequestService.StartAppointment`
 * Removed parameter `OfferRepair.Appointment` - use `OfferService.StartAppointment`
 * Removed parameter `OfferSupply.Appointment` - use `OfferService.StartAppointment`
-* Removed parmeter `LOG_Service.Consumer` - use `RequestService.ConsumerEntity`
-* Removed parmeter `LOG_Service.Provider` - use `RequestService.ProviderEntity`
+* Removed parameter `LOG_Service.Consumer` - use `RequestService.ConsumerEntity`
+* Removed parameter `LOG_Service.Provider` - use `RequestService.ProviderEntity`
 
 * Added parameter `RequestSupply.TransferDirection`
 * Added parameter `OfferService.OfferType`
