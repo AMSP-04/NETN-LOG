@@ -15,51 +15,63 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Added note for modelIdentification to provide additional description of FOM module
 * Added glyph
 
-* `SCP_Facility` removed
+* Introduced dependency to RPR-Enumeration v2.0
+
+* Removed object class `SCP_Facility`
+
+* Removed interaction class `RequestStorage` - use `RequestSupply.TransferDirection`
+* Removed interaction class `OfferStorage` - use `OfferSupply`
+* Removed interaction class `StorageComplete` - use `SupplyComplete`
+* Removed interaction class `ReadyToReceiveStorage` - use `ReadyToReceiveService`
+* Removed interaction class `ReadyToReceiveRepair` - use `ReadyToReceiveService`
+* Removed interaction class `ReadyToReceiveSupply` - use `ReadyToReceiveService`
+
+* Added interaction class `LOG_Service.CancelOffer`
+
+* Removed parameter `LOG_Service.ServiceType` - use subclasses and ServiceID
+* Removed parameter `RequestSupply.LoadingDoneByProvider` - always by provider.
+* Removed parameter `OfferSupply.LoadingDoneByProvider`. always by provider.
+* Removed parameter `OfferTransport.OfferType` - use `OfferService.OfferType`
+* Removed parameter `OfferService.IsOffering` - use `OfferService.OfferType`
+* Removed parameter `RequestRepair.Appointment` - use `RequestService.StartAppointment`
+* Removed parameter `RequestSupply.Appointment` - use `RequestService.StartAppointment`
+* Removed parameter `OfferRepair.Appointment` - use `OfferService.StartAppointment`
+* Removed parameter `OfferSupply.Appointment` - use `OfferService.StartAppointment`
+* Removed parmeter `LOG_Service.Consumer` - use `RequestService.ConsumerEntity`
+* Removed parmeter `LOG_Service.Provider` - use `RequestService.ProviderEntity`
+
+* Added parameter `RequestSupply.TransferDirection`
+* Added parameter `OfferService.OfferType`
+* Added parameter `RequestService.StartAppointment`
+* Added parameter `RequestTransport.EndAppointment`
+* Added parameter `OfferService.StartAppointment`
+* Added parameter `OfferTransport.EndAppointment`
+* Added parameter `OfferService.OfferID`
+* Added parameter `AcceptOffer.OfferID`
+* Added parameter `RequestService.ConsumerEntity`
+* Added parameter `RequestService.ProviderEntity`
+* Added parameter `OfferService.ProviderEntity`
+
+* Renamed parameter `OfferService.RequestTimeOut` to `OfferService.OfferTimeOut`
+
+* Changed parameter datatype for `LOG_Service.ServiceID` to `TransactionID`
+* Changed parameter datatype for `RequestTransport.TransportData` to `ArrayOfUuid`.
+* Changed parameter datatype for `OfferTransport.TransportData` to `ArrayOfUuid`.
+
+* Removed datatype `TransportStruct`
+* Removed datatype `DataTStruct`
+* Removed datatype `DataEDStruct`
+* Removed datatype `TransportTypeEnum32`
+* Removed datatype `ServiceIdentifier` 
+* Removed datatype `LOG_ServiceTypeEnum8` 
+* Removed datatype `ServiceDescription` 
+* Removed datatype `NETN_RepairTypeEnum16`
 
 * Renamed datatype `NETN_ServiceIdentifier` to `ServiceIdentifier`
-* Renamed field `MaterialID` of datatype `RepairStruct` to `MaterielID`
+* Renamed datatype field `RepairStruct.MaterialID` to `RepairStruct.MaterielID`
 
-* Removed `NETN_RepairTypeEnum16`
-* Introduced dependency to RPR-Enumeration v2.0
-* Changed datatype of `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16` (from RPR_Enumeration). 
+* Changed datatype for `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16`
 
-* Change datatype of `LOG_Service.ServiceID` to `TransactionID` defined in NETN-BASE.
-* Remove parameter `LOG_Service.ServiceType`.
-
-* Move and rename parameter `LOG_Service.Consumer` to `LOG_Service.RequestService.ConsumerEntity` and change datatype from `Callsign` to `UuidArrayOfHLAbyte16`
-* Move and rename parameter `LOG_Service.Provider` to `LOG_Service.RequestService.ProviderEntity` and `LOG_Service.OfferService.ProviderEntity` and change datatype from `Callsign` to `UuidArrayOfHLAbyte16`
-* Add parameter `LOG_Service.OfferService.OfferID` with datatype `TransactionID` defined in NETN-BASE.
-* Add parameter `LOG_Service.AcceptOffer.OfferID` with datatype `TransactionID` defined in NETN-BASE.
-* Change parameter `LOG_Service.OfferService.IsOffering` to Optional with default value TRUE.
-* Rename parameter `LOG_Service.OfferService.RequestTimeOut` to `LOG_Service.OfferService.OfferTimeOut`
-* Add interaction class `LOG_Service.CancelOffer` to allow providers to withdraw offers before they are accepted when `OfferTimeOut` has been reached.
-* Remove interaction classes `ReadyToReceiveRepair`, `ReadyToReceiveSupply` and `ReadyToReceiveStorage`. Change of accepted offer not allowed to be modified and therefore subclasses are not required.
-* Remove parameter `RequestStorage.LoadingDoneByProvider`. Loading will always be modelled by provider.
-* Remove parameter `RequestSupply.LoadingDoneByProvider`. Loading will always be modelled by provider.
-* Remove parameter `OfferStorage.LoadingDoneByProvider`. Loading will always be modelled by provider.
-* Remove parameter `OfferSupply.LoadingDoneByProvider`. Loading will always be modelled by provider.
-
-* Change datatype of parameter `RequestTransport.TransportData` to `ArrayOfUuid`.
-* Change datatype of parameter `OfferTransport.TransportData` to `ArrayOfUuid`.
-
-* Remove datatype `TransportStruct`.
-* Remove datatype `DataTStruct`.
-* Remove datatype `DataEDStruct`.
-
-* Add parameter `RequestTransport.Embarkment` specifying time and location for loading/embarking onto transport.
-* Add parameter `RequestTransport.Disembarkment` specifying time and location for unloading/disembarking from transport.
-* Add parameter `OfferTransport.Embarkment` specifying time and location for loading/embarking onto transport.
-* Add parameter `OfferTransport.Disembarkment` specifying time and location for unloading/disembarking from transport.
-
-* Remove datatype `TransportTypeEnum32` - not used.
-* Remove datatype `ServiceIdentifier` - not used.
-* Remove datatype `LOG_ServiceTypeEnum8` - not used.
-* Remove datatype `ServiceDescription` - not used.
-
-
-* Remove parameter `OfferTransport.OfferType` (use IsOffering)
-* Remove datatype OfferTypeEnum32
 
 ### Previous structure
 

@@ -22,8 +22,7 @@ NETN LOG provides a common standard interface for negotiation, delivery, and acc
 
 NETN LOG covers the following services:
 
-* Supply Service offered by a federate capable of simulating the transfer of supplies to the consumer.
-* Storage Service offered by a federate capable of simulating receiving the transfer of supplies from the consumer.
+* Supply Service offered by a federate capable of simulating the transfer of supplies between consumer and provider.
 * Transport Service offered by a federate capable of simulating loading, transport and/or unloading of non-consumable materiel.
 * Repair Service offered by a federate capable of simulating repair of consumer provided non-consumable materiel, e.g platforms.
 
@@ -75,7 +74,7 @@ DIAGRAM GENERATED IN https://sequencediagram.org/
 autonumber 1
 space
 parallel 
-Consumer->Provider: RequestService(ServiceID, ConsumerEntity, ProviderEntity, RequestTimeOut)
+Consumer->Provider: RequestService(ServiceID, ConsumerEntity, ProviderEntity, StartAppointment, RequestTimeOut)
 note right of Provider:Multiple potential Providers \ncan receive the ServiceRequest.
 parallel off
 space
@@ -84,7 +83,7 @@ Consumer->Provider: CancelService(ServiceID)
 end
 space
 parallel 
-Provider->Consumer: OfferService(ServiceID, OfferID, ProviderEntity, IsOffering, OfferTimeOut)
+Provider->Consumer: OfferService(ServiceID, OfferID, ProviderEntity, OfferType, StartAppointment, OfferTimeOut)
 note right of Provider:Multiple offers from the same and/or \ndifferent Providers are possible.
 parallel off
 space
@@ -132,7 +131,7 @@ The logistics service pattern is divided into three phases:
 
 2. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is received, the consumer shall cancel the service using `CancelService`. A `ServiceID` parameter is required to indicate which service is cancelled. After the cancellation the logistics service pattern is terminated.
 
-3. Offers are sent by potential providers using `OfferService` with a required parameter `ServiceID` referenceing the requested service. The provider can indicate if an offer is made or not using the optional parameter `IsOffering`. If set to false, no offer is provided and no other attributes are required in the offer. If set to true (default if no parameter is provided), a unique `OfferID` must be provided. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
+3. Offers are sent by potential providers using `OfferService` with a required parameter `ServiceID` referenceing the requested service and a unique `OfferID`. The provider can indicate if an complete, modified or no offer is made using the optional parameter `OfferType`. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
 
 4. The provider can cancel an offer using `CancelOffer` as long as it has not been accepted. Required parameters are the `ServiceID` and `OfferID`.
 
@@ -158,29 +157,26 @@ The logistics service pattern is divided into three phases:
 
 # Transfer of Supplies
 
-Federates can have the capability to provide and/or store supplies. These capabilities can be offered as services to other federates and involve the transfer of materiel between a `ConsumerEntity` and `ProviderEntity` modelled in two different federates.
+Federates can have the capability to provide and/or store supplies. These capabilities can be offered as services to other federates and involve the transfer of materiel between a `ConsumerEntity` and `ProviderEntity` modelled in two different federates. The transfer of supplies can differ in terms of the flow of materiel between consumer and provider. 
 
-Supply and storage services are different in terms of the flow of materiel between consumer and provider. 
-
-* Supply Service: Supplies are transferred from the provider to the consumer of the service.
-* Storage Services: Supplies are transferred from the consumer to the provider of the service.
-
-The supply and storage services are based on the general Logistics Services Pattern but with specific extensions for supplies.
-
-## Supply Service
+The supply service is based on the general Logistics Services Pattern but with some specific extensions.
 
 
 <img src="./images/log_supply_sequence.svg" width="500px"/>
 
 <!--```
 autonumber 
-Consumer->Provider:RequestSupply(..., SuppliesData, Appointment)
-Provider->Consumer:OfferSupply(..., SuppliesData, Appointment)
+Consumer->Provider:RequestSupply(..., StartAppointment, SuppliesData, TransferDirection)
+Provider->Consumer:OfferSupply(..., StartAppointment, SuppliesData)
 Consumer->Provider:AcceptOffer(...)
 Consumer->Provider: ReadyToReceiveService(...)
 Provider->Consumer:ServiceStarted(...)
 loop Delivery of Service
+alt TransferDirection=fromConsumer
 aboxleft over Provider, Consumer: Transfer Supplies
+else TransferDirection=fromProvider
+aboxright over Provider, Consumer: Transfer Supplies
+end
 break Cancel during Delivery
 Consumer<->Provider: CancelService(...)
 end
@@ -192,9 +188,9 @@ autonumber off
 
 **Figure: Supply Service**
 
-1. The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
+1. The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. An optional parameter `StartAppointment` specifies when and where the service delivery is expected. The `TransferDirection` parameter indicate if the transfer of supplies flows from consumer to provider or from provider to consumer.
 
-2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify and alternate `Appointment` in the offer.
+2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify and alternate `StartAppointment` in the offer.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
@@ -208,69 +204,19 @@ autonumber off
 
 8. The consumer sends a `ServiceReceived` interaction as a response to a `SupplyComplete` from the provider. 
 
-## Storage Service
+# Repair
 
-<img src="./images/log_storage_sequence.svg" width="500px"/>
-
-<!--```
-autonumber 
-Consumer->Provider:RequestStorage(..., SuppliesData, Appointment)
-Provider->Consumer:OfferStorage(..., SuppliesData, Appointment)
-Consumer->Provider:AcceptOffer(...)
-Consumer->Provider: ReadyToReceiveService(...)
-Provider->Consumer:ServiceStarted(...)
-
-loop Delivery of Service
-aboxright over Provider, Consumer: Transfer Supplies
-break Cancel during Delivery
-Consumer<->Provider: CancelService(...)
-end
-end
-Provider->Consumer:StorageComplete(..., SuppliesData)
-Consumer->Provider:ServiceReceived(...)
-
-
-autonumber off
-```-->
-
-**Figure: Storage Service**
-
-The storage service os similar to the supply service but the actual transfer of supplies is reversed and moves from consumer to supplier of the service.
-
-
-1. The consumer sends a `RequestStorage` interaction to request storage of supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
-
-2. An `OfferStorage` interaction is used by potential providers to offer storage. The `SuppliesData` parameter specifies the amount and type of supplies included in the storage offer. The provider can also specify and alternate `Appointment` in the offer.
-
-3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
-
-4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that supply delivery can start. 
-
-5. The `ServiceStarted` interaction is sent by the provider to notify that the transfer of supplies has started. 
-
-6. If a `CancelService` occurs during delivery of a storage services, the actual amounts transferred can be less than agreed.
-
-7. A `StorageComplete` interaction is sent when the transfer of supplies is completed or after a cancellation. The actual amount of supplies transferred is provided as `SuppliesData` and should in the normal case be the same amounts as agreed in the offer. 
-
-8. The consumer sends a `ServiceReceived` interaction as a response to a `StorageComplete` from the provider. 
-
-
-# Transport and Repair of Entities
-Non-consumable materiel and personnel represented as entities in a federated distributed simulation can be transported and subject to repair activities. Services provided by one simulation system can be used to transport and repair units, platforms and other entities represented in another simulation system.
-
-## Repair Service
-
-<img src="./images/log_repair_sequence.svg" width="500px"/>
+<img src="./images/log_repair_sequence.svg" width="400px"/>
 
 <!--```
 autonumber 
-Consumer->Provider:RequestRepair(..., RepairData, Appointment)
-Provider->Consumer:OfferRepair(..., RepairData, Appointment)
+Consumer->Provider:RequestRepair(..., RepairData, StartAppointment)
+Provider->Consumer:OfferRepair(..., RepairData, StartAppointment)
 Consumer->Provider:AcceptOffer(...)
 Consumer->Provider: ReadyToReceiveService(...)
 Provider->Consumer:ServiceStarted(...)
 loop Delivery of Service
-abox over Provider, Consumer: Conduct Repair
+aboxleft over Provider, Consumer: Conduct Repair
 break Cancel during Delivery
 Consumer<->Provider: CancelService(...)
 end
@@ -283,9 +229,9 @@ autonumber off
 
 A repair can be performed on non-consumable materiel. E.g. damaged platforms can be moved to a maintenance facility for repair or units capable of providing repair services can move to the location of a damaged platform deliver repair services.
 
-1. The consumer sends a `RequestRepair` interaction to request repair service. The materiel to be repaired and type of repair is specified in the required `RepairData` parameter. An optional parameter `Appointment` specifies when and where the service delivery is expected.
+1. The consumer sends a `RequestRepair` interaction to request repair service. The materiel to be repaired and type of repair is specified in the required `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where the service delivery is expected.
 
-2. An `OfferRepair` interaction is used by potential providers of repair services. The `RepairData` parameter specifies the materiel and type of repair included in offer. The provider can also specify and alternate `Appointment` in the offer.
+2. An `OfferRepair` interaction is used by potential providers of repair services. The `RepairData` parameter specifies the materiel and type of repair included in offer. The provider can also specify and alternate `StartAppointment` in the offer.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
@@ -297,9 +243,9 @@ A repair can be performed on non-consumable materiel. E.g. damaged platforms can
 
 7. A `RepairComplete` interaction is sent when the repair is completed or after a cancellation. The actual completed repairs is provided as `RepairData` and should in the normal case be the same as agreed in the offer. 
 
-8. The consumer sends a `ServiceReceived` interaction as a response to a `StorageComplete` from the provider. 
+8. The consumer sends a `ServiceReceived` interaction as a response to a `RepairComplete` from the provider. 
 
-## Transport Service
+# Transport
 
 A logistics transport service is used when there is a need to move non-consumable entities such as platforms, units humans or other battlefield objects using means of transportation simulated in another federated system.
 
@@ -311,31 +257,34 @@ The transport service consists of the following phases in which the change of co
 
 * Disembarkment is the process of dismounting or unloading of entities. Control over materiel is transferred from the transport service provider back to the service consumer. 
 
-<img src="./images/log_transport_service.svg" width="500px"/>
+<img src="./images/log_transport_service.svg" width="550px"/>
 
 <!--```
 autonumber 
-Consumer->Provider:RequestTransport(..., TransportData, \nEmbarkmentAppointment, DisembarkmentAppointment)
-Provider->Consumer:OfferTransport(..., TransportData, \nEmbarkmentAppointment, DisembarkmentAppointment, \nTransporters)
+Consumer->Provider:RequestTransport(..., TransportData, \nStartAppointment, EndAppointment)
+Provider->Consumer:OfferTransport(..., TransportData, \nStartAppointment, EndAppointment, \nTransporters)
 Consumer->Provider: AcceptOffer(...)
-opt if EmbarkmentAppointment provided
+opt if StartAppointment
 abox over Provider, Consumer: Prepare for Embarkment
 end
 Consumer->Provider: ReadyToReceiveService(...)
 Provider->Consumer: ServiceStarted(...)
-opt if EmbarkmentAppointment provided
+opt if StartAppointment
 loop until all entities embarked
+abox over Provider, Consumer:Embarkment
 Provider->Consumer: TransportEmbarkmentStatus(..., EmbarkedObjects, TransportUnitIdentifier)
 end
 end
-opt if DisembarkmentAppointment provided
+opt if EndAppointment
 loop until at DisembarkmentAppointment
-abox over Provider, Consumer: Move Transport 
+abox over Provider, Consumer:Transport
 opt if TransportUnitDestroyed
 Provider->Consumer: TransportDestroyedEntities(..., DestroyedObjects)
 end
 end
 loop until all entities disembarked
+abox over Provider, Consumer:Disembarkment
+
 Provider->Consumer: TransportDisembarkmentStatus(..., DisembarkedObjects, TransportUnitIdentifier)
 end
 end
@@ -347,13 +296,13 @@ autonumber off
 
 Negotiation, delivery, and acceptance of transport service are based on the Logistics Service Pattern:
 
-1. To request a transport, the consumer sends a `RequestTransport` message that includes `TransportData` information specifying the entities to transport and the time and location for embarkment and disembarkment.
+1. To request a transport, the consumer sends a `RequestTransport` interaction that includes `TransportData` information specifying the entities to transport. If a `StartAppointment` is provided the service include embarkment of the entities at a specified time and location. If a `EndAppointment` is provided the service include the transport between the specified Start and End locations and subsequent disembarkment of specified entities.
 
-2. An `OfferTransport` message is used by potential service providers to make an offer for transport. The offer includes information regarding which of the requested entities can be transported and appointment information for embarkment and disembarkment. This offered `TransportData` information can that potentially differ from the requested `TransportData`. The offer also includes `Transporters` - a list of entities that will conduct the transport. The `OfferType` information indicates if the offer is positive, negative (no offer) or has some restrictions as specified in the `TransportData` information.
+2. An `OfferTransport` message is used by potential service providers to make an offer for transport. The offer includes information regarding which of the requested entities can be transported and appointment information for the transport. This offered `TransportData` information can that potentially differ from the requested `TransportData`. The offer also includes `Transporters` - a list of entities that will conduct the transport.
 
 3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`.
 
-4. At the time of embarkment, as specified in the offer `TransportData` information, all entities to be transported must be at the agreed embarkment location. A `ReadyToReceiveService` message is sent by the consumer to initiate the transport service delivery.
+4. If a `StartAppointment` has been agreed all entities to be transported must be at the agreed embarkment location before a `ReadyToReceiveService` message is sent. If no `StartAppointment` has been agreed the consumer can send a `ReadyToReceiveService` immediately.
 
 5. The delivery of the transport service starts when the provider sends a `ServiceStarted` message. During delivery of the transport services, the provider informs the service consumer about the progress using the following messages (can be sent multiple times):
     * `TransportEmbarkmentStatus` is used to inform the consumer which entities are embarked on which transport.
