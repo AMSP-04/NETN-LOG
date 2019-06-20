@@ -330,35 +330,6 @@ When all subunits have embarked on transports the `Status` of the original `NETN
 
 When all subunits have disembarked from their transports the `Status` of the original `NETN_Aggregate` unit can be set to `Active` and the location set to the disembarkment position. Any bridgehead unit can be removed or status set to `Inactive`.
 
-### Disembarkment 
-
-A Consumer makes a request for disembarkment with the following data:
-* List with units to disembark.
-* Time and location for disembarkment.
-
-A Provider offers a response to the consumer request with the following parameters which may be modified from the originating request:
-* List with units that the provider can disembark.
-* Time and location for disembarkment.
-* List of units that will execute the disembarkment.
-
-An offer is accepted or rejected by the Consumer. The offer is accepted when both service Consumer and Provider are agreeing about the conditions for delivery of the service. To achieve a Disembarkment service, Consumer shall publish the `ReadyToReceiveService` interaction.
-
-A TransportDisembarkmentStatus interaction can be repeated as much as needed if disembarkment needs to be realized in several iterations. During a Disembarkment service execution, each transporter enters a loop where it publishes a list of disembarked units. If the modelling responsibility is transferred to the application that provides the service then it shall be returned back to the application that consumed the service.
-
-A Disembarkment service is considered as closed:
-* When the service Consumer receives a `ServiceComplete` interaction and issues a `ServiceReceived` interaction.
-* When a `RejectOffer` is issued by the service Consumer.
-* When a `CancelService` is issued by the service Provider or Consumer.
-
-If a Disembarkment service is cancelled:
-* During negotiation phase (before service delivery start):
-    * The transaction between the service Consumer and Provider is considered as closed without delivery of service.
-* During delivery phase (after service start and before service completed):
-    * All embarked units are kept by the service Provider. The service Provider needs a new Request to continue, either to disembark remaining units or to embark the already disembarked units.
-
-Variations:
-* Disembarkment protocol can start with a Consumer interaction instead of a Provider one. If a Provider initiates a Disembarkment (planned operation), the protocol execution starts directly at the second step (`OfferService`), without processing the query phase (RequestTransport).	
-
 ## Scenario Initialization Phase 
 
 Units can start as embarked units and have a planned disembarkment location. The transporters attribute EmbeddedUnitList shall identify these units with their UniqueId (UUID) which is specified in the scenario (MSDL) file for the initialization of the federation execution. Embarked units shall be published by the consumer during the scenario preparation/initialization phase.
