@@ -308,9 +308,9 @@ Negotiation, delivery, and acceptance of transport service are based on the Logi
 
 6. During embarkment the provider informs the service consumer about the progress using `TransportEmbarkmentStatus` interactions indentifying which entities are embarked on which transport.
 
-7. During transport the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. All embarked entities must either be inactive or update their location/relative location during transport.
+7. During transport the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. The `Status` attribute of embarked entities is set to `Inactive` during transport.
 
-8. During disembarkment, the provider send `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport. Location of disembarked entities should be set to the location of `EndAppointment` and set to active.
+8. During disembarkment, the provider send `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport. Location of disembarked entities should be set to the location of `EndAppointment` and `Status` is set to `Active`.
 
 9. The provider sends a `ServiceComplete` interaction after transport is complete and after any disembarkment of entities. 
 
@@ -322,7 +322,7 @@ If a `CancelService` is sent during delivery of the service but before starting 
 
 If a `CancelService` is sent during delivery of the service after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. To complete disembarkment, a new transport service can be requested with only `EndAppointment` and list of the remaining entities to disembark.
 
-## Transport of Aggregate Units
+## Bridgehead
 
 If a `NETN_Aggregate` unit is too large for transport, e.g. size of a unit requires multiple transports to be conducted, then the service consumer may require the unit to be disaggregated into subunits before requesting transport, using e.g. the NETN MRM FOM Module. If multiple transports are required, the consumer can create a temporary `NETN_Aggregate` entity to represent a bridgehead on the disembarkment location. The `Callsign`of the bridgehead should be the same as the aggregate being transported with a "-bh" suffix. 
 
@@ -330,19 +330,11 @@ When all subunits have embarked on transports the `Status` of the original `NETN
 
 When all subunits have disembarked from their transports the `Status` of the original `NETN_Aggregate` unit can be set to `Active` and the location set to the disembarkment position. Any bridgehead unit can be removed or status set to `Inactive`.
 
-## Scenario Initialization Phase 
+## Initial Transport State
 
-Units can start as embarked units and have a planned disembarkment location. The transporters attribute EmbeddedUnitList shall identify these units with their UniqueId (UUID) which is specified in the scenario (MSDL) file for the initialization of the federation execution. Embarked units shall be published by the consumer during the scenario preparation/initialization phase.
+A scenario can start with some entities already embarked on transports. The attribute `EmbeddedUnitList` of transporting entities identifies which units are already embarked by referenceing their UniqueId (UUID). The embarked units are published during the scenario initialization and their `Status` attribute should be set to `Inactive`.
 
-The embarkment phase is assumed to have taken place during the scenario preparation phase, so applications do not need to interact for embarkment. The interaction sequence for the disembarkment service is:
-* The Consumer sends a request for disembarkment with units, time and location.
-* The Provider offers the service.
-* If the offer conditions are OK, it is accepted by the Consumer.
-* Consumer directly sends a ReadyToReceive interaction.
-* Provider directly sends a `ServiceStarted`.
-* Provider sends TransportDisembarkStatus when it arrives at the location.
-* Provider sends a `ServiceComplete` when all units have disembarked.
-* Consumer sends a `ServiceReceived`.
+
  
 
 
