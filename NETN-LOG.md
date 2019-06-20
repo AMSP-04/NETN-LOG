@@ -304,10 +304,13 @@ Negotiation, delivery, and acceptance of transport service are based on the Logi
 
 4. If a `StartAppointment` has been agreed all entities to be transported must be at the agreed embarkment location before a `ReadyToReceiveService` message is sent. If no `StartAppointment` has been agreed the consumer can send a `ReadyToReceiveService` immediately.
 
-5. The delivery of the transport service starts when the provider sends a `ServiceStarted` message. During delivery of the transport services, the provider informs the service consumer about the progress using the following messages (can be sent multiple times):
-    * `TransportEmbarkmentStatus` is used to inform the consumer which entities are embarked on which transport.
-    * `TransportDisembarkmentStatus` is used to inform the consumer which entities have disembarked from which transport.
-    * `TransportDestroyedEntities` is used to inform the consumer about entities that have been lost or destroyed during transport.
+5. The delivery of the transport service starts when the provider sends a `ServiceStarted` message. 
+
+6. During embarkment the provider informs the service consumer about the progress using `TransportEmbarkmentStatus` interactions indentifying which entities are embarked on which transport. 
+
+7. During transport the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. 
+
+8. During disembarkment, the provider send `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport.
 
 6. The consumer sends a `ServiceReceived` as a response to the `ServiceComplete` interaction. The transport service is considered as complete once the `ServiceReceived` is sent.
 
