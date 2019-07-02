@@ -2,12 +2,9 @@
 
 The NATO Education and Training Network Logistics Module (NETN LOG).
 
-## Background
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
-## Description
-
-This module is a specification of how to model logistics services in a federated distributed simulation. 
+The NATO Education and Training Network Logistics Module (NETN LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN LOG FOM module is available as an XML file for use in HLA based federations.
 
