@@ -1,6 +1,6 @@
 ## Changelog
 
-### Changes in v2.0.0
+### Changes in v2.0 (RC 1)
 
 Version 2.0.0 is the initial version of the new combined NETN LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
 
