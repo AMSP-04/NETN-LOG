@@ -1,4 +1,4 @@
-## Changelog
+## Changelog NETN-LOG
 
 ### Changes in v2.0 (RC 1)
 
@@ -21,7 +21,6 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 #### NETN-LOG#5 Supply transfer modelled by provider
 * Removed parameter `RequestSupply.LoadingDoneByProvider` - always by provider.
 * Removed parameter `OfferSupply.LoadingDoneByProvider`. always by provider.
-
 
 #### NETN-LOG#6 Remove SCP_Facility
 * Removed object class `SCP_Facility`
@@ -62,7 +61,6 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed interaction class `ReadyToReceiveRepair` - use `ReadyToReceiveService`
 * Removed interaction class `ReadyToReceiveSupply` - use `ReadyToReceiveService`
 * Added parameter `RequestSupply.TransferDirection`
-
 
 #### NETN-LOG#11 Harmonize Offer Type
 * Removed parameter `OfferTransport.OfferType` - use `OfferService.OfferType`
