@@ -1,6 +1,0 @@
-#!/bin/bash
-cd "${0%/*}"
-pwd 
-
-## Generate Summary from XML
-xsltproc --output gendoc.md NETN-LOG.xslt ../NETN-LOG.xml
