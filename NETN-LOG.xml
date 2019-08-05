@@ -4,33 +4,56 @@
         <name>NETN LOG</name>
         <type>FOM</type>
         <version>2.0 (RC1)</version>
-        <modificationDate>2019-06-18</modificationDate>
+        <modificationDate>2019-07-31</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
-        <description>The NATO Education and Training Network (NETN) Logistics FOM Module.
-
-This module is a specification of how to represent logistics services provided to participants in a federated distributed simulation. The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. An HLA OMT based Federation Object Model (FOM) is used to specify types of data and how it is encoded on the network. The NETN FOM FOM module is available as a XML file for use in HLA based federations.Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
-
+        <description>NATO Education and Training Network (NETN) Logistics (LOG) Module
+Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 The NATO Education and Training Network Logistics Module (NETN LOG) is a specification of how to model logistics services in a federated distributed simulation. 
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA based federations.
+</description>
+        <useLimitation> The NETN Logistics module covers the following services:  
+* Supply Service 
+* Transport Service
+* Repair service 
 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN LOG FOM module is available as an XML file for use in HLA based federations.</description>
-        <useLimitation> The NETN Logistics module covers the following services:  * Supply Service offered by a facility, unit or entity with a capability to provide supplies to the consumer. The supplies are transferred from the provider to the consumer of this service. * Storage Service offered by a facility, unit or entity with a capability to store supplies. The supplies are transferred from the consumer to the provider of this service. * Transport Service offered by a facility, unit or entity with a capability to transport non-consumable materiel. Units can embark, be transported and then disembark. * Repair service offered by a facility, unit or entity with the capability to repair non-consumables materiel, e.g platforms.  Examples of use:  * Refuelling of aircraft at an airbase or in the air * Transport of supplies between facilities * Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft * Embarkment and disembarkment of units on platforms         </useLimitation>
-        <useHistory>v2.0.0 - Initial merged version of NETN-LOG FOM Module. This version replaces NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+Examples of use:  
+* Refuelling of aircraft at an airbase or in the air 
+* Transport of supplies between facilities 
+* Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft 
+* Embarkment and disembarkment of units on platforms</useLimitation>
+        <useHistory>v1.1r5 - Initial version developed by MSG-068 for NETN-FOM v1.0. </useHistory>
+        <useHistory>In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. </useHistory>
+        <useHistory>v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+        <poc>
+            <pocType>Release authority</pocType>
+            <pocName>NATO Modelling and Simulation Group</pocName>
+            <pocOrg>NATO Science and Technology Organization</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
         <poc>
             <pocType>Primary author</pocType>
+            <pocName>MSG-163 Evolution of NATO Standards for Federated Simulation</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>MSG-068 NATO Education and Training Network</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
             <pocName>Lennart Olsson</pocName>
-            <pocOrg>Pitch Technologies</pocOrg>
-            <pocTelephone>+46134705500</pocTelephone>
-            <pocEmail>lennart.olsson@pitchtechnologies.com</pocEmail>
+            <pocOrg>Pitch Technologies, Sweden</pocOrg>
         </poc>
         <poc>
             <pocType>Contributor</pocType>
             <pocName>Björn Löfstrand</pocName>
-            <pocOrg>Pitch Technologies</pocOrg>
-            <pocTelephone>+46702475152</pocTelephone>
-            <pocEmail>bjorn.lofstrand@pitchtechnologies.com</pocEmail>
+            <pocOrg>Pitch Technologies, Sweden</pocOrg>
         </poc>
         <reference>
             <type>Dependency</type>
@@ -41,7 +64,7 @@ Copyright © 2019 by NATO/OTAN. All rights reserved.
 This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
 
 Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group.</other>
-        <glyph type="png" height="48" width="48" alt="">iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVGhD7Zi7ThVRGIUnoZAKY6Tw0tHY8woWgMoTWFmbWKAkXAoaXgCegnegkUaI9lRWXhqFgIkFGBNZ62TY+c/K3nPZ2X9isb/kS05m/XvtczhM5sw0lUqlUqm0PIPf4D9nuccyLM5XGNvQwy+wOLGNPC1ObBNPi+O9gXe/+wbe/e4baH+fZ/AIvoIzsBctKI32j/E9nIed6CKldD7WQ9j5TegCpXSe4xuYRIcV71x5Ao+hXfMLPoZR7CBVvPMYD+EltOsOYBQ7RBXvPMVrqGujv6V0SPHOU/DE/Qjt2s9wFk5hB6jinXexCP9Cu34XTmFDqnjnfexBu/4KLsCADaninfcxB/V+ZR8GbEAV73wIL6HtOIUBG9DSlOi/A23HNQzYgJamVH+yJxmAu3ATnsDzVl4lNyCzIZTqT/akgqeQhZrfyowzfei6W8b2ax6IBSvwD9RM5f9i35MGXUNy+jULaHAPfpdjXXKWa1LofG6/Hg9ooPLCsQYfQP7Ietsei83mmNsfiIXWd1BZh7HZHHP7A30PtvhXUXgsNptjTv/UAzKeJDwQG6T/2wfge12CSfRuaMhX/AEOxbu/2YZ2MU8obvKola/1JNuCQ/Hub+7Dn9AWdPkDcs1QvPsnvIB6IxGTM8/hWLz7J6zCCxgrprzU843k4t0/gU/FduAn+LuVr3ls9Ncawbu/UqlUXGiaG6HtCk/oIWIVAAAAAElFTkSuQmCC</glyph>
+        <glyph type="png" height="48" width="48" alt="">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</glyph>
     </modelIdentification>
     <objects>
         <objectClass>

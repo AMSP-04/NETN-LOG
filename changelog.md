@@ -83,11 +83,11 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed datatype `DataEDStruct`
 * Removed datatype `TransportTypeEnum32`
 
-### Previous structure
+### Logistics in NETN-FOM v2.0
 
 Before merged into a single FOM Module, several FOM modules were used to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
 
-These modules were initially developed by MSG-068, updated by MSG-106 and prepared for release by MSG-134.
+These modules were initially developed by MSG-106 and prepared for release by MSG-134.
 
 Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Architecture and FOM Design (NETN FAFD) were:
 * NETN-SCP-BASE v1.1.3
@@ -96,3 +96,6 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * NETN-Repair v 1.2.1
 * NETN-Transport v1.1.2
 
+### Logistics in NETN-FOM v1.0
+
+* NETN_Logistics_v1.1r5_2010
