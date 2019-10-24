@@ -33,7 +33,12 @@ Examples of use:
 Copyright (C) 2019 NATO/OTAN.
 This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENCE.md). 
 
-The work includes the [NETN-LOG.xml](NETN-LOG.xml) FOM Module.
+The work includes the following FOM Modules.
+
+* [NETN-Repair](NETN-Repair_v1.2.1.xml)
+* [NETN-Storage](NETN-Storage_v1.2.2.xml)	
+* [NETN-Supply](NETN-Supply_v1.1.2.xml)	
+* [NETN-Transport](NETN-Transport_v1.1.2.xml)
 
 Above license gives you the right to use and redistribute the NETN FOM Modules (XML files) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN modules by reference and including neccessary scaffolding classes. You are NOT allowed to modify these FOM Modules without prior permission by the NATO Modelling and Simulation Group. 
 
