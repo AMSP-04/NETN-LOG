@@ -1,44 +1,65 @@
-# NETN-LogisticsA combined module of the NETN2 modules, NETN-Transport, NETN-Supply, NETN-Storage and NETN-Repair.## Purpose## Scope
-### LOG_FacilityLogistics LOG_Facility dedicated for supplying, storaging, reparing, and other services.Federates shall send the time at which the data is valid in the user defined tag with every attribute values update and interaction.  The time shall be in the first 8 bytes (octets) of the user defined tag, using the DIS timestamp field format (see section 5.2.31 of IEEE 1278.1-1995) converted into hexadecimal ASCII character representation (0-9 and A-F).  The ordering of the characters shall be in accordance with section 5.1.1 of IEEE 1278.1-1995, that is most significant octet first, with the most significant bits first (i.e. the character for bits 4-7 precedes the character for bits 0-3). 
- 
-All federates shall transmit this field, even if they do not use it themselves, so that other federates can use its value to compensate for network transport delays.
-### LOG_RequestRepairSent by the consumer when a repair for needed. Specifies entity and type of repair
-### LOG_RequestStorageLOG_RequestStorage is used by a consumer to initiate a request for storage of supplies. The amount and type of material is included in the request.
-### LOG_RequestSupplyLOG_RequestSupply is used by a consumer to initiate a request for supply from a supply service provider. The amount and type of material is included in the request. In this request the consumer propose whether the loading is done by the provider or by the consumer.
-### LOG_RequestTransportA request for a Transport support. 
-The request to transport, embark or disembark a platform is initiated by a LOG_RequestTransport interaction;
-### LOG_OfferRepairThe LOG_OfferRepair interaction class shall be sent by a federate simulating the service providing entity in response to a LOG_RequestRepair interaction.
-### LOG_OfferStorageLOG_OfferStorage is used by a storage service provider to indicate which (amount and type) of the requested material can be stored.
-### LOG_OfferSupplyLOG_OfferSupply is used by a supply service provider to indicate which of the requested materials (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.
-### LOG_OfferTransportAn Offer for a Transport support. 
-The LOG_OfferTransport interaction shall be sent by the service providing federate in response to a LOG_RequestTransport interaction.
-### LOG_AcceptOfferThe LOG_AcceptOffer is used to accept an offer made by a service providing entity as indicated in a SCP_OfferService interaction. By issuing a LOG_AcceptOffer interaction the service consuming entity enters a contract for service delivery with the service producing entity. 
- 
-The LOG_AcceptOffer interaction does not define any additional parameters but subclasses may include parameters with additional information.
-### LOG_ServiceStartedThe LOG_ServiceStarted interaction is issued by a service providing entity to inform about the start of service delivery. The time of service delivery start may be significantly later then receiving a indication from the consumer that the service delivery can start. 
- 
-The SCP_ServiceStarted interaction does not define any additional parameters.
-### LOG_ServiceCompleteThe LOG_ServiceCompleted interaction is used by a service providing entity to inform the service consuming entity that the service has been delivered. 
- 
-The LOG_ServiceCompleted interaction does not define any additional parameters.
-### LOG_SupplyCompleteThis interaction is sent by the provider when the supply is delivered to the consumer
-### LOG_StorageCompleteThis interaction is sent by the provider when the supply is delivered to the provider
-### LOG_RepairCompleteThis interaction is sent by the provider when the repair service is delivered to the consumer
-### LOG_ServiceReceivedThe LOG_ServiceReceived interaction is used by a service consuming entity to inform the service providing entity that the service has been delivered. 
- 
-TheLOG_ ServiceReceived interaction does not define any additional parameters.
-### LOG_RejectOfferThe LOG_RejectOffer is used to reject an offer made by a service providing entity as indicated in a LOG_OfferService interaction. By issuing a LOG_RejectOffer interaction the service consuming entity informs the providing entity that the offer has been rejected.
-### LOG_CancelServiceThe LOG_CancelService interaction is used by either a service consuming entity or a service providing entity to inform about early termination of the service delivery or in some cases termination of the service request before delivery has begun.
-### LOG_ReadyToReceiveServiceThe LOG_ReadyToReceiveService interaction is issued by a service consuming entity to indicate that the start of service delivery can start. The time of service delivery start may be significantly later then indicating ready for service delivery. 
- 
-The LOG_ReadyToReceiveService interaction does not define any additional parameters.
-### LOG_ReadyToReceiveRepairThis interaction is sent when the consumer is ready to receive the repair service. 
-(At same location as the provider)
-### LOG_ReadyToReceiveSupplyThis interaction is sent when the consumer is ready to receive the supply. (At same location as the provider)
-### LOG_ReadyToReceiveStorageThis interaction is sent when the consumer is ready to deliver the supply (receive storage). 
-(At same location as the provider)
-### LOG_TransportDestroyedEntitiesThe LOG_TransportDestroyedEntities interaction is used by the service provider federate to give information on managed element to the consumer. This interaction is used only if the provider simulate the destruction of elements managed
-### LOG_TransportDisembarkmentStatusThe LOG_TransportDisembarkmentStatus interaction shall be sent by the service provider federate, to inform the service consumer of the disembarkment state, after the LOG_ServiceStarted interaction
-### LOG_TransportEmbarkmentStatusThe LOG_TransportEmbarkmentStatus interaction shall be sent by the service provider federate, to inform the service consumer of the embarkment state, after the LOG_ServiceStarted interaction
+# NETN LOG
+NATO Education and Training Network (NETN) Logistics (LOG) Modules
 
-[objectclasses]: ./objectclasses.png
+## Introduction
+
+Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
+
+The NATO Education and Training Network Logistics Modules (NETN LOG) is a specification of how to model logistics services in a federated distributed simulation. 
+
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A set of Federation Object Model (FOM) Modules are used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM modules are available as XML files for use in HLA based federations.
+
+### Purpose
+
+The NETN-LOG FOM Modules provides a common standard interface for negotiation, delivery, and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
+
+### Scope
+
+NETN-LOG covers the following services:
+
+* Supply Service offered by a federate capable of simulating the transfer of supplies between consumer and provider.
+* Transport Service offered by a federate capable of simulating loading, transport and/or unloading of non-consumable materiel.
+* Repair Service offered by a federate capable of simulating repair of consumer provided non-consumable materiel, e.g platforms.
+
+Examples of use:
+
+* Refuelling of aircraft at an airbase or in the air
+* Transport of supplies between facilities
+* Repair of damaged platforms in a facility or by unit
+* Transport of units, platforms, and humans by train, ship, or aircraft   		
+
+## License
+
+Copyright (C) 2019 NATO/OTAN.
+This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENCE.md). 
+
+The work includes the [NETN-LOG.xml](NETN-LOG.xml) FOM Module.
+
+Above license gives you the right to use and redistribute the NETN FOM Modules (XML files) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN modules by reference and including neccessary scaffolding classes. You are NOT allowed to modify these FOM Modules without prior permission by the NATO Modelling and Simulation Group. 
+
+## Versions, updates and extentions
+
+All updates and versioning of this work is coordinated by the NATO Modelleing and Simulation Coordination Office (MSCO), managed by the NATO Modelling and Simulation Group (NMSG) and performed as NATO Science and Technology Organization (STO) technical activities in support of the NMSG Modelling and Simulation Standards Subgroup (MS3).
+
+Feedback on the use of this work, suggestions for improvements and identified issues are welcome and can be provided using GitGub issue tracking. To engage in the development and update of this FOM Module please contact your national NMSG representative.
+
+Version numbering of this FOM Module and associated documentation is based on the following principles:
+
+* New official version number is assigned and in effect only when new release is made in the Master branch.
+* Updates in the Develop branch will not change version number.
+* In the FOM Module useHistory information include only information on official releases.
+* Update of the major version number is made if the change constitute a major restructuring, merging, addition or redefinition of semantics that breaks backward compatibility or cover entirely new concepts.
+* Update of the minor version number is made if the change constitute a minor additions to existing concepts and editorial changes that do not break backward compatibility but may require updates of software to use new concepts.
+* Patches are released to fix minor issues that do not break backward compatibility.
+
+|Version|Description|
+|---|---|
+|v2.0.0 (Planned) |Initial merged version of NETN-LOG FOM Module. This version replaces NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. |
+
+[Changelog](changelog.md)
+
+## Documentation
+
+[Full Documentation](NETN-LOG.md)
+
+
