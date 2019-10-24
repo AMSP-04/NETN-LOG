@@ -1,4 +1,4 @@
-# NETN LOG
+# NETN Logistics
 NATO Education and Training Network (NETN) Logistics (LOG) Modules
 
 ## Introduction
@@ -60,6 +60,6 @@ Version numbering of this FOM Module and associated documentation is based on th
 
 ## Documentation
 
-[Full Documentation](NETN-LOG.md)
+[Full Documentation](https://nso.nato.int/nso/nsdd/APdetails.html?APNo=2268&LA=EN)
 
 
