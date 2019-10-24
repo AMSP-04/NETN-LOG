@@ -57,12 +57,6 @@ Version numbering of this FOM Module and associated documentation is based on th
 * Update of the minor version number is made if the change constitute a minor additions to existing concepts and editorial changes that do not break backward compatibility but may require updates of software to use new concepts.
 * Patches are released to fix minor issues that do not break backward compatibility.
 
-|Version|Description|
-|---|---|
-|v2.0.0 (Planned) |Initial merged version of NETN-LOG FOM Module. This version replaces NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. |
-
-[Changelog](changelog.md)
-
 ## Documentation
 
 [Full Documentation](https://nso.nato.int/nso/nsdd/APdetails.html?APNo=2268&LA=EN)
