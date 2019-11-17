@@ -229,7 +229,7 @@ autonumber off
 
 
 
-1. The consumer sends a `RequestRepair` interaction to request repair service. The materiel to be repaired and type of repair is specified in the required `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where the service delivery is expected.
+1. The consumer sends a `RequestRepair` interaction to request repair service. The materiel to be repaired and the type of repair is specified in the required `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where the service delivery is expected.
 
 2. An `OfferRepair` interaction is used by potential providers of repair services. The `RepairData` parameter specifies the materiel and the type of repair included in the offer. The provider can also specify an alternate `StartAppointment` in the offer.
 
