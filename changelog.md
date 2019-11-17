@@ -1,8 +1,8 @@
 ## Changelog NETN-LOG
 
-### Changes in v2.0 (RC 1)
+### Changes in v3.0
 
-Version 2.0.0 is the initial version of the new combined NETN LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
+Version 3.0 is the initial version of the new combined NETN LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
 
 The NETN LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
 
@@ -98,4 +98,4 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 
 ### Logistics in NETN-FOM v1.0
 
-* NETN_Logistics_v1.1r5_2010
+* NETN_Logistics_v1.1.2
