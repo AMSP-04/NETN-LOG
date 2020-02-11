@@ -104,7 +104,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                     </parameter>
                     <parameter>
                         <name>RequestTimeOut</name>
-                        <dataType>TimeSecInt64</dataType>
+                        <dataType>EpochTimeSecInt64</dataType>
                         <semantics>Optional: Wallclock time. The timeout time in seconds after 1 January 1970.</semantics>
                     </parameter>
                     <parameter>
@@ -183,7 +183,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     </parameter>
                     <parameter>
                         <name>OfferTimeOut</name>
-                        <dataType>TimeSecInt64</dataType>
+                        <dataType>EpochTimeSecInt64</dataType>
                         <semantics>Optional: The system wallclock time (in seconds after 1 January 1970) when the offer stops being valid. If not provided, the offer valid until otherwise specified.</semantics>
                     </parameter>
                     <parameter>
@@ -462,7 +462,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
 When date and time is set to zero (0), implies no date-time specification</semantics>
                 <field>
                     <name>DateTime</name>
-                    <dataType>TimeSecInt64</dataType>
+                     <dataType>EpochTimeSecInt64</dataType>
                     <semantics>Date time in second since 1 junuary 1970 for the appointment</semantics>
                 </field>
                 <field>
