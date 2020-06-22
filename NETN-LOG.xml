@@ -76,7 +76,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <order>Receive</order>
                 <semantics>Base class for all NETN Logistics Pattern Service Transactions.</semantics>
                 <parameter>
-                    <name>ServiceID</name>
+                    <name>ServiceId</name>
                     <dataType>TransactionId</dataType>
                     <semantics>Required: Unique identifier for the requested service related to the transaction.</semantics>
                 </parameter>
@@ -85,7 +85,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique ServiceID and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
+                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique ServiceId and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
 Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.</semantics>
                     <parameter>
                         <name>ConsumerEntity</name>
@@ -162,7 +162,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <order>Receive</order>
                     <semantics>The OfferService is a response to a RequestService and contains information with respect to the providing entities ability to deliver the requested service. This ability is expressed as either an offer to provide the service or no offer. Subclasses of this interaction for specific types of offers should contain more detailed description of the offer. This may include information about when, where, how the service can be delivered.</semantics>
                     <parameter>
-                        <name>OfferID</name>
+                        <name>OfferId</name>
                         <dataType>TransactionId</dataType>
                         <semantics>Required: Unique offer identifier.</semantics>
                     </parameter>
@@ -240,7 +240,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <order>Receive</order>
                     <semantics>The AcceptOffer is used to accept an offer made by a service providing entity as indicated in a OfferService interaction. By issuing a AcceptOffer interaction the service consuming entity enters a contract for service delivery with the service producing entity.</semantics>
                     <parameter>
-                        <name>OfferID</name>
+                        <name>OfferId</name>
                         <dataType>TransactionId</dataType>
                         <semantics>Required: Unique offer identifier.</semantics>
                     </parameter>
@@ -311,13 +311,13 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <order>Receive</order>
                     <semantics>Used by provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.</semantics>
                     <parameter>
-                        <name>OfferID</name>
+                        <name>OfferId</name>
                         <dataType>TransactionId</dataType>
                         <semantics></semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>CancelService</name>
+                    <name>CancelRequest</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -440,7 +440,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>Repairs associated with a specific materiel</semantics>
                 <field>
-                    <name>MaterielID</name>
+                    <name>MaterielId</name>
                     <dataType>UuidArrayOfHLAbyte16</dataType>
                     <semantics>UUID for the materiel.</semantics>
                 </field>
@@ -457,7 +457,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
 When date and time is set to zero (0), implies no date-time specification</semantics>
                 <field>
                     <name>DateTime</name>
-                     <dataType>EpochTimeSecInt64</dataType>
+                    <dataType>EpochTimeSecInt64</dataType>
                     <semantics>Date time in second since 1 junuary 1970 for the appointment</semantics>
                 </field>
                 <field>
