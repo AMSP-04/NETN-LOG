@@ -42,8 +42,9 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Removed datatype `ServiceDescription` 
 * Removed datatype `NETN_RepairTypeEnum16`
 
-* Added interaction class `LOG_Service.CancelOffer`
+* Added interaction class `LOG_Interaction.CancelOffer`
 * Renamed interaction class `CancelService` to `CancelRequest`
+* Renamed interaction class `LOG_Service` to `LOG_Interaction`
 
 * Added parameter `RequestService.ConsumerEntity`
 * Added parameter `RequestService.ProviderEntity`
@@ -57,7 +58,7 @@ The NETN LOG module is not backward compatible with previous NETN Logistics Modu
 * Added parameter `OfferTransport.EndAppointment`
 * Added parameter `RequestSupply.TransferDirection`
 
-* Renamed parameter `LOG_Service.ServiceID` to `ServiceId`
+* Renamed parameter `LOG_Service.TransactionId` to `LOG_Interaction.RequestId`
 * Renamed parameter `OfferService.RequestTimeOut` to `OfferService.OfferTimeOut`
 * Changed parameter datatype for `LOG_Service.ServiceID` to `TransactionId`
 * Changed parameter datatype for `RequestTransport.TransportData` to `ArrayOfUuid`.

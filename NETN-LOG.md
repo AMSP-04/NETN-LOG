@@ -55,7 +55,7 @@ The unit of consumable supplies includes the number of items, cubic meters for l
 ### Logistics Service Pattern
 All NETN LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
 
-The pattern defines sequences of service transactions between federates as sub-classes of the `LOG_Service` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
+The pattern defines sequences of service transactions between federates as sub-classes of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
 
 <img src="./images/log_interactionclasses.png">
 
@@ -121,29 +121,29 @@ autonumber off
 The logistics service pattern consists of three phases:
 **Service Negotiation**: the service is requested, offers received and offers are either accepted or rejected.
 
-1. A consumer federate initiates service negotiation using `RequestService`. A unique ServiceId and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional.
+1. A consumer federate initiates service negotiation using `RequestService`. A unique `RequestId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional.
 
     Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. These requests may consist of information when, where and how the service should be delivered.
 
-2. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is received, the consumer shall cancel the service using `CancelRequest`. A `ServiceId` parameter is required and indicates which service to cancel. After the cancellation, the logistics service pattern ends.
+2. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is received, the consumer shall cancel the service using `CancelRequest`. A `RequestId` parameter is required and indicates which service to cancel. After the cancellation, the logistics service pattern ends.
 
-3. Offers are sent by potential providers using `OfferService` with a required parameter `ServiceId` referencing the requested service and a unique `OfferId`. Using the optional parameter `OfferType`, the provider indicates if the offer matches the request, if the offer is modified, or if the provider is not able to make an offer. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
+3. Offers are sent by potential providers using `OfferService` with a required parameter `RequestId` referencing the requested service and a unique `OfferId`. Using the optional parameter `OfferType`, the provider indicates if the offer matches the request, if the offer is modified, or if the provider is not able to make an offer. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
 
-4. The provider can cancel an offer using the `CancelOffer` interaction until the offer is accepted. Required parameters are the `ServiceId` and `OfferId`.
+4. The provider can cancel an offer using the `CancelOffer` interaction until the offer is accepted. Required parameters are the `RequestId` and `OfferId`.
 
 5. The consumer accepts an offer using `AcceptOffer` or 
 
 6. Rejects an offer from a provider using `RejectOffer`. 
 
-7. Both consumer and provider can cancel the service before service delivery has started using `CancelRequest` with `ServiceId` and on optional `Reason` parameter. If cancelled, the logistics pattern will also terminate.
+7. Both consumer and provider can cancel the service before service delivery has started using `CancelRequest` with `RequestId` and on optional `Reason` parameter. If cancelled, the logistics pattern will also terminate.
 
 **Service Delivery**: the consumer indicates that the delivery process can start, and the selected provider starts to deliver, continuing until all the services are delivered.
 
-8.  The consumer sends a `ReadyToReceiveService` message with `ServiceId` parameter to indicate readiness to start receiving the service. I.e., all necessary preparations are in place to allow the `ConsumingEntity` to get the service.
+8.  The consumer sends a `ReadyToReceiveService` message with `RequestId` parameter to indicate readiness to start receiving the service. I.e., all necessary preparations are in place to allow the `ConsumingEntity` to get the service.
 
-9. The provider sends a `ServiceStarted` message with `ServiceId` parameter to indicate that service delivery has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
+9. The provider sends a `ServiceStarted` message with `RequestId` parameter to indicate that delivery of requested service has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
 
-10. Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `ServiceId` and on optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered.
+10. Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `RequestId` and on optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered.
 
 **Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 

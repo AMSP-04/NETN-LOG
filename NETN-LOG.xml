@@ -4,7 +4,7 @@
         <name>NETN LOG</name>
         <type>FOM</type>
         <version>2.0</version>
-        <modificationDate>2020-04-28</modificationDate>
+        <modificationDate>2020-06-29</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
@@ -70,13 +70,13 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>LOG_Service</name>
+                <name>LOG_Interaction</name>
                 <sharing>Neither</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
                 <semantics>Base class for all NETN Logistics Pattern Service Transactions.</semantics>
                 <parameter>
-                    <name>ServiceId</name>
+                    <name>RequestId</name>
                     <dataType>TransactionId</dataType>
                     <semantics>Required: Unique identifier for the requested service related to the transaction.</semantics>
                 </parameter>
