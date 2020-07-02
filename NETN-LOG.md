@@ -61,7 +61,7 @@ The pattern defines sequences of service transactions between federates as sub-c
 
 **Figure: Logistics Services Interaction Classes**
 
-The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more detail information required for specific logistics services.
+The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more detailed information required for specific logistics services.
 
 <img src="./images/log_scp_phases.svg" width="1000px"/>
 
@@ -125,7 +125,7 @@ The logistics service pattern consists of three phases:
 
     Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. These requests may consist of information when, where and how the service should be delivered.
 
-2. If the time, specified in the `RequestTimeOut` parameter, pass without an offer is received, the consumer shall cancel the service using `CancelRequest`. A `RequestId` parameter is required and indicates which service to cancel. After the cancellation, the logistics service pattern ends.
+2. If the time, specified in the `RequestTimeOut` parameter, pass, without an offer is received, the consumer shall cancel the service using `CancelRequest`. A `RequestId` parameter is required and indicates which service to cancel. After the cancellation, the logistics service pattern ends.
 
 3. Offers are sent by potential providers using `OfferService` with a required parameter `RequestId` referencing the requested service and a unique `OfferId`. Using the optional parameter `OfferType`, the provider indicates if the offer matches the request, if the offer is modified, or if the provider is not able to make an offer. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
 
@@ -135,7 +135,7 @@ The logistics service pattern consists of three phases:
 
 6. Rejects an offer from a provider using `RejectOffer`. 
 
-7. Both consumer and provider can cancel the service before service delivery has started using `CancelRequest` with `RequestId` and on optional `Reason` parameter. If cancelled, the logistics pattern will also terminate.
+7. Both consumer and provider can cancel the service before service delivery has started using `CancelRequest` with `RequestId` and an optional `Reason` parameter. If cancelled, the logistics pattern will also terminate.
 
 **Service Delivery**: the consumer indicates that the delivery process can start, and the selected provider starts to deliver, continuing until all the services are delivered.
 
@@ -143,7 +143,7 @@ The logistics service pattern consists of three phases:
 
 9. The provider sends a `ServiceStarted` message with `RequestId` parameter to indicate that delivery of requested service has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
 
-10. Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `RequestId` and on optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered.
+10. Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `RequestId` and an optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered.
 
 **Service Acceptance**: the provider or consumer indicates the completion of the service delivery and waits for acknowledgement/acceptance from the other part.
 

@@ -4,7 +4,7 @@
         <name>NETN LOG</name>
         <type>FOM</type>
         <version>2.0</version>
-        <modificationDate>2020-06-29</modificationDate>
+        <modificationDate>2020-07-01</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NETN LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
@@ -112,7 +112,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Sent by the consumer when a repair for needed. Specifies entity and type of repair</semantics>
+                        <semantics>Sent by the consumer when a repair is needed. Specifies entity and type of repair</semantics>
                         <parameter>
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
@@ -141,8 +141,8 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>A request for a Transport support. 
-The request to transport, embark or disembark a platform is initiated by a RequestTransport interaction;</semantics>
+                        <semantics>A request for a Transport service. 
+Use a RequestTransport interaction to initiate a transport, embarkment or disembarkment of a platform.</semantics>
                         <parameter>
                             <name>TransportData</name>
                             <dataType>ArrayOfUuid</dataType>
@@ -160,7 +160,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>The OfferService is a response to a RequestService and contains information with respect to the providing entities ability to deliver the requested service. This ability is expressed as either an offer to provide the service or no offer. Subclasses of this interaction for specific types of offers should contain more detailed description of the offer. This may include information about when, where, how the service can be delivered.</semantics>
+                    <semantics>The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, how the service can be delivered.</semantics>
                     <parameter>
                         <name>OfferId</name>
                         <dataType>TransactionId</dataType>
@@ -238,7 +238,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>The AcceptOffer is used to accept an offer made by a service providing entity as indicated in a OfferService interaction. By issuing a AcceptOffer interaction the service consuming entity enters a contract for service delivery with the service producing entity.</semantics>
+                    <semantics>Use the AcceptOffer interaction to accept an offer received in an OfferService interaction.</semantics>
                     <parameter>
                         <name>OfferId</name>
                         <dataType>TransactionId</dataType>
@@ -250,9 +250,7 @@ The request to transport, embark or disembark a platform is initiated by a Reque
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Issued by a service providing entity to inform about the start of service delivery. The time of service delivery start may be significantly later then receiving a indication from the consumer that the service delivery can start. 
- 
-The SCP_ServiceStarted interaction does not define any additional parameters.</semantics>
+                    <semantics>Issued by a service provider to inform about the start of service delivery. The time of service delivery start may be significantly later than receiving an indication from the consumer that the service delivery can start.</semantics>
                 </interactionClass>
                 <interactionClass>
                     <name>ServiceComplete</name>
@@ -269,7 +267,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>NETN_ArrayOfSupplyStruct</dataType>
-                            <semantics>The amount of supplies, by type, that were transferred from provider to consumer.</semantics>
+                            <semantics>Required: The amount of supplies, by type, that were transferred from provider to consumer.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -281,7 +279,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                         <parameter>
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
-                            <semantics>List of the type of repairs done. May be different from the list of requested repairs.</semantics>
+                            <semantics>Required: List of the type of repairs done. May be different from the list of requested repairs.</semantics>
                         </parameter>
                     </interactionClass>
                 </interactionClass>
@@ -301,7 +299,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <parameter>
                         <name>Reason</name>
                         <dataType>HLAASCIIstring</dataType>
-                        <semantics>Allows to inform about the reason of the cancel (free text)</semantics>
+                        <semantics>Optional: Allows to inform about the reason of the cancel (free text)</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -313,7 +311,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <parameter>
                         <name>OfferId</name>
                         <dataType>TransactionId</dataType>
-                        <semantics></semantics>
+                        <semantics>Required: Reference to the cancelled offer.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -333,18 +331,18 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Issued by a service consuming entity to indicate that the start of service delivery can start. The time of service delivery start may be significantly later then indicating ready for service delivery.</semantics>
+                    <semantics>Issued by a service consumer to indicate that service delivery can start. The time of service delivery may be significantly later than indicating ready for service delivery.</semantics>
                 </interactionClass>
                 <interactionClass>
                     <name>TransportDestroyedEntities</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by the service provider federate to give information on managed element to the consumer. This interaction is used only if the provider simulate the destruction of elements managed</semantics>
+                    <semantics>Used by a service provider to update information on damage state of entities under transport.</semantics>
                     <parameter>
                         <name>DestroyedObjects</name>
                         <dataType>ArrayOfUuid</dataType>
-                        <semantics>Allows to follow the elements managed by the provider</semantics>
+                        <semantics>Required: Identifies the objects that have been destroyed during transport.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -356,12 +354,12 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <parameter>
                         <name>DisembarkedObjects</name>
                         <dataType>ArrayOfUuid</dataType>
-                        <semantics>Allows to follow the elements managed by the provider</semantics>
+                        <semantics>Required: References to disembarked entities. Updated during disembarkment.</semantics>
                     </parameter>
                     <parameter>
                         <name>TransportUnitIdentifier</name>
                         <dataType>UuidArrayOfHLAbyte16</dataType>
-                        <semantics>UUID of transporter</semantics>
+                        <semantics>Required: UUID of entity performing the transport.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -373,12 +371,12 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
                     <parameter>
                         <name>EmbarkedObjects</name>
                         <dataType>ArrayOfUuid</dataType>
-                        <semantics>Allows to follow the elements managed by the provider</semantics>
+                        <semantics>Required: List of entities currently embarked. Updated during embarkment.</semantics>
                     </parameter>
                     <parameter>
                         <name>TransportUnitIdentifier</name>
                         <dataType>UuidArrayOfHLAbyte16</dataType>
-                        <semantics>UUID of transporter</semantics>
+                        <semantics>Required: Referens to entity providing the transport.</semantics>
                     </parameter>
                 </interactionClass>
             </interactionClass>
@@ -407,7 +405,7 @@ The SCP_ServiceStarted interaction does not define any additional parameters.</s
             <enumeratedData>
                 <name>TransferDirectionEnum32</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics></semantics>
+                <semantics>Indicates the direction of flow of material or supplies during service delivery.</semantics>
                 <enumerator>
                     <name>FromConsumer</name>
                     <value>0</value>
