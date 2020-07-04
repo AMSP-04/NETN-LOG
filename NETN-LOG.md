@@ -9,7 +9,7 @@ This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 In
 
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
-The NATO Education and Training Network Logistics Module (NETN LOG) is a specification of how to model logistics services in a federated distributed simulation. 
+The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module specifies how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA based federations.
 
@@ -19,7 +19,7 @@ The NETN-LOG FOM Module provides a standard interface for negotiation, delivery,
 
 ### Scope
 
-NETN LOG covers the following services:
+NETN-LOG covers the following services:
 
 * Supply Service provided by a federate capable of simulating the transfer of supplies between consumer and provider.
 * Transport Service provided by a federate capable of simulating loading, transport or unloading of materiel.
@@ -36,10 +36,8 @@ Examples of use:
 Materiel is classified as:
 * Consumable Supplies
     * Ammunition
-    * Mines
     * Medical materiel
     * Spare parts
-    * NBC Materiel
     * Fuel (Diesel, Gas, Aviation fuel, etc.)
     * Water
     * Food
@@ -47,13 +45,12 @@ Materiel is classified as:
     * Platforms
     * Humans
     * Units
-    * Reconnaissance and Artillery systems (Radar)
-    * Missile
+    * Equipment
 
 The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available types of supplies, and additional supply types can be defined and documented in federation specific agreements.
 
 ### Logistics Service Pattern
-All NETN LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
+All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
 
 The pattern defines sequences of service transactions between federates as sub-classes of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
 
