@@ -38,7 +38,7 @@ Materiel is classified as:
     * Ammunition
     * Medical materiel
     * Spare parts
-    * Fuel (Diesel, Gas, Aviation fuel, etc.)
+    * Fuel
     * Water
     * Food
 * Non-consumable Entities
@@ -47,7 +47,7 @@ Materiel is classified as:
     * Units
     * Equipment
 
-The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available types of supplies, and additional supply types can be defined and documented in federation specific agreements.
+The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation specific agreements.
 
 ### Logistics Service Pattern
 All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
@@ -138,7 +138,7 @@ The logistics service pattern consists of three phases:
 
 8.  The consumer sends a `ReadyToReceiveService` message with `RequestId` parameter to indicate readiness to start receiving the service. I.e., all necessary preparations are in place to allow the `ConsumingEntity` to get the service.
 
-9. The provider sends a `ServiceStarted` message with `RequestId` parameter to indicate that delivery of requested service has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
+9. The provider sends a `ServiceStarted` message with `RequestId` parameter to indicate that the delivery of requested service has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
 
 10. Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `RequestId` and an optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered.
 

@@ -55,8 +55,8 @@ Version numbering of this FOM Module and associated documentation is based on th
 |Version|Description|
 |---|---|
 |v1.1.2 |Version 1.1.2 of NETN-LOG FOM Module developed by MSG-068 and included in NETN FOM v1.0. |
-|v2.0 |Version 2.0 of NETN-LOG FOM Module developed by MSG-106 including SCP Base, Repair, Supply, Transport and Storage FOM Modules. Included in NETN FOM v2.0 as part of AMSP-04 Ed A.|
-|v3.0 |Version 3.0 of NETN-LOG FOM Module developed by MSG-163 merging back NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport in a single NETN-LOG FOM Module included in NETN FOM v3.0 as part of AMSP-04 Ed B. |
+||In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. |
+|v2.0 |Version 2.0 of NETN-LOG FOM Module developed by MSG-163 merging back NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport in a single NETN-LOG FOM Module included in NETN FOM v3.0. |
 
 [Changelog](changelog.md)
 

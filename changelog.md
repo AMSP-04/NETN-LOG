@@ -1,8 +1,8 @@
 ## Changelog NETN-LOG
 
-### Changes in v3.0
+### Changes in NETN-LOG v2.0 as part of NETN-FOM v3.0
 
-Version 3.0 is the initial version of the new combined NETN-LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
+Version 2.0 is the combined NETN-LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
 
 The NETN-LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
 
