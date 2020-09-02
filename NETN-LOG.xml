@@ -4,7 +4,7 @@
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>2.0</version>
-        <modificationDate>2020-07-04</modificationDate>
+        <modificationDate>2020-09-02</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NETN-LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
@@ -14,16 +14,7 @@ Military logistics is the discipline of planning and carrying out the movement a
 The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA based federations.
 </description>
-        <useLimitation> The NETN Logistics module covers the following services:  
-* Supply Service 
-* Transport Service
-* Repair service 
-
-Examples of use:  
-* Refuelling of aircraft at an airbase or in the air 
-* Transport of supplies between facilities 
-* Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft 
-* Embarkment and disembarkment of units on platforms</useLimitation>
+        <useLimitation> The NETN Logistics module covers the following services:   * Supply Service  * Transport Service * Repair service   Examples of use:   * Refuelling of aircraft at an airbase or in the air  * Transport of supplies between facilities  * Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft  * Embarkment and disembarkment of units on platforms</useLimitation>
         <useHistory>v1.1r5 - Initial version developed by MSG-068 for NETN-FOM v1.0. </useHistory>
         <useHistory>In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. </useHistory>
         <useHistory>v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
@@ -44,16 +35,6 @@ Examples of use:
             <pocName>MSG-068 NATO Education and Training Network</pocName>
             <pocOrg>NATO Modelling and Simulation Group</pocOrg>
             <pocEmail>msg@cso.nato.int</pocEmail>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Lennart Olsson</pocName>
-            <pocOrg>Pitch Technologies, Sweden</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Björn Löfstrand</pocName>
-            <pocOrg>Pitch Technologies, Sweden</pocOrg>
         </poc>
         <reference>
             <type>Dependency</type>

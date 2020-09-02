@@ -58,7 +58,7 @@ The pattern defines sequences of service transactions between federates as sub-c
 
 **Figure: Logistics Services Interaction Classes**
 
-The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more detailed information required for specific logistics services.
+The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more information for specific logistics services.
 
 <img src="./images/log_scp_phases.svg" width="1000px"/>
 
