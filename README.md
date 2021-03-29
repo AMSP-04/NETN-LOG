@@ -1,17 +1,17 @@
-# NETN Logistics
-NATO Education and Training Network (NETN) Logistics (LOG) Modules
+# NETN-LOG
+NATO Education and Training Network (NETN) Logistics (LOG) Module
 
 ## Introduction
 
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
-The NATO Education and Training Network Logistics Modules (NETN LOG) is a specification of how to model logistics services in a federated distributed simulation. 
+The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A set of Federation Object Model (FOM) Modules are used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM modules are available as XML files for use in HLA based federations.
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA based federations.
 
 ### Purpose
 
-The NETN-LOG FOM Modules provides a common standard interface for negotiation, delivery, and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
+The NETN-LOG FOM Module provides a common standard interface for negotiation, delivery, and acceptance of logistics services between federates modelling different entities involved in the service transaction. E.g simulation of the transport of a unit modelled in another simulator.
 
 ### Scope
 
@@ -28,37 +28,38 @@ Examples of use:
 * Repair of damaged platforms in a facility or by unit
 * Transport of units, platforms, and humans by train, ship, or aircraft   		
 
-## License
+## Licence
 
-Copyright (C) 2019 NATO/OTAN.
+Copyright (C) 2020 NATO/OTAN.
 This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENCE.md). 
 
-The work includes the following FOM Modules.
+The work includes the [NETN-LOG.xml](NETN-LOG.xml) FOM Module and documentation NETN-LOG.md.
 
-* [NETN-Repair](NETN-Repair_v1.2.1.xml)
-* [NETN-Storage](NETN-Storage_v1.2.2.xml)	
-* [NETN-Supply](NETN-Supply_v1.1.2.xml)	
-* [NETN-Transport](NETN-Transport_v1.1.2.xml)
+Above licence gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference and including necessary scaffolding classes. You are NOT allowed to modify this FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group. 
 
-Above license gives you the right to use and redistribute the NETN FOM Modules (XML files) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN modules by reference and including neccessary scaffolding classes. You are NOT allowed to modify these FOM Modules without prior permission by the NATO Modelling and Simulation Group. 
+## Versions, updates and extensions
 
-## Versions, updates and extentions
+All updates and versioning of this work is coordinated by the NATO Modelling and Simulation Coordination Office (MSCO), managed by the NATO Modelling and Simulation Group (NMSG) and performed as NATO Science and Technology Organization (STO) technical activities in support of the NMSG Modelling and Simulation Standards Subgroup (MS3).
 
-All updates and versioning of this work is coordinated by the NATO Modelleing and Simulation Coordination Office (MSCO), managed by the NATO Modelling and Simulation Group (NMSG) and performed as NATO Science and Technology Organization (STO) technical activities in support of the NMSG Modelling and Simulation Standards Subgroup (MS3).
-
-Feedback on the use of this work, suggestions for improvements and identified issues are welcome and can be provided using GitGub issue tracking. To engage in the development and update of this FOM Module please contact your national NMSG representative.
+Feedback on the use of this work, suggestions for improvements and identified issues are welcome and can be provided using GitHub issue tracking. To engage in the development and update of this FOM Module please contact your national NMSG representative.
 
 Version numbering of this FOM Module and associated documentation is based on the following principles:
 
-* New official version number is assigned and in effect only when new release is made in the Master branch.
-* Updates in the Develop branch will not change version number.
-* In the FOM Module useHistory information include only information on official releases.
-* Update of the major version number is made if the change constitute a major restructuring, merging, addition or redefinition of semantics that breaks backward compatibility or cover entirely new concepts.
-* Update of the minor version number is made if the change constitute a minor additions to existing concepts and editorial changes that do not break backward compatibility but may require updates of software to use new concepts.
+* New official version number is assigned and in effect only when a new release is made in the Master branch.
+* Updates in the Develop branch will not change the version number.
+* In the FOM Module `useHistory` information includes only information on official releases.
+* Update of the major version number is made if the change constitutes a major restructuring, merging, addition or redefinition of semantics that breaks backward compatibility or cover entirely new concepts.
+* Update of the minor version number is made if the change constitutes minor additions to existing concepts and editorial changes that do not break backward compatibility but may require updates of software to use new concepts.
 * Patches are released to fix minor issues that do not break backward compatibility.
+
+|Version|Description|
+|---|---|
+|v1.1.2 |Version 1.1.2 of NETN-LOG FOM Module developed by MSG-068 and included in NETN FOM v1.0. |
+||In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. |
+|v2.0 |Version 2.0 of NETN-LOG FOM Module developed by MSG-163 merging back NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport in a single NETN-LOG FOM Module included in NETN FOM v3.0. |
+
+[Changelog](changelog.md)
 
 ## Documentation
 
-[Full Documentation](https://nso.nato.int/nso/nsdd/APdetails.html?APNo=2268&LA=EN)
-
-
+[Full Documentation](NETN-LOG.md)
