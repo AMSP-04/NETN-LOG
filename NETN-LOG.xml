@@ -70,12 +70,12 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
 Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.</semantics>
                     <parameter>
                         <name>ConsumerEntity</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Unique identifier for a simulated entity that is the intended receiver of service</semantics>
                     </parameter>
                     <parameter>
                         <name>ProviderEntity</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Optional: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.</semantics>
                     </parameter>
                     <parameter>
@@ -149,7 +149,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     </parameter>
                     <parameter>
                         <name>ProviderEntity</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.</semantics>
                     </parameter>
                     <parameter>
@@ -339,7 +339,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     </parameter>
                     <parameter>
                         <name>TransportUnitIdentifier</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: UUID of entity performing the transport.</semantics>
                     </parameter>
                 </interactionClass>
@@ -356,7 +356,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     </parameter>
                     <parameter>
                         <name>TransportUnitIdentifier</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Referens to entity providing the transport.</semantics>
                     </parameter>
                 </interactionClass>
@@ -420,7 +420,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                 <semantics>Repairs associated with a specific materiel</semantics>
                 <field>
                     <name>MaterielId</name>
-                    <dataType>UuidArrayOfHLAbyte16</dataType>
+                    <dataType>UUID</dataType>
                     <semantics>UUID for the materiel.</semantics>
                 </field>
                 <field>
