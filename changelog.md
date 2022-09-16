@@ -1,5 +1,11 @@
 ## Changelog NETN-LOG
 
+
+### Changes for v3.0
+Version 3.0 was developed by MSG-191 and included in NETN-FOM v4.0.
+
+* Changed datatype `TransactionId` to `UUID`
+
 ### Changes in NETN-LOG v2.0 as part of NETN-FOM v3.0
 
 Version 2.0 is the combined NETN-LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.

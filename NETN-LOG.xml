@@ -58,7 +58,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <semantics>Base class for all NETN Logistics Pattern Service Transactions.</semantics>
                 <parameter>
                     <name>RequestId</name>
-                    <dataType>TransactionId</dataType>
+                    <dataType>UUID</dataType>
                     <semantics>Required: Unique identifier for the requested service related to the transaction.</semantics>
                 </parameter>
                 <interactionClass>
@@ -144,7 +144,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <semantics>The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, how the service can be delivered.</semantics>
                     <parameter>
                         <name>OfferId</name>
-                        <dataType>TransactionId</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Unique offer identifier.</semantics>
                     </parameter>
                     <parameter>
@@ -222,7 +222,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <semantics>Use the AcceptOffer interaction to accept an offer received in an OfferService interaction.</semantics>
                     <parameter>
                         <name>OfferId</name>
-                        <dataType>TransactionId</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Unique offer identifier.</semantics>
                     </parameter>
                 </interactionClass>
@@ -291,7 +291,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <semantics>Used by provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.</semantics>
                     <parameter>
                         <name>OfferId</name>
-                        <dataType>TransactionId</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Required: Reference to the cancelled offer.</semantics>
                     </parameter>
                 </interactionClass>
