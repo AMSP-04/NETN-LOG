@@ -1,10 +1,16 @@
 ## Changelog NETN-LOG
 
 
-### Changes for v3.0
-Version 3.0 was developed by MSG-191 and included in NETN-FOM v4.0.
+### Changes for v2.1
+Version 2.1 was developed by MSG-191 and included in NETN-FOM v4.0.
 
 * Changed datatype `TransactionId` to `UUID`
+* Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
+
+#### Enumerated  Datatypes
+
+* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility
+
 
 ### Changes in NETN-LOG v2.0 as part of NETN-FOM v3.0
 
