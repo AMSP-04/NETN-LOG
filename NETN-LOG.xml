@@ -4,20 +4,32 @@
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>2.1</version>
-        <modificationDate>2023-02-21</modificationDate>
+        <modificationDate>2023-03-12</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
-        <purpose>The NETN-LOG module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
+        <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
-        <description>NATO Education and Training Network (NETN) Logistics (LOG) Module
-Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
+        <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
+
 The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA based federations.
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.
 </description>
-        <useLimitation> The NETN Logistics module covers the following services:   * Supply Service  * Transport Service * Repair service   Examples of use:   * Refuelling of aircraft at an airbase or in the air  * Transport of supplies between facilities  * Repair of damaged platforms in facility or by unit * Transport of units, platforms, and humans by train, ship, or aircraft  * Embarkment and disembarkment of units on platforms</useLimitation>
+        <useLimitation> The NETN Logistics module covers the following services:   
+* Supply Service  
+* Transport Service 
+* Repair service   
+
+Examples of use:   
+* Refuelling of aircraft at an airbase or in the air  
+* Transport of supplies between facilities  
+* Repair of damaged platforms in a facility or by unit 
+* Transport of units, platforms, and humans by train, ship, or aircraft  
+* Embarkment and disembarkment of units on platforms</useLimitation>
         <useHistory>v1.1r5 - Initial version developed by MSG-068 for NETN-FOM v1.0. </useHistory>
         <useHistory>In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. </useHistory>
         <useHistory>v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+        <useHistory>v2.1.0 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0</useHistory>
+       
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -33,6 +45,12 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
         <poc>
             <pocType>Primary author</pocType>
             <pocName>MSG-068 NATO Education and Training Network</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>MSG-191 NATO Standards for Federated Simulation and Services for Integration, Verification and Certification</pocName>
             <pocOrg>NATO Modelling and Simulation Group</pocOrg>
             <pocEmail>msg@cso.nato.int</pocEmail>
         </poc>
@@ -364,7 +382,6 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
         </interactionClass>
     </interactions>
     <dataTypes>
-        <simpleDataTypes/>
         <enumeratedDataTypes>
             <enumeratedData>
                 <name>OfferTypeEnum32</name>
@@ -787,7 +804,6 @@ When date and time is set to zero (0), implies no date-time specification</seman
                 </field>
             </fixedRecordData>
         </fixedRecordDataTypes>
-        <variantRecordDataTypes/>
     </dataTypes>
     <notes>
         <note>
