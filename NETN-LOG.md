@@ -20,8 +20,6 @@ Examples of use:
 * Embarkment and disembarkment of units on platforms
 
 ## Overview
- 
-### Materiel
 
 Materiel is classified as:
 * Consumable Supplies
@@ -39,7 +37,7 @@ Materiel is classified as:
 
 The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation-specific agreements.
 
-### Logistics Service Pattern
+## Logistics Service Pattern
 All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either Service Consumers or Service Providers. 
 
 The pattern defines sequences of service transactions between federates as subclasses of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
@@ -94,7 +92,7 @@ The logistics service pattern consists of three phases:
 
 7. On acceptance of service delivery, the consumer sends a `ServiceReceived` interaction.
 
-## Transfer of Supplies
+### Transfer of Supplies
 
 Federates can have the capability to provide or store supplies. These offered services can involve the transfer of materiel between a `ConsumerEntity` and `ProviderEntity` modelled in two different federates. The transfer of supplies can differ in terms of the flow of materiel between consumer and provider. 
 
@@ -131,7 +129,7 @@ Consumer->>Provider: ServiceReceived
 
 7. The consumer sends a `ServiceReceived` interaction as a response to a `SupplyComplete` from the provider. 
 
-# Repair
+### Repair
 
 Simulation of repair of non-consumable materiel is possible. E.g. tow-trucks move damaged platforms to a maintenance facility for repair, or a unit capable of providing repair services can move to the location of a damaged platform to deliver repair services.
 
@@ -165,7 +163,7 @@ Consumer->>Provider: ServiceReceived
 
 7. The consumer sends a `ServiceReceived` interaction as a response to a `RepairComplete` from the provider. 
 
-# Transport
+### Transport
 
 A logistics transport service is useful when there is a need to move non-consumable entities such as platforms, units, humans or other battlefield objects using means of transportation simulated in another federated system.
 
@@ -234,15 +232,13 @@ Sending a `CancelRequest` interaction during delivery of the service, but before
 
 Sending a `CancelRequest` during delivery of the service, after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. It is possible to initiate a new transport service with only an `EndAppointment` and list of the remaining entities to disembark.
 
-## Bridgehead
+#### Bridgehead
 
-If a `NETN_Aggregate` unit is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require the unit to be disaggregated into subunits before requesting transport, using, e.g. the NETN MRM FOM Module. The consumer can create a temporary `NETN_Aggregate` entity to represent a bridgehead on the disembarkment location. The `Callsign` of the bridgehead should be the same as the transported aggregate with a "-bh" suffix. 
+If a `NETN_Aggregate` entity representing a unit is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided into multiple `NETN_Aggregate` entities before requesting transport, using, e.g. the NETN-MRM FOM Module. The consumer can create divided temporary `NETN_Aggregate` entities that represent a bridgehead on the disembarkment location, units under transport or units waiting for embarkation.
 
-When embarkment on transports is complete, the `Status` of the original `NETN_Aggregate` unit can be set to `Inactive` until all subunits have disembarked. 
+Temporary divided `NETN_Aggregate` entities can be merged using NETN-MRM after complete embarkation and disembarkation from transports.
 
-After complete unloading from transports, the `Status` of the disembarked units are `Active`, and their location is the disembarkment position. It is possible to remove any bridgehead unit or set the status to `Inactive`.
-
-## Initial Transport State
+#### Initial Transport State
 
 A scenario can start with some entities already embarked on transports. The attribute `EmbeddedUnitList` of transporting entities identifies which units are already embarked by referencing their UniqueId (UUID). Scenario initialization includes publishing embarked units, and their `Status` attribute set to `Inactive`.
 
