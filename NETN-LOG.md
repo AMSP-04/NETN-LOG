@@ -38,9 +38,9 @@ Materiel is classified as:
 The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation-specific agreements.
 
 ## Logistics Service Pattern
-All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either Service Consumers or Service Providers. 
+All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service events are either Service Consumers or Service Providers. 
 
-The pattern defines sequences of service transactions between federates as subclasses of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
+The pattern defines sequences of service events between federates as subclasses of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
 
 
 The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more information for specific logistics services.
@@ -254,7 +254,7 @@ Base class for all NETN Logistics Pattern Service Transactions.
     
 |Parameter|Semantics|
 |---|---|
-|EventId|Required: Unique identifier for the requested service related to the transaction.|
+|EventId|Required: Unique identifier for the requested service related to the event.|
 ### RequestService
 
 A consumer federate initiates service negotiation using `RequestService`. A unique `EventId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 

@@ -76,7 +76,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 <parameter>
                     <name>EventId</name>
                     <dataType>UUID</dataType>
-                    <semantics>Required: Unique identifier for the requested service related to the transaction.</semantics>
+                    <semantics>Required: Unique identifier for the requested service related to the event.</semantics>
                 </parameter>
                 <interactionClass>
                     <name>RequestService</name>
