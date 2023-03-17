@@ -4,7 +4,7 @@
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>2.1</version>
-        <modificationDate>2023-03-12</modificationDate>
+        <modificationDate>2023-03-17</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
@@ -29,7 +29,6 @@ Examples of use:
         <useHistory>In NETN-FOM v2.0 the logistics module was replaced by NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport. </useHistory>
         <useHistory>v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
         <useHistory>v2.1.0 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0</useHistory>
-       
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -75,7 +74,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 <order>Receive</order>
                 <semantics>Base class for all NETN Logistics Pattern Service Transactions.</semantics>
                 <parameter>
-                    <name>RequestId</name>
+                    <name>EventId</name>
                     <dataType>UUID</dataType>
                     <semantics>Required: Unique identifier for the requested service related to the transaction.</semantics>
                 </parameter>

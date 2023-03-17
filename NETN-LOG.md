@@ -22,6 +22,7 @@ Examples of use:
 ## Overview
  
 ### Materiel
+
 Materiel is classified as:
 * Consumable Supplies
     * Ammunition
@@ -36,20 +37,28 @@ Materiel is classified as:
     * Units
     * Equipment
 
-The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation specific agreements.
+The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation-specific agreements.
 
 ### Logistics Service Pattern
-All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either a Service Consumer or a Service Provider. 
+All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service transaction are either Service Consumers or Service Providers. 
 
-The pattern defines sequences of service transactions between federates as sub-classes of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
+The pattern defines sequences of service transactions between federates as subclasses of the `LOG_Interaction` interaction-class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
 
-<img src="./images/log_interactionclasses.png">
+<img src="./images/interactionclasses.png">
 
-**Figure: Logistics Services Interaction Classes**
+**Figure: Logistics Interaction Classes**
 
 The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more information for specific logistics services.
 
 <img src="./images/log_scp_phases.svg" width="1000px"/>
+
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
 
 <!--```
 DIAGRAM GENERATED IN https://sequencediagram.org/
