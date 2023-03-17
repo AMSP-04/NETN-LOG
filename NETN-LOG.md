@@ -196,7 +196,7 @@ loop Transport
 Provider->>Consumer: TransportDestroyedEntities
 end
 
-loop Disembark
+loop Disembarkment
 Provider->>Consumer: TransportDisembarkmentStatus
 end
 
