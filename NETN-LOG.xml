@@ -83,8 +83,8 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique ServiceId and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
-Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information when, where and how the service should be delivered.</semantics>
+                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique `EventId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
+Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information on when, where and how the service should be delivered.</semantics>
                     <parameter>
                         <name>ConsumerEntity</name>
                         <dataType>UUID</dataType>
@@ -98,7 +98,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                     <parameter>
                         <name>RequestTimeOut</name>
                         <dataType>EpochTimeSecInt64</dataType>
-                        <semantics>Optional: Wallclock time. The timeout time in seconds after 1 January 1970.</semantics>
+                        <semantics>Optional: Wallclock time. The timeout time is in seconds after 1 January 1970.</semantics>
                     </parameter>
                     <parameter>
                         <name>StartAppointment</name>
@@ -122,7 +122,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The required `TransferDirection` parameter indicates whether supplies are transferred from Consumer to provider or from Provider to consumer.</semantics>
+                        <semantics>The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The required `TransferDirection` parameter indicates whether supplies are transferred from the Consumer to the Provider or from the Provider to the Consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>SupplyStructArray</dataType>
@@ -131,7 +131,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <parameter>
                             <name>TransferDirection</name>
                             <dataType>TransferDirectionEnum32</dataType>
-                            <semantics>Required: Indicates if the transfer of supplies are from Consumer to Provider or from Provider to Consumer.</semantics>
+                            <semantics>Required: Indicates if the transfer of supplies is from Consumer to Provider or from Provider to Consumer.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -158,7 +158,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>Neither</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, how the service can be delivered.</semantics>
+                    <semantics>The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, and how the service can be delivered.</semantics>
                     <parameter>
                         <name>OfferId</name>
                         <dataType>UUID</dataType>
@@ -172,7 +172,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <parameter>
                         <name>OfferType</name>
                         <dataType>OfferTypeEnum32</dataType>
-                        <semantics>Optional: Specifies if the offer is Negative (no Offer), Positive (Complete as requested) or Modified (not the same as the requested).</semantics>
+                        <semantics>Optional: Specifies if the offer is Negative (no Offer), Positive (Complete as requested) or Modified (not the same as requested).</semantics>
                     </parameter>
                     <parameter>
                         <name>OfferTimeOut</name>
@@ -189,11 +189,11 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Is sent by a federate simulating the service providing entity in response to a RequestRepair interaction.</semantics>
+                        <semantics>Is sent by a federate simulating the service-providing entity in response to a RequestRepair interaction.</semantics>
                         <parameter>
                             <name>RepairData</name>
                             <dataType>ArrayOfRepairStruct</dataType>
-                            <semantics>Required: List of the type of repairs offered. May be different from the list of requested repairs. List of all offered repairs if isOffering = true otherwise Undefined</semantics>
+                            <semantics>Required: List of the type of repairs offered. May be different from the list of requested repairs. List of all offered repairs if `isOffering` = true otherwise Undefined</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -201,11 +201,11 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
+                        <semantics>Used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request, the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>SupplyStructArray</dataType>
-                            <semantics>Required: List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if isOffering = true otherwise Undefined</semantics>
+                            <semantics>Required: List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if `isOffering` = true otherwise Undefined</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -213,7 +213,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>An Offer for a Transport support. The OfferTransport interaction shall be sent by the service providing federate in response to a RequestTransport interaction.</semantics>
+                        <semantics>An Offer for Transport support. The OfferTransport interaction shall be sent by the service-providing federate in response to a RequestTransport interaction.</semantics>
                         <parameter>
                             <name>TransportData</name>
                             <dataType>ArrayOfUuid</dataType>
@@ -265,7 +265,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <parameter>
                             <name>SuppliesData</name>
                             <dataType>SupplyStructArray</dataType>
-                            <semantics>Required: The amount of supplies, by type, that were transferred from provider to consumer.</semantics>
+                            <semantics>Required: The number of supplies, by type, that were transferred from provider to consumer.</semantics>
                         </parameter>
                     </interactionClass>
                     <interactionClass>
@@ -293,11 +293,11 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used to reject an offer made by a service providing entity as indicated in a OfferService interaction. By issuing a RejectOffer interaction the service consuming entity informs the providing entity that the offer has been rejected.</semantics>
+                    <semantics>Used to reject an offer made by a service-providing entity as indicated in an OfferService interaction. By issuing a RejectOffer interaction the service-consuming entity informs the providing entity that the offer has been rejected.</semantics>
                     <parameter>
                         <name>Reason</name>
                         <dataType>HLAASCIIstring</dataType>
-                        <semantics>Optional: Allows to inform about the reason of the cancel (free text)</semantics>
+                        <semantics>Optional: Allows informing about the reason for the cancellation.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -305,7 +305,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.</semantics>
+                    <semantics>Used by the provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.</semantics>
                     <parameter>
                         <name>OfferId</name>
                         <dataType>UUID</dataType>
@@ -317,11 +317,11 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by either a service consuming entity or a service providing entity to inform about early termination of the service delivery or in some cases termination of the service request before delivery has begun.</semantics>
+                    <semantics>Used by either a service-consuming entity or a service-providing entity to inform about early termination of the service delivery or in some cases termination of the service request before delivery has begun.</semantics>
                     <parameter>
                         <name>Reason</name>
                         <dataType>HLAASCIIstring</dataType>
-                        <semantics>Allows to inform about the reason of the cancel (free text)</semantics>
+                        <semantics>Allows informing about the reason for the cancellation.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -336,7 +336,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by a service provider to update information on damage state of entities under transport.</semantics>
+                    <semantics>Used by a service provider to update information on the state of entities under transport.</semantics>
                     <parameter>
                         <name>DestroyedObjects</name>
                         <dataType>ArrayOfUuid</dataType>
@@ -357,7 +357,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <parameter>
                         <name>TransportUnitIdentifier</name>
                         <dataType>UUID</dataType>
-                        <semantics>Required: UUID of entity performing the transport.</semantics>
+                        <semantics>Required: UUID of the entity performing the transport.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -374,7 +374,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <parameter>
                         <name>TransportUnitIdentifier</name>
                         <dataType>UUID</dataType>
-                        <semantics>Required: Referens to entity providing the transport.</semantics>
+                        <semantics>Required: Refers to the entity providing the transport.</semantics>
                     </parameter>
                 </interactionClass>
             </interactionClass>

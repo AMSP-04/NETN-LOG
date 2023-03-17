@@ -14,7 +14,7 @@ Version 2.1 was developed by MSG-191 and included in NETN-FOM v4.0.
 
 Version 2.0 is the combined NETN-LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
 
-The NETN-LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
+The NETN-LOG module is not backwards compatible with previous NETN Logistics Modules and usage requires minor updates to federates to use the new class names and structure.
 
 * FOM Modules NETN-SCP-BASE v1.1.3, NETN-Supply v1.1.2, NETN-Storage v1.2.2, NETN-Repair v1.2.1 and NETN-Transport v1.1.2 merged into new module NETN-LOG
 * Prefix dropped from all interaction classes except interaction class LOG_Service
