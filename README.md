@@ -5,6 +5,7 @@
 |---|---|---|
 |3.0|2023-03-18|NETN-BASE|
 
+> [Full Documentation](NETN-LOG.md)
 
 The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.
 
@@ -53,9 +54,5 @@ Version numbering of this FOM Module and associated documentation is based on th
 |v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.|
 |v3.0.0 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0|
 
-[Changelog](changelog.md)
-
-## Documentation
-
-[Full Documentation](NETN-LOG.md)
+> [Changelog](changelog.md)
 
