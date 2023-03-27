@@ -3,7 +3,7 @@
 
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2023-03-18|NETN-BASE|
+|2.1|2023-03-25|NETN-BASE|
 
 > [Full Documentation](NETN-LOG.md)
 
@@ -14,8 +14,7 @@ Military logistics is the discipline of planning and carrying out the movement a
 The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.
 
-
- The NETN Logistics module covers the following services:    
+The NETN Logistics module covers the following services:    
 * Supply Service   
 * Transport Service  
 * Repair service     
@@ -50,9 +49,9 @@ Version numbering of this FOM Module and associated documentation is based on th
 
 |Version|
 |---|
-|v1.1r5 - Initial version developed by MSG-068 for NETN-FOM v1.0. |
-|v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.|
-|v3.0.0 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0|
+|v1.1 - Initial version developed by MSG-068 for NETN-FOM v1.0. |
+|v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.|
+|v2.1 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0|
 
 > [Changelog](changelog.md)
 

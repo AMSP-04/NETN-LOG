@@ -1,8 +1,8 @@
-# NETN-LOG
 
+# NETN-LOG
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2023-03-18|NETN-BASE|
+|2.1|2023-03-25|NETN-BASE|
 
 The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.
 
@@ -11,8 +11,7 @@ Military logistics is the discipline of planning and carrying out the movement a
 The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.
 
-
- The NETN Logistics module covers the following services:    
+The NETN Logistics module covers the following services:    
 * Supply Service   
 * Transport Service  
 * Repair service     
@@ -23,6 +22,7 @@ Examples of use:
 * Repair of damaged platforms in a facility or by unit  
 * Transport of units, platforms, and humans by train, ship, or aircraft   
 * Embarkment and disembarkment of units on platforms
+
 ## Overview
 
 Materiel is classified as:
@@ -40,6 +40,7 @@ Materiel is classified as:
     * Equipment
 
 The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation-specific agreements.
+
 ## Logistics Service Pattern
 
 All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service events are either Service Consumers or Service Providers. 
@@ -62,7 +63,6 @@ Provider->>Consumer: ServiceCompleted
 Consumer->>Provider: ServiceReceived
 ```
 
-**Figure: Logistics Service Pattern**
 
 The logistics service pattern consists of three phases:
 
@@ -116,8 +116,6 @@ Consumer->>Provider: ServiceReceived
 ```
 
 
-**Figure: Supply Service**
-
 1. The consumer sends a `RequestSupply` interaction to request supplies, including the amount and type of supplies as a `SuppliesData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery. The `TransferDirection` parameter indicates if the transfer of supplies flows from consumer to provider or from provider to consumer.
 
 2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify an alternate `StartAppointment` in the offer.
@@ -148,8 +146,6 @@ Provider->>Consumer: ServiceStarted
 Provider->>Consumer: RepairComplete
 Consumer->>Provider: ServiceReceived
 ```
-**Figure: Repair Service**
-
 
 
 1. The consumer sends a `RequestRepair` interaction to request repair service, including the materiel to be repaired and the type of repair as the `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery.
@@ -206,8 +202,6 @@ Provider->>Consumer: ServiceComplete
 Consumer->>Provider: ServiceReceived
 ```
 
-**Figure: Transport Service**
-
 Negotiation, delivery, and acceptance of transport service are part of the Logistics Service Pattern:
 
 1. To request a transport, the consumer sends a `RequestTransport` interaction that includes `TransportData` information specifying the entities to transport. The `StartAppointment` provides information on when and where the embarkment will start. If the `EndAppointment` is provided, the service includes the transport between the specified Start and End locations and subsequent disembarkment of specified entities.
@@ -238,178 +232,222 @@ Sending a `CancelRequest` during delivery of the service, after starting to dise
 
 #### Bridgehead
 
-If a `NETN_Aggregate` entity representing a unit is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided into multiple `NETN_Aggregate` entities before requesting transport, using, e.g. the NETN-MRM FOM Module. The consumer can create divided temporary `NETN_Aggregate` entities that represent a bridgehead on the disembarkment location, units under transport or units waiting for embarkation.
-
-Temporary divided `NETN_Aggregate` entities can be merged using NETN-MRM after complete embarkation and disembarkation from transports.
+If an `Aggregate` entity is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided before requesting transport, e.g. using the NETN-MRM FOM Module divide pattern. A divided entity can be transported and re-merged with an `Aggregate` entity that represents a bridgehead on the disembarkment location.
 
 #### Initial Transport State
 
 A scenario can start with some entities already embarked on transports. The attribute `EmbeddedUnitList` of transporting entities identifies which units are already embarked by referencing their UniqueId (UUID). Scenario initialization includes publishing embarked units, and their `Status` attribute set to `Inactive`.
 
 
-
 ## Interaction Classes
 
-Note that inherited and dependency parameters are not explicitly listed for each interaction class below. Only parameters defined in this FOM Module are listed. 
+Note that inherited and dependency parameters are not not included in the description of interaction classes.
 
-<img src="./images/interactionclasses.png">
-
-**Figure: Interaction Classes**
-
+```mermaid
+graph RL
+LOG_Interaction-->HLAinteractionRoot
+RequestService-->LOG_Interaction
+OfferService-->LOG_Interaction
+AcceptOffer-->LOG_Interaction
+ServiceStarted-->LOG_Interaction
+ServiceComplete-->LOG_Interaction
+ServiceReceived-->LOG_Interaction
+RejectOffer-->LOG_Interaction
+CancelOffer-->LOG_Interaction
+CancelRequest-->LOG_Interaction
+ReadyToReceiveService-->LOG_Interaction
+TransportDestroyedEntities-->LOG_Interaction
+TransportDisembarkmentStatus-->LOG_Interaction
+TransportEmbarkmentStatus-->LOG_Interaction
+RequestRepair-->RequestService
+RequestSupply-->RequestService
+RequestTransport-->RequestService
+OfferRepair-->OfferService
+OfferSupply-->OfferService
+OfferTransport-->OfferService
+SupplyComplete-->ServiceComplete
+RepairComplete-->ServiceComplete
+```
 
 ### LOG_Interaction
 
 Base class for all NETN Logistics Pattern Service Transactions.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |EventId|UUID|Required: Unique identifier for the requested service related to the event.|
+
 ### RequestService
 
 A consumer federate initiates service negotiation using `RequestService`. A unique `EventId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
 Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information on when, where and how the service should be delivered.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |ConsumerEntity|UUID|Required: Unique identifier for a simulated entity that is the intended receiver of service|
 |ProviderEntity|UUID|Optional: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.|
 |RequestTimeOut|EpochTimeSecInt64|Optional: Wallclock time. The timeout time is in seconds after 1 January 1970.|
 |StartAppointment|AppointmentStruct|Optional: The time and location of the start of the service delivery.|
+
 ### RequestRepair
 
 Sent by the consumer when a repair is needed. Specifies entity and type of repair
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |RepairData|ArrayOfRepairStruct|Required: List of all requested repairs.|
+
 ### RequestSupply
 
 The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The required `TransferDirection` parameter indicates whether supplies are transferred from the Consumer to the Provider or from the Provider to the Consumer.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |SuppliesData|SupplyStructArray|Required: List of type and quantity of supplies requested.|
 |TransferDirection|TransferDirectionEnum32|Required: Indicates if the transfer of supplies is from Consumer to Provider or from Provider to Consumer.|
+
 ### RequestTransport
 
 A request for a Transport service. 
 Use a RequestTransport interaction to initiate a transport, embarkment or disembarkment of a platform.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|EndAppointment|AppointmentStruct|Optional: Location and time for disembarkment.|
 |TransportData|ArrayOfUuid|Required: Entities to be transported.|
+|EndAppointment|AppointmentStruct|Optional: Location and time for disembarkment.|
+
 ### OfferService
 
 The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, and how the service can be delivered.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |OfferId|UUID|Required: Unique offer identifier.|
-|OfferTimeOut|EpochTimeSecInt64|Optional: The system wallclock time (in seconds after 1 January 1970) when the offer stops being valid. If not provided, the offer valid until otherwise specified.|
-|OfferType|OfferTypeEnum32|Optional: Specifies if the offer is Negative (no Offer), Positive (Complete as requested) or Modified (not the same as requested).|
 |ProviderEntity|UUID|Required: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.|
+|OfferType|OfferTypeEnum32|Optional: Specifies if the offer is Negative (no Offer), Positive (Complete as requested) or Modified (not the same as requested).|
+|OfferTimeOut|EpochTimeSecInt64|Optional: The system wallclock time (in seconds after 1 January 1970) when the offer stops being valid. If not provided, the offer valid until otherwise specified.|
 |StartAppointment|AppointmentStruct|Optional: Time and location of the start of service delivery.|
+
 ### OfferRepair
 
 Is sent by a federate simulating the service-providing entity in response to a RequestRepair interaction.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |RepairData|ArrayOfRepairStruct|Required: List of the type of repairs offered. May be different from the list of requested repairs. List of all offered repairs if `isOffering` = true otherwise Undefined|
+
 ### OfferSupply
 
 Used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request, the consumer decides whether the loading is done by the provider or by the consumer.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |SuppliesData|SupplyStructArray|Required: List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if `isOffering` = true otherwise Undefined|
+
 ### OfferTransport
 
 An Offer for Transport support. The OfferTransport interaction shall be sent by the service-providing federate in response to a RequestTransport interaction.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|EndAppointment|AppointmentStruct|Optional: Location and time for disembarkment.|
 |TransportData|ArrayOfUuid|Required: Entities to be transported.|
+|EndAppointment|AppointmentStruct|Optional: Location and time for disembarkment.|
 |Transporters|ArrayOfUuid|Optional: Platform list with transporters|
+
 ### AcceptOffer
 
 Use the AcceptOffer interaction to accept an offer received in an OfferService interaction.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |OfferId|UUID|Required: Unique offer identifier.|
+
 ### ServiceStarted
 
 Issued by a service provider to inform about the start of service delivery. The time of service delivery start may be significantly later than receiving an indication from the consumer that the service delivery can start.
+
+
 ### ServiceComplete
 
-Used by a service providing entity to inform the service consuming entity that the service has been delivered.
+Used by a service-providing entity to inform the service-consuming entity that the service has been delivered.
+
+
 ### SupplyComplete
 
 This interaction is sent by the provider when the supply is delivered to the consumer
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |SuppliesData|SupplyStructArray|Required: The number of supplies, by type, that were transferred from provider to consumer.|
+
 ### RepairComplete
 
 This interaction is sent by the provider when the repair service is delivered to the consumer
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |RepairData|ArrayOfRepairStruct|Required: List of the type of repairs done. May be different from the list of requested repairs.|
+
 ### ServiceReceived
 
-Used by a service consuming entity to inform the service providing entity that the service has been delivered.
+Used by a service-consuming entity to inform the service-providing entity that the service has been delivered.
+
+
 ### RejectOffer
 
 Used to reject an offer made by a service-providing entity as indicated in an OfferService interaction. By issuing a RejectOffer interaction the service-consuming entity informs the providing entity that the offer has been rejected.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |Reason|HLAASCIIstring|Optional: Allows informing about the reason for the cancellation.|
+
 ### CancelOffer
 
 Used by the provider to cancel an already made offer before it has been accepted. Used if the OfferTimeOut has passed.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |OfferId|UUID|Required: Reference to the cancelled offer.|
+
 ### CancelRequest
 
 Used by either a service-consuming entity or a service-providing entity to inform about early termination of the service delivery or in some cases termination of the service request before delivery has begun.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |Reason|HLAASCIIstring|Allows informing about the reason for the cancellation.|
+
 ### ReadyToReceiveService
 
 Issued by a service consumer to indicate that service delivery can start. The time of service delivery may be significantly later than indicating ready for service delivery.
+
+
 ### TransportDestroyedEntities
 
 Used by a service provider to update information on the state of entities under transport.
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |DestroyedObjects|ArrayOfUuid|Required: Identifies the objects that have been destroyed during transport.|
+
 ### TransportDisembarkmentStatus
 
 Is sent by the service provider federate, to inform the service consumer of the disembarkment state, after the ServiceStarted interaction
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |DisembarkedObjects|ArrayOfUuid|Required: References to disembarked entities. Updated during disembarkment.|
 |TransportUnitIdentifier|UUID|Required: UUID of the entity performing the transport.|
+
 ### TransportEmbarkmentStatus
 
 Is sent by the service provider federate, to inform the service consumer of the embarkment state, after the ServiceStarted interaction
-    
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |EmbarkedObjects|ArrayOfUuid|Required: List of entities currently embarked. Updated during embarkment.|
 |TransportUnitIdentifier|UUID|Required: Refers to the entity providing the transport.|
+
 ## Datatypes
 
 Note that only datatypes defined in this FOM Module are listed below. Please refer to FOM Modules on which this module depends for other referenced datatypes.

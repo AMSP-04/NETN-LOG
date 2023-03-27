@@ -3,8 +3,8 @@
     <modelIdentification notes="Overview Logistics_Service_Pattern">
         <name>NETN-LOG</name>
         <type>FOM</type>
-        <version>3.0</version>
-        <modificationDate>2023-03-18</modificationDate>
+        <version>2.1</version>
+        <modificationDate>2023-03-25</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
@@ -12,9 +12,8 @@
         <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
 
 The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.
-</description>
-        <useLimitation> The NETN Logistics module covers the following services:    
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.</description>
+        <useLimitation>The NETN Logistics module covers the following services:    
 * Supply Service   
 * Transport Service  
 * Repair service     
@@ -25,9 +24,9 @@ Examples of use:
 * Repair of damaged platforms in a facility or by unit  
 * Transport of units, platforms, and humans by train, ship, or aircraft   
 * Embarkment and disembarkment of units on platforms</useLimitation>
-        <useHistory notes="netn-log_3">v1.1r5 - Initial version developed by MSG-068 for NETN-FOM v1.0. </useHistory>
-        <useHistory notes="netn-log_1">v2.0.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
-        <useHistory notes="netn-log_2">v3.0.0 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0</useHistory>
+        <useHistory notes="netn-log_3">v1.1 - Initial version developed by MSG-068 for NETN-FOM v1.0. </useHistory>
+        <useHistory notes="netn-log_1">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+        <useHistory notes="netn-log_2">v2.1 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0</useHistory>
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -254,7 +253,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by a service providing entity to inform the service consuming entity that the service has been delivered.</semantics>
+                    <semantics>Used by a service-providing entity to inform the service-consuming entity that the service has been delivered.</semantics>
                     <interactionClass>
                         <name>SupplyComplete</name>
                         <sharing>PublishSubscribe</sharing>
@@ -285,7 +284,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Used by a service consuming entity to inform the service providing entity that the service has been delivered.</semantics>
+                    <semantics>Used by a service-consuming entity to inform the service-providing entity that the service has been delivered.</semantics>
                 </interactionClass>
                 <interactionClass>
                     <name>RejectOffer</name>
@@ -932,7 +931,6 @@ Provider-&gt;&gt;Consumer: ServiceCompleted
 Consumer-&gt;&gt;Provider: ServiceReceived
 ```
 
-**Figure: Logistics Service Pattern**
 
 The logistics service pattern consists of three phases:
 
@@ -986,8 +984,6 @@ Consumer-&gt;&gt;Provider: ServiceReceived
 ```
 
 
-**Figure: Supply Service**
-
 1. The consumer sends a `RequestSupply` interaction to request supplies, including the amount and type of supplies as a `SuppliesData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery. The `TransferDirection` parameter indicates if the transfer of supplies flows from consumer to provider or from provider to consumer.
 
 2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify an alternate `StartAppointment` in the offer.
@@ -1018,8 +1014,6 @@ Provider-&gt;&gt;Consumer: ServiceStarted
 Provider-&gt;&gt;Consumer: RepairComplete
 Consumer-&gt;&gt;Provider: ServiceReceived
 ```
-**Figure: Repair Service**
-
 
 
 1. The consumer sends a `RequestRepair` interaction to request repair service, including the materiel to be repaired and the type of repair as the `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery.
@@ -1076,8 +1070,6 @@ Provider-&gt;&gt;Consumer: ServiceComplete
 Consumer-&gt;&gt;Provider: ServiceReceived
 ```
 
-**Figure: Transport Service**
-
 Negotiation, delivery, and acceptance of transport service are part of the Logistics Service Pattern:
 
 1. To request a transport, the consumer sends a `RequestTransport` interaction that includes `TransportData` information specifying the entities to transport. The `StartAppointment` provides information on when and where the embarkment will start. If the `EndAppointment` is provided, the service includes the transport between the specified Start and End locations and subsequent disembarkment of specified entities.
@@ -1108,9 +1100,7 @@ Sending a `CancelRequest` during delivery of the service, after starting to dise
 
 #### Bridgehead
 
-If a `NETN_Aggregate` entity representing a unit is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided into multiple `NETN_Aggregate` entities before requesting transport, using, e.g. the NETN-MRM FOM Module. The consumer can create divided temporary `NETN_Aggregate` entities that represent a bridgehead on the disembarkment location, units under transport or units waiting for embarkation.
-
-Temporary divided `NETN_Aggregate` entities can be merged using NETN-MRM after complete embarkation and disembarkation from transports.
+If an `Aggregate` entity is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided before requesting transport, e.g. using the NETN-MRM FOM Module divide pattern. A divided entity can be transported and re-merged with an `Aggregate` entity that represents a bridgehead on the disembarkment location.
 
 #### Initial Transport State
 
