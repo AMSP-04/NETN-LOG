@@ -241,7 +241,7 @@ A scenario can start with some entities already embarked on transports. The attr
 
 ## Interaction Classes
 
-Note that inherited and dependency parameters are not not included in the description of interaction classes.
+Note that inherited and dependency parameters are not included in the description of interaction classes.
 
 ```mermaid
 graph RL
