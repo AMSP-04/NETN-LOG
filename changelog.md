@@ -1,29 +1,27 @@
 ## Changelog NETN-LOG
 
+### v1.1 - Initial version developed by MSG-068 for NETN-FOM v1.0. 
 
-### Changes for v2.1
-Version 2.1 was developed by MSG-191 and included in NETN-FOM v4.0.
+In NETN-FOM v 2.0 this module was replaced with several FOM modules to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
 
-* Changed datatype `TransactionId` to `UUID`
-* Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
+These modules were initially developed by MSG-106 and prepared for release by MSG-134.
 
-#### Enumerated  Datatypes
+Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Architecture and FOM Design (NETN FAFD) were:
+* NETN-SCP-BASE v1.1.3
+* NETN-Supply v1.1.2
+* NETN-Storage v1.2.2
+* NETN-Repair v 1.2.1
+* NETN-Transport v1.1.2
 
-* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility
 
-
-### Changes in NETN-LOG v2.0 as part of NETN-FOM v3.0
-
-Version 2.0 is the combined NETN-LOG FOM module based on previous Logistics related NETN modules. This version was developed by MSG-163.
-
-The NETN-LOG module is not backward compatible with previous NETN Logistics Modules and usage require minor updates to federates to use the new class names and structure.
+### v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.
 
 * FOM Modules NETN-SCP-BASE v1.1.3, NETN-Supply v1.1.2, NETN-Storage v1.2.2, NETN-Repair v1.2.1 and NETN-Transport v1.1.2 merged into new module NETN-LOG
 * Prefix dropped from all interaction classes except interaction class LOG_Service
-* Added note for modelIdentification to provide additional description of FOM module
+* Added note for `modelIdentification` to provide additional description of FOM module
 * Added glyph
-* Updated releaseRestriction, purpose, description and useLimitation
-* Changed securityClassification from Unclassified to Not Classified
+* Updated `releaseRestriction`, `purpose`, `description` and `useLimitation`
+* Changed `securityClassification` from `Unclassified` to `Not Classified`
 
 * Removed object class `SCP_Facility`
 * Removed interaction class `RequestStorage`
@@ -81,19 +79,10 @@ The NETN-LOG module is not backward compatible with previous NETN Logistics Modu
 * Changed datatype for `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16`
 
 
-### Logistics in NETN-FOM v2.0
+### v2.1 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0
 
-Before merged into a single FOM Module, several FOM modules were used to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
+* Changed parameter `ServicID`of interaction-class `LOG_Service` to `EventId`
+* Changed datatype `TransactionId` to `UUID`
+* Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
+* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility
 
-These modules were initially developed by MSG-106 and prepared for release by MSG-134.
-
-Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Architecture and FOM Design (NETN FAFD) were:
-* NETN-SCP-BASE v1.1.3
-* NETN-Supply v1.1.2
-* NETN-Storage v1.2.2
-* NETN-Repair v 1.2.1
-* NETN-Transport v1.1.2
-
-### Logistics in NETN-FOM v1.0
-
-* NETN_Logistics_v1.1.2
