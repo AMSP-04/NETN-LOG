@@ -95,7 +95,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                     </parameter>
                     <parameter>
                         <name>RequestTimeOut</name>
-                        <dataType>ScenarioTime</dataType>
+                        <dataType>EpochTime</dataType>
                         <semantics>Optional: Wallclock time. The timeout time is in seconds after 1 January 1970.</semantics>
                     </parameter>
                     <parameter>
@@ -174,7 +174,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                     </parameter>
                     <parameter>
                         <name>OfferTimeOut</name>
-                        <dataType>ScenarioTime</dataType>
+                        <dataType>EpochTime</dataType>
                         <semantics>Optional: The system wallclock time (in seconds after 1 January 1970) when the offer stops being valid. If not provided, the offer valid until otherwise specified.</semantics>
                     </parameter>
                     <parameter>
@@ -791,7 +791,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
 When date and time is set to zero (0), implies no date-time specification</semantics>
                 <field>
                     <name>DateTime</name>
-                    <dataType>ScenarioTime</dataType>
+                    <dataType>EpochTime</dataType>
                     <semantics>Date time in second since 1 junuary 1970 for the appointment</semantics>
                 </field>
                 <field>
@@ -870,11 +870,12 @@ When date and time is set to zero (0), implies no date-time specification</seman
         <note>
             <label>netn-log_2</label>
             <semantics>* Changed parameter `ServicID`of interaction-class `LOG_Service` to `EventId` 
-* Replaced all `WorldLocationStruct` with `LocationStruct`
-* Replaced all `ArrayOfWorldLocationStruct` with `LocationStructArray`
+* Replaced all `WorldLocationStruct` with `LocationStruct` 
+* Replaced all `ArrayOfWorldLocationStruct` with `LocationStructArray` 
 * Changed datatype `TransactionId` to `UUID` 
 * Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
-* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility</semantics>
+* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility
+* Replaced all `EpochTimeSecInt64` datatype with `EpochTime`</semantics>
         </note>
         <note>
             <label>netn-log_3</label>
