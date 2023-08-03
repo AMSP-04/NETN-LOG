@@ -123,7 +123,7 @@ Requests for specific types of services are defined as subclasses to `RequestSer
                         <semantics>The consumer sends a `RequestSupply` interaction to request supplies. The amount and type of supplies are specified in the required `SuppliesData` parameter. The required `TransferDirection` parameter indicates whether supplies are transferred from the Consumer to the Provider or from the Provider to the Consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>SupplyStructArray</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>Required: List of type and quantity of supplies requested.</semantics>
                         </parameter>
                         <parameter>
@@ -202,7 +202,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <semantics>Used by a supply service provider to indicate which of the requested materiel (amount and type) can be offered. In this request, the consumer decides whether the loading is done by the provider or by the consumer.</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>SupplyStructArray</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>Required: List of type and quantity of supplies offered. May be different from the list of requested supplies. All offered supplies if `isOffering` = true otherwise Undefined</semantics>
                         </parameter>
                     </interactionClass>
@@ -262,7 +262,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <semantics>This interaction is sent by the provider when the supply is delivered to the consumer</semantics>
                         <parameter>
                             <name>SuppliesData</name>
-                            <dataType>SupplyStructArray</dataType>
+                            <dataType>ArrayOfSupplyStruct</dataType>
                             <semantics>Required: The number of supplies, by type, that were transferred from provider to consumer.</semantics>
                         </parameter>
                     </interactionClass>
@@ -874,7 +874,7 @@ When date and time is set to zero (0), implies no date-time specification</seman
 * Replaced all `ArrayOfWorldLocationStruct` with `LocationStructArray` 
 * Changed datatype `TransactionId` to `UUID` 
 * Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
-* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility
+* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility 
 * Replaced all `EpochTimeSecInt64` datatype with `EpochTime`</semantics>
         </note>
         <note>
