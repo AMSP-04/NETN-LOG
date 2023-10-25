@@ -1,8 +1,8 @@
 ## Changelog NETN-LOG
 
-### v1.1 - Initial version developed by MSG-068 for NETN-FOM v1.0. 
+### v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. 
 
-In NETN-FOM v 2.0 this module was replaced with several FOM modules to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
+In NETN FOM v 2.0 this module was replaced with several FOM modules to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
 
 These modules were initially developed by MSG-106 and prepared for release by MSG-134.
 
@@ -14,7 +14,7 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * NETN-Transport v1.1.2
 
 
-### v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.
+### v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.
 
 * FOM Modules NETN-SCP-BASE v1.1.3, NETN-Supply v1.1.2, NETN-Storage v1.2.2, NETN-Repair v1.2.1 and NETN-Transport v1.1.2 merged into new module NETN-LOG
 * Prefix dropped from all interaction classes except interaction class LOG_Service
@@ -79,7 +79,7 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * Changed datatype for `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16`
 
 
-### v2.1 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0
+### v2.1 - Updated version developed by MSG-191. Release included in NETN FOM v4.0
 
 * Changed parameter `ServicID`of interaction-class `LOG_Service` to `EventId`
 * Changed datatype `TransactionId` to `UUID`

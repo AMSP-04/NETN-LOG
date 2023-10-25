@@ -49,9 +49,9 @@ Version numbering of this FOM Module and associated documentation is based on th
 
 |Version|
 |---|
-|v1.1 - Initial version developed by MSG-068 for NETN-FOM v1.0. |
-|v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN-FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.|
-|v2.1 - Updated version developed by MSG-191. Release included in NATO-FOM v4.0|
+|v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. |
+|v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.|
+|v2.1 - Updated version developed by MSG-191. Release included in NETN FOM v4.0|
 
 > [Changelog](changelog.md)
 
