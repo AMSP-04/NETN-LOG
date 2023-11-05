@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelIdentification notes="Overview Logistics_Service_Pattern">
+    <modelIdentification notes="Overview">
         <name>NETN-LOG</name>
         <type>FOM</type>
-        <version>2.1</version>
-        <modificationDate>2023-03-25</modificationDate>
+        <version>3.0</version>
+        <modificationDate>2023-11-05</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
-        <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for negotiation, delivery and acceptance of logistics services where service providers and consumers are represented in different systems in a federated distributed simulation.</purpose>
+        <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
-        <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces including storage, distribution, maintenance and transportation of materiel.
+        <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces, including storage, distribution, maintenance and transportation of supplies, equipment and personnel.
 
-The NATO Education and Training Network Logistics Module (NETN-LOG) is a specification of how to model logistics services in a federated distributed simulation. 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.</description>
-        <useLimitation>The NETN Logistics module covers the following services:    
-* Supply Service   
-* Transport Service  
-* Repair service     
-        
-Examples of use:    
-* Refuelling of aircraft at an airbase or in the air   
-* Transport of supplies between facilities   
-* Repair of damaged platforms in a facility or by unit  
-* Transport of units, platforms, and humans by train, ship, or aircraft   
-* Embarkment and disembarkment of units on platforms</useLimitation>
-        <useHistory notes="netn-log_3">v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. </useHistory>
-        <useHistory notes="netn-log_1">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
-        <useHistory notes="netn-log_2">v2.1 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
+The NATO Education and Training Network Logistics Module (NETN-LOG) specifies how to model logistics tasks and logistics attributes of aggregated simulation entities in a federated distributed simulation. 
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and supports interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module specifies how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.</description>
+        <useLimitation>The NETN Logistics module covers the following tasks:    
+* Resupply, e.g. refuelling of aircraft at an airbase or in the air
+* Repair, e.g. repair of damaged platforms in a facility
+* Transport, e.g. loading and transport of supplies from a specific pick-up point to an off-loading destination</useLimitation>
+        <useHistory notes="netn-log_1">v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. </useHistory>
+        <useHistory notes="netn-log_2">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+        <useHistory notes="netn-log_3">v3.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -73,7 +66,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                     <semantics>A group of one or more separate objects that operate together as part of an organization. These objects may be discrete, may be other aggregate objects, or may be a mixture of both.</semantics>
                     <attribute>
                         <name>Supplies</name>
-                        <dataType>ArrayOfSupplyStruct</dataType>
+                        <dataType>ArrayOfSupplyStatus</dataType>
                         <updateType>Conditional</updateType>
                         <updateCondition>On change</updateCondition>
                         <ownership>DivestAcquire</ownership>
@@ -112,164 +105,6 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>LOG_Interaction</name>
-                <sharing>Neither</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>Receive</order>
-                <semantics>Base class for all NETN Logistics Pattern Service Transactions.</semantics>
-                <parameter>
-                    <name>EventId</name>
-                    <dataType>UUID</dataType>
-                    <semantics>Required: Unique identifier for the requested service related to the event.</semantics>
-                </parameter>
-                <interactionClass>
-                    <name>RequestService</name>
-                    <sharing>Neither</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>A consumer federate initiates service negotiation using `RequestService`. A unique `EventId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
-Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. This may include information on when, where and how the service should be delivered.</semantics>
-                    <parameter>
-                        <name>ConsumerEntity</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Unique identifier for a simulated entity that is the intended receiver of service</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>ProviderEntity</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Optional: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>RequestTimeOut</name>
-                        <dataType>EpochTime</dataType>
-                        <semantics>Optional: Wallclock time. The timeout time is in seconds after 1 January 1970.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>StartAppointment</name>
-                        <dataType>AppointmentStruct</dataType>
-                        <semantics>Optional: The time and location of the start of the service delivery.</semantics>
-                    </parameter>
-                    <interactionClass>
-                        <name>RequestTransport</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>A request for a Transport service. 
-Use a RequestTransport interaction to initiate a transport, embarkment or disembarkment of a platform.</semantics>
-                        <parameter>
-                            <name>TransportData</name>
-                            <dataType>ArrayOfUuid</dataType>
-                            <semantics>Required: Entities to be transported.</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>EndAppointment</name>
-                            <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for disembarkment.</semantics>
-                        </parameter>
-                    </interactionClass>
-                </interactionClass>
-                <interactionClass>
-                    <name>OfferService</name>
-                    <sharing>Neither</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>The OfferService is a response to a RequestService. Subclasses of this interaction for specific types of offers contain a more detailed description of the offer. This information may include when, where, and how the service can be delivered.</semantics>
-                    <parameter>
-                        <name>OfferId</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Unique offer identifier.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>ProviderEntity</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Unique identifier of a simulated entity intended to perform the service. If not provided, the entity performing the service is considered unknown.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>OfferType</name>
-                        <dataType>OfferTypeEnum32</dataType>
-                        <semantics>Optional: Specifies if the offer is Negative (no Offer), Positive (Complete as requested) or Modified (not the same as requested).</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>OfferTimeOut</name>
-                        <dataType>EpochTime</dataType>
-                        <semantics>Optional: The system wallclock time (in seconds after 1 January 1970) when the offer stops being valid. If not provided, the offer valid until otherwise specified.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>StartAppointment</name>
-                        <dataType>AppointmentStruct</dataType>
-                        <semantics>Optional: Time and location of the start of service delivery.</semantics>
-                    </parameter>
-                    <interactionClass>
-                        <name>OfferTransport</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>An Offer for Transport support. The OfferTransport interaction shall be sent by the service-providing federate in response to a RequestTransport interaction.</semantics>
-                        <parameter>
-                            <name>TransportData</name>
-                            <dataType>ArrayOfUuid</dataType>
-                            <semantics>Required: Entities to be transported.</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>EndAppointment</name>
-                            <dataType>AppointmentStruct</dataType>
-                            <semantics>Optional: Location and time for disembarkment.</semantics>
-                        </parameter>
-                        <parameter>
-                            <name>Transporters</name>
-                            <dataType>ArrayOfUuid</dataType>
-                            <semantics>Optional: Platform list with transporters</semantics>
-                        </parameter>
-                    </interactionClass>
-                </interactionClass>
-                <interactionClass>
-                    <name>TransportDestroyedEntities</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Used by a service provider to update information on the state of entities under transport.</semantics>
-                    <parameter>
-                        <name>DestroyedObjects</name>
-                        <dataType>ArrayOfUuid</dataType>
-                        <semantics>Required: Identifies the objects that have been destroyed during transport.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>TransportDisembarkmentStatus</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Is sent by the service provider federate, to inform the service consumer of the disembarkment state, after the ServiceStarted interaction</semantics>
-                    <parameter>
-                        <name>DisembarkedObjects</name>
-                        <dataType>ArrayOfUuid</dataType>
-                        <semantics>Required: References to disembarked entities. Updated during disembarkment.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>TransportUnitIdentifier</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: UUID of the entity performing the transport.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>TransportEmbarkmentStatus</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Is sent by the service provider federate, to inform the service consumer of the embarkment state, after the ServiceStarted interaction</semantics>
-                    <parameter>
-                        <name>EmbarkedObjects</name>
-                        <dataType>ArrayOfUuid</dataType>
-                        <semantics>Required: List of entities currently embarked. Updated during embarkment.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>TransportUnitIdentifier</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Refers to the entity providing the transport.</semantics>
-                    </parameter>
-                </interactionClass>
-            </interactionClass>
-            <interactionClass>
                 <name>ETR_Task</name>
                 <interactionClass>
                     <name>RequestTask</name>
@@ -278,7 +113,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics></semantics>
+                        <semantics>Tasks a simulated entity to resupply another simulated entity (receiving). Successful task completion means that supplies are reduced from the tasked entity and increased at the receiving entity.</semantics>
                         <parameter>
                             <name>TaskParameters</name>
                             <dataType>ResupplyTaskStruct</dataType>
@@ -290,7 +125,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics></semantics>
+                        <semantics>Tasks a simulated entity to perform repair activity on another simulated entity (receiving). Successful completion of the task means that the damage state of the receiving entity is improved.</semantics>
                         <parameter>
                             <name>TaskParameters</name>
                             <dataType>RepairTaskStruct</dataType>
@@ -302,7 +137,7 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics></semantics>
+                        <semantics>Tasks a simulated entity (transporter entity) to transport another simulated entity (transported entity). Successful completion of the task means that (1) the transport and transported entity moves towards a specified pick-up point, (2) the transported entity mounts the transport, (3) the transport moves according to route and at the final waypoint (4) the transported entity dismounts the transport.</semantics>
                         <parameter>
                             <name>TaskParameters</name>
                             <dataType>TransportTaskStruct</dataType>
@@ -314,67 +149,34 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
             <interactionClass>
                 <name>ETR_SimCon</name>
                 <interactionClass>
-                    <name>SetSupplies</name>
-                    <sharing>Neither</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics></semantics>
-                    <parameter>
-                        <name>Supplies</name>
-                        <dataType>SupplyStruct</dataType>
-                        <semantics>New quatity of a specific supply.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
                     <name>SetResourceStatus</name>
-                    <sharing>Neither</sharing>
+                    <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics></semantics>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
                     <parameter>
                         <name>ResourceStatus</name>
                         <dataType>ResourceStatusStruct</dataType>
-                        <semantics></semantics>
+                        <semantics>Status of a specific type of resource.</semantics>
                     </parameter>
                 </interactionClass>
-            </interactionClass>
-            <interactionClass>
-                <name>ETR_Report</name>
+                <interactionClass>
+                    <name>SetSupplies</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
+                    <parameter>
+                        <name>Supplies</name>
+                        <dataType>SupplyStatusStruct</dataType>
+                        <semantics>New quantity of a specific supply.</semantics>
+                    </parameter>
+                </interactionClass>
             </interactionClass>
         </interactionClass>
     </interactions>
     <dataTypes>
         <enumeratedDataTypes>
-            <enumeratedData>
-                <name>OfferTypeEnum32</name>
-                <representation>HLAinteger32BE</representation>
-                <semantics>Type of the offer (With restriction, positive, negative)</semantics>
-                <enumerator>
-                    <name>RequestAcknowledgeWithRestriction</name>
-                    <value>0</value>
-                </enumerator>
-                <enumerator>
-                    <name>RequestAcknowledgePositive</name>
-                    <value>1</value>
-                </enumerator>
-                <enumerator>
-                    <name>RequestAcknowledgeNegative</name>
-                    <value>2</value>
-                </enumerator>
-            </enumeratedData>
-            <enumeratedData>
-                <name>TransferDirectionEnum32</name>
-                <representation>HLAinteger32BE</representation>
-                <semantics>Indicates the direction of flow of material or supplies during service delivery.</semantics>
-                <enumerator>
-                    <name>FromConsumer</name>
-                    <value>0</value>
-                </enumerator>
-                <enumerator>
-                    <name>FromProvider</name>
-                    <value>1</value>
-                </enumerator>
-            </enumeratedData>
             <enumeratedData>
                 <name>RepairTypeEnum16</name>
                 <representation>RPRunsignedInteger16BE</representation>
@@ -734,43 +536,13 @@ Use a RequestTransport interaction to initiate a transport, embarkment or disemb
                 </enumerator>
             </enumeratedData>
         </enumeratedDataTypes>
-        <arrayDataTypes>
-            <arrayData>
-                <name>ArrayOfRepairStruct</name>
-                <dataType>RepairStruct</dataType>
-                <cardinality>Dynamic</cardinality>
-                <encoding>HLAvariableArray</encoding>
-                <semantics>List of repair descriptions (equipment and type of repairs).</semantics>
-            </arrayData>
-            <arrayData>
-                <name>ArrayOfRepairTypeEnum</name>
-                <dataType>RepairTypeEnum16</dataType>
-                <cardinality>Dynamic</cardinality>
-                <encoding>HLAvariableArray</encoding>
-                <semantics>List of repair types</semantics>
-            </arrayData>
-        </arrayDataTypes>
+        <arrayDataTypes/>
         <fixedRecordDataTypes>
-            <fixedRecordData>
-                <name>RepairStruct</name>
-                <encoding>HLAfixedRecord</encoding>
-                <semantics>Repairs associated with a specific materiel</semantics>
-                <field>
-                    <name>MaterielId</name>
-                    <dataType>UUID</dataType>
-                    <semantics>UUID for the materiel.</semantics>
-                </field>
-                <field>
-                    <name>Repairs</name>
-                    <dataType>ArrayOfRepairTypeEnum</dataType>
-                    <semantics>List of the types of repair associated with the materiel.</semantics>
-                </field>
-            </fixedRecordData>
             <fixedRecordData>
                 <name>AppointmentStruct</name>
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>Date ; Time and Location of an appointment. 
-When date and time is set to zero (0), implies no date-time specification</semantics>
+When time is set to zero (0), implies as soon as possible.</semantics>
                 <field>
                     <name>DateTime</name>
                     <dataType>EpochTime</dataType>
@@ -785,9 +557,9 @@ When date and time is set to zero (0), implies no date-time specification</seman
             <fixedRecordData>
                 <name>RepairTaskStruct</name>
                 <encoding>HLAfixedRecord</encoding>
-                <semantics>Task-specific data for Repair task.</semantics>
+                <semantics>Task-specific data for Repair task. If receiving entity is a physical entity, the `ResourceType`, and `QuantityToRepair` fields are ignored.</semantics>
                 <field>
-                    <name>EntityId</name>
+                    <name>ReceivingEntity</name>
                     <dataType>UUID</dataType>
                     <semantics>Reference to the entity receiving the repairs.</semantics>
                 </field>
@@ -817,13 +589,13 @@ When date and time is set to zero (0), implies no date-time specification</seman
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>Task-specific data for Resupply task.</semantics>
                 <field>
-                    <name>EntityId</name>
+                    <name>ReceivingEntity</name>
                     <dataType>UUID</dataType>
                     <semantics>Reference to the entity to receive supplies.</semantics>
                 </field>
                 <field>
                     <name>Supplies</name>
-                    <dataType>ArrayOfSupplyStruct</dataType>
+                    <dataType>ArrayOfSupplyStatus</dataType>
                     <semantics>Type and quantity of supplies to be transferred.</semantics>
                 </field>
             </fixedRecordData>
@@ -831,6 +603,21 @@ When date and time is set to zero (0), implies no date-time specification</seman
                 <name>TransportTaskStruct</name>
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>Task-specific data for Transport task.</semantics>
+                <field>
+                    <name>TransportedEntity</name>
+                    <dataType>UUID</dataType>
+                    <semantics>The entity to transport.</semantics>
+                </field>
+                <field>
+                    <name>PickUp</name>
+                    <dataType>AppointmentStruct</dataType>
+                    <semantics>The time and location of the pickup of the entity.</semantics>
+                </field>
+                <field>
+                    <name>Route</name>
+                    <dataType>ArrayOfWaypoints</dataType>
+                    <semantics>Transportation route.</semantics>
+                </field>
             </fixedRecordData>
         </fixedRecordDataTypes>
         <variantRecordDataTypes>
@@ -852,7 +639,7 @@ When date and time is set to zero (0), implies no date-time specification</seman
     </dataTypes>
     <notes>
         <note>
-            <label>netn-log_1</label>
+            <label>netn-log_2</label>
             <semantics>* FOM Modules NETN-SCP-BASE v1.1.3, NETN-Supply v1.1.2, NETN-Storage v1.2.2, NETN-Repair v1.2.1 and NETN-Transport v1.1.2 merged into new module NETN-LOG 
 * Prefix dropped from all interaction classes except interaction class LOG_Service 
 * Added note for `modelIdentification` to provide additional description of FOM module 
@@ -916,17 +703,48 @@ When date and time is set to zero (0), implies no date-time specification</seman
 * Changed datatype for `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16`</semantics>
         </note>
         <note>
-            <label>netn-log_2</label>
-            <semantics>* Changed parameter `ServicID`of interaction-class `LOG_Service` to `EventId` 
-* Replaced all `WorldLocationStruct` with `LocationStruct` 
-* Replaced all `ArrayOfWorldLocationStruct` with `LocationStructArray` 
-* Changed datatype `TransactionId` to `UUID` 
-* Replaced all use of Array datatype `NETN_ArrayOfSupplyStruct` with `SupplyStructArray` 
-* Added datatype `RepairTypeEnum16` for RPR-FOM v2 and RPR-FOM v3 compatibility 
-* Replaced all `EpochTimeSecInt64` datatype with `EpochTime`</semantics>
+            <label>netn-log_3</label>
+            <semantics>* MAJOR UPDATE TO USE NETN-ETR Patterns
+* Add dependency on NETN-ETR
+* Replaced all interaction classes
+* Removed datatype `OfferTypeEnum32`
+* Removed datatype `TransferDirectionEnum32`
+* Removed datatype `RepairStruct`
+* Removed datatype `ArrayOfRepairStruct`
+* Removed datatype `ArrayOfRepairTypeEnumStruct`
+
+* Updated datatype `AppointmentStruct`
+
+* Extended`AggregateEntity` object class
+* Added `AggregateEntity` attribute `Supplies`
+* Added `AggregateEntity` attribute `Equipment`
+* Added `AggregateEntity` attribute `Personnel`
+
+* Extended NETN-ETR `RequestTask`
+* Added `RequestTask` interaction subclass `Resupply`
+* Added `RequestTask` interaction subclass `Repair`
+* Added `RequestTask` interaction subclass `Transport`
+
+* Extended NETN-ETR `SimCon`
+* Added `SimCon` interaction subclass `SetResourceStatus`
+* Added `SimCon` interaction subclass `SetSupplies`
+
+* Added datatype `RepairTaskStruct`
+* Added datatype `ResupplyTaskStruct`
+* Added datatype `TransportTaskStruct`
+* Added datatype `RepairTypeEnum16`
+* Added enumerators to NETN-ETR datatype `TaskTypeEnum`
+* Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord`
+* Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`
+
+
+
+
+
+</semantics>
         </note>
         <note>
-            <label>netn-log_3</label>
+            <label>netn-log_1</label>
             <semantics>In NETN FOM v 2.0 this module was replaced with several FOM modules to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
  
 These modules were initially developed by MSG-106 and prepared for release by MSG-134. 
@@ -938,224 +756,120 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * NETN-Repair v 1.2.1 
 * NETN-Transport v1.1.2</semantics>
         </note>
+       
         <note>
             <label>Overview</label>
-            <semantics>## Overview 
- 
-Materiel is classified as: 
-* Consumable Supplies 
-* Ammunition 
-* Medical materiel 
-* Spare parts 
-* Fuel 
-* Water 
-* Food 
-* Non-consumable Entities 
-* Platforms 
-* Humans 
-* Units 
-* Equipment 
- 
-The unit of consumable supplies includes the number of items, cubic meters for liquid bulk goods, and kilograms for solid bulk goods. The type of packaging, e.g. fuel in canisters or water in bottles, is not included. The SISO-REF-010 standard enumerates available kinds of supplies, and additional supply types can be defined and documented in federation-specific agreements.</semantics>
-        </note>
-        <note>
-            <label>Logistics_Service_Pattern</label>
-            <semantics>## Logistics Service Pattern 
- 
-All NETN-LOG services use a standard Logistics Service Pattern that includes negotiation, delivery, and acceptance of logistics services. Federates participating in the logistics service events are either Service Consumers or Service Providers. 
- 
-The pattern defines sequences of service events between federates as subclasses of the `LOG_Interaction` interaction class. Although the interaction pattern for different types of services may vary slightly, the basic principles and interaction sequences are the same. 
- 
- 
-The interactions defined for the Logistics Service Pattern are extended by subclassing to provide more information for specific logistics services. 
- 
- 
-```mermaid 
-sequenceDiagram 
-autonumber 
-Consumer-&gt;&gt;Provider: RequestService 
-Provider-&gt;&gt;Consumer: OfferService 
-Consumer-&gt;&gt;Provider: AcceptOffer 
-Consumer-&gt;&gt;Provider: ReadyToReceiveService 
-Provider-&gt;&gt;Consumer: ServiceStarted 
-Provider-&gt;&gt;Consumer: ServiceCompleted 
-Consumer-&gt;&gt;Provider: ServiceReceived 
-``` 
- 
- 
-The logistics service pattern consists of three phases: 
- 
-**Service Negotiation** 
- 
-1. A consumer federate initiates service negotiation by sending a `RequestService` interaction. A unique `EventId` and a reference to a `ConsumerEntity` are required parameters. A reference to a specific `ProviderEntity` and a system wall-clock time for when offers are expected `RequestTimeOut` are optional. 
- 
-Requests for specific types of services are defined as subclasses to `RequestService` and include parameters for detailing the requirements of the request. These requests may consist of information about when, where and how the service should be delivered. 
- 
-If the time, specified in the `RequestTimeOut` parameter, pass, without an offer being received, the consumer shall cancel the service using a`CancelRequest` interaction. An `EventId` parameter is required and indicates which service to cancel. After the cancellation, the logistics service pattern ends. 
- 
-2. Offers are sent by potential providers using an `OfferService` interaction with a required parameter `EventId` referencing the requested service and a unique `OfferId`. Using the optional parameter `OfferType`, the provider indicates if the offer matches the request, if the offer is modified, or if the provider is not able to make an offer. Optional parameters for `ProvidingEntity` and `OfferTimeOut` can be provided. 
- 
-The provider can cancel an offer using a `CancelOffer` interaction until the offer is accepted. The required parameters are the `EventId` and `OfferId`. 
- 
-5. The consumer accepts an offer using an `AcceptOffer` interaction or rejects an offer from a provider using `RejectOffer`. 
- 
-Both consumer and provider can cancel the service before service delivery has started using `CancelRequest` with `EventId` and an optional `Reason` parameter. If cancelled, the logistics pattern will also terminate. 
- 
-**Service Delivery** 
- 
-4.  The consumer sends a `ReadyToReceiveService` interaction with an `EventId` parameter to indicate readiness to start receiving the service. I.e., all necessary preparations are in place to allow the `ConsumingEntity` to get the service. 
- 
-5. The provider sends a `ServiceStarted` interaction with the `EventId` parameter to indicate that the delivery of the requested service has started. All preparations and a `ReadyToReceiveService` notification from the consumer must be complete beginning the service delivery. 
- 
-Both consumer and provider can cancel the service during service delivery using `CancelRequest` with `RequestId` and an optional `Reason` parameter. Cancellation during delivery will cause the logistics pattern to continue with Service Acceptance immediately even if not all of the agreed service is delivered. 
- 
-**Service Acceptance** 
- 
-6. On service completion or cancellation, the provider sends a `ServiceComplete` interaction with any additional parameters specifying the completeness of the delivery, e.g. if only part of a service was delivered. 
- 
-7. On acceptance of service delivery, the consumer sends a `ServiceReceived` interaction. 
+            <semantics>## Overview
+
+`Supplies`, `Equipment` and `Personnel` are attributes of the `AggregateEntity` object class.
  
 ### Transfer of Supplies 
- 
-Federates can have the capability to provide or store supplies. These offered services can involve the transfer of materiel between a `ConsumerEntity` and `ProviderEntity` modelled in two different federates. The transfer of supplies can differ in terms of the flow of materiel between consumer and provider. 
- 
-The supply service is based on the general Logistics Services Pattern but with some adaptations. 
- 
+
+OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions.
+
+The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction.
+
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
-Consumer-&gt;&gt;Provider: RequestSupply 
-Provider-&gt;&gt;Consumer: OfferSupply 
-Consumer-&gt;&gt;Provider: AcceptOffer 
-Consumer-&gt;&gt;Provider: ReadyToReceiveService 
-Provider-&gt;&gt;Consumer: ServiceStarted 
-Provider-&gt;&gt;Consumer: SupplyComplete 
-Consumer-&gt;&gt;Provider: ServiceReceived 
+autonumber
+Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity)
+Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started)
+Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSupplies(ReceiverEntity) 
+Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Complete)
+
 ``` 
  
  
-1. The consumer sends a `RequestSupply` interaction to request supplies, including the amount and type of supplies as a `SuppliesData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery. The `TransferDirection` parameter indicates if the transfer of supplies flows from consumer to provider or from provider to consumer. 
+1. A Tasking Federate sends a `Resupply` task with references to the supplier entity and the receiver entity.
  
-2. An `OfferSupply` interaction is used by potential providers to offer supplies. The `SuppliesData` parameter specifies the amount and type of supplies included in the offer. The provider can also specify an alternate `StartAppointment` in the offer. 
+2. The Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer.
  
-3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`. 
+3. During the transfer, update the state of the supplier entity continuously or once after the transfer. Use the `SetSupplies` interaction to request an update of supplies for the receiver entity.
  
-4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that supply delivery can start. 
- 
-5. The `ServiceStarted` interaction is sent by the provider to notify that the transfer of supplies has started. 
-If a `CancelRequest` occurs during the delivery of supply services, the actual amounts transferred can be less than agreed. 
- 
-6. The provider sends a `SupplyComplete` interaction when the transfer of supplies is completed or after cancellation. The actual amount of supplies transferred is provided as `SuppliesData` and should, in the typical case, be the same amounts as agreed in the offer. 
- 
-7. The consumer sends a `ServiceReceived` interaction as a response to a `SupplyComplete` from the provider. 
+4. On completion, the Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure.
  
 ### Repair 
+
+OPTIONAL: Use the `Repair` interaction to initiate a task for an entity to repair (RepairingEntity) another entity(ReceiverEntity). The `Repair` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include repair task definitions.
+
+Use the `SetResourceStatus` simulation control interaction to model the repair process by attempting to set the receiver entity's resources status.
  
-Simulation of repair of non-consumable materiel is possible. E.g. tow-trucks move damaged platforms to a maintenance facility for repair, or a unit capable of providing repair services can move to the location of a damaged platform to deliver repair services. 
  
 ```mermaid 
-sequenceDiagram 
-autonumber 
-Consumer-&gt;&gt;Provider: RequestRepair 
-Provider-&gt;&gt;Consumer: OfferRepair 
-Consumer-&gt;&gt;Provider: AcceptOffer 
-Consumer-&gt;&gt;Provider: ReadyToReceiveService 
-Provider-&gt;&gt;Consumer: ServiceStarted 
-Provider-&gt;&gt;Consumer: RepairComplete 
-Consumer-&gt;&gt;Provider: ServiceReceived 
+sequenceDiagram
+autonumber
+Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity)
+Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started)
+Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
+Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Completed)
 ``` 
  
  
-1. The consumer sends a `RequestRepair` interaction to request repair service, including the materiel to be repaired and the type of repair as the `RepairData` parameter. An optional parameter `StartAppointment` specifies when and where to start the service delivery. 
+1. A Tasking Federate sends a `Repair` task referencing the repairing entity and the receiver entity.
  
-2. Potential providers of repair services send `OfferRepair` interactions. The `RepairData` parameter specifies the materiel and the type of repair included in the offer. The provider can also specify an alternate `StartAppointment` in the offer. 
+2. The Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer.
  
-3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`. 
+3. During the repair, use the `SetResourcesStatus` interaction to request an update of a specific type of resource modelled for the receiver entity.
  
-4. The `ReadyToReceiveService` interaction is used by a consumer to indicate that repairs can start. 
- 
-5. The `ServiceStarted` interaction is sent by the provider to notify that the repair has begun. 
-If a `CancelRequest` occurs during the delivery of repair services, the completed repairs can be different from what was agreed. 
- 
-6. On completion or cancellation, the service provider sends a `RepairComplete` interaction. The completed repairs are provided as `RepairData` and should, in the typical case, be the same as agreed in the offer. 
- 
-7. The consumer sends a `ServiceReceived` interaction as a response to a `RepairComplete` from the provider. 
+4. On completion, the Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure.
+
  
 ### Transport 
  
-A logistics transport service is useful when there is a need to move non-consumable entities such as platforms, units, humans or other battlefield objects using means of transportation simulated in another federated system. 
+A transport task is practical when there is a need to move non-consumable entities such as equipment, personnel or units using transportation simulated in another federate.
  
-The transport service consists of the following phases in which the change of control over the entities differs: 
+The transport task consists of the following phases:
  
-* Embarkment is the process of mounting, loading and storing entities in, e.g. a truck or an aggregate unit. Embarkment transfers control over the entities from the service consumer to the transport service provider. 
+1. Embarkment is mounting, loading and storing simulated entities in, e.g. a truck or an aggregate unit. Embarkment takes place at a designated pick-up point. In case of limitations in the transportation capacity, the simulation entity can not embark. An `AggregatedEntity` representation of the transported entity may require a NETN-MRM disaggregation or divide action before embarking/mounting to fit on the transport.
  
-* Transport is the process of the transport moving entities from the point of departure to their destination. The provider of the transport service has control over the entities during transport. If required, the change of control over the entities can include a Transfer of Modelling Responsibility (NETN TMR). 
+2. After entity embarkation, the transporting entity moves according to a specified route to its destination.
  
-* Disembarkment is the process of dismounting or unloading entities. Control over materiel is transferred from the transport service provider back to the service consumer. 
+3. At the destination, disembarkment takes place.
+
  
  
  
 ```mermaid 
-sequenceDiagram 
-autonumber 
-Consumer-&gt;&gt;Provider: RequestTransport 
-Provider-&gt;&gt;Consumer: OfferTransport 
-Consumer-&gt;&gt;Provider: AcceptOffer 
-Consumer-&gt;&gt;Provider: ReadyToReceiveService 
-Provider-&gt;&gt;Consumer: ServiceStarted 
- 
-loop Embarkment 
-Provider-&gt;&gt;Consumer: TransportEmbarkmentStatus 
-end 
- 
-loop Transport 
-Provider-&gt;&gt;Consumer: TransportDestroyedEntities 
-end 
- 
-loop Disembarkment 
-Provider-&gt;&gt;Consumer: TransportDisembarkmentStatus 
-end 
- 
-Provider-&gt;&gt;Consumer: ServiceComplete 
-Consumer-&gt;&gt;Provider: ServiceReceived 
+sequenceDiagram
+autonumber
+
+Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity)
+Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started)
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Mount(TransportedEntity, TransportEntity)
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started)
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed)
+
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Dismount(TransportedEntity, TransportEntity)
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started)
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed)
+
+Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Completed)
 ``` 
  
-Negotiation, delivery, and acceptance of transport service are part of the Logistics Service Pattern: 
  
-1. To request a transport, the consumer sends a `RequestTransport` interaction that includes `TransportData` information specifying the entities to transport. The `StartAppointment` provides information on when and where the embarkment will start. If the `EndAppointment` is provided, the service includes the transport between the specified Start and End locations and subsequent disembarkment of specified entities. 
+1. A Tasking Federate sends a `Transport` task referencing the transport entity and the transported entity. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up.
+
+2. The Transport Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transport task.
  
-2. An `OfferTransport` message is used by potential service providers to make an offer for transport. The offer includes information regarding which of the requested entities are part of the transportation and when it will take place. The offered `TransportData` information can potentially differ from the requested `TransportData`. The offer also includes `Transporters` - a list of entities that will conduct the transport. 
- 
-3. The consumer accepts an offer using `AcceptOffer` or rejects an offer from a provider using `RejectOffer`. 
- 
-4. If a `StartAppointment` exists, all entities to be transported must be at the agreed embarkment location before sending a `ReadyToReceiveService` message. If no `StartAppointment` exists, the consumer can send a `ReadyToReceiveService` immediately. 
- 
-5. The delivery of the transport service starts when the provider sends a `ServiceStarted` message. 
- 
-6. During embarkment, the Provider informs the service consumer about the progress using `TransportEmbarkmentStatus` interactions identifying which entities are embarked on which transport. 
- 
-7. During transport, the provider can inform the consumer about entities lost or destroyed using the `TransportDestroyedEntities` interaction. The `Status` attribute of embarked entities is `Inactive` during transport. 
- 
-8. During disembarkment, the provider sends `TransportDisembarkmentStatus` interactions to inform the consumer which entities have disembarked from which transport. The location of disembarked entities should be the location of `EndAppointment` and `Status` is set to `Active`. 
- 
-9. The provider sends a `ServiceComplete` interaction after transport is complete and after any disembarkment of entities. 
- 
-10. The consumer sends a `ServiceReceived` as a response to the `ServiceComplete` interaction. 
- 
-If either consumer or provider sends a `CancelRequest`, before `ReadyToReceiveService` and `ServiceStarted`, then the transport service delivery will not start, and all involved entities remain in their current state. 
- 
-Sending a `CancelRequest` interaction during delivery of the service, but before starting to disembark, results in all entities already embarked or partially embarked remaining on the transport. Initiate a new transport service to continue embarking, or to perform transport and disembarkment with the already embarked entities. 
- 
-Sending a `CancelRequest` during delivery of the service, after starting to disembark, all entities not already disembarked or partially disembarked remain on the transport. It is possible to initiate a new transport service with only an `EndAppointment` and list of the remaining entities to disembark. 
- 
-#### Bridgehead 
- 
-If an `Aggregate` entity is too large for transport, e.g. size of a unit requires multiple transporting entities, then the service consumer may require that the unit is divided before requesting transport, e.g. using the NETN-MRM FOM Module divide pattern. A divided entity can be transported and re-merged with an `Aggregate` entity that represents a bridgehead on the disembarkment location. 
- 
+3. At the pick-up location, the Transport Entity Federate initiates a NETN-ETR `Mount` task for the transported entity to embark/mount on the transport.
+
+4. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the embarkation/mounting process.
+
+5. When the embarkation/mounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. Then, the transport entity conducts its movement according to the transport route. 
+
+6. When at the final destination of the transport route, the Transport Entity Federate initiates a NETN-ETR `Dismount` task for the transported entity to disembark/dismount on the transport.
+
+
+7. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the disembarkation/dismounting process.
+
+8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. 
+
+9. Finally, the Transport Entity Federate sends a `TaskStatusUpdate` to indicate transport task success or failure.
+
 #### Initial Transport State 
  
-A scenario can start with some entities already embarked on transports. The attribute `EmbeddedUnitList` of transporting entities identifies which units are already embarked by referencing their UniqueId (UUID). Scenario initialization includes publishing embarked units, and their `Status` attribute set to `Inactive`.</semantics>
+A scenario can start with some entities already embarked on transports. Use the simulated entity attribute `HostEntity` to identify a potential transporting entity. </semantics>
         </note>
     </notes>
 </objectModel>
