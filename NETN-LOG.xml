@@ -144,33 +144,30 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                             <semantics>Required: Task parameters</semantics>
                         </parameter>
                     </interactionClass>
-                </interactionClass>
-            </interactionClass>
-            <interactionClass>
-                <name>ETR_SimCon</name>
-                <interactionClass>
-                    <name>SetResourceStatus</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
-                    <parameter>
-                        <name>ResourceStatus</name>
-                        <dataType>ResourceStatusStruct</dataType>
-                        <semantics>Status of a specific type of resource.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>SetSupplies</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
-                    <parameter>
-                        <name>Supplies</name>
-                        <dataType>SupplyStatusStruct</dataType>
-                        <semantics>New quantity of a specific supply.</semantics>
-                    </parameter>
+                    <interactionClass>
+                        <name>SetResourceStatus</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
+                        <parameter>
+                            <name>TaskParameters</name>
+                            <dataType>ResourceStatusStruct</dataType>
+                            <semantics>Status of a specific type of resource.</semantics>
+                        </parameter>
+                    </interactionClass>
+                    <interactionClass>
+                        <name>SetSupplies</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
+                        <parameter>
+                            <name>TaskParameters</name>
+                            <dataType>SupplyStatusStruct</dataType>
+                            <semantics>New quantity of a specific supply.</semantics>
+                        </parameter>
+                    </interactionClass>
                 </interactionClass>
             </interactionClass>
         </interactionClass>
@@ -704,44 +701,38 @@ When time is set to zero (0), implies as soon as possible.</semantics>
         </note>
         <note>
             <label>netn-log_3</label>
-            <semantics>* MAJOR UPDATE TO USE NETN-ETR Patterns
-* Add dependency on NETN-ETR
-* Replaced all interaction classes
-* Removed datatype `OfferTypeEnum32`
-* Removed datatype `TransferDirectionEnum32`
-* Removed datatype `RepairStruct`
-* Removed datatype `ArrayOfRepairStruct`
-* Removed datatype `ArrayOfRepairTypeEnumStruct`
-
-* Updated datatype `AppointmentStruct`
-
-* Extended`AggregateEntity` object class
-* Added `AggregateEntity` attribute `Supplies`
-* Added `AggregateEntity` attribute `Equipment`
-* Added `AggregateEntity` attribute `Personnel`
-
-* Extended NETN-ETR `RequestTask`
-* Added `RequestTask` interaction subclass `Resupply`
-* Added `RequestTask` interaction subclass `Repair`
-* Added `RequestTask` interaction subclass `Transport`
-
-* Extended NETN-ETR `SimCon`
-* Added `SimCon` interaction subclass `SetResourceStatus`
-* Added `SimCon` interaction subclass `SetSupplies`
-
-* Added datatype `RepairTaskStruct`
-* Added datatype `ResupplyTaskStruct`
-* Added datatype `TransportTaskStruct`
-* Added datatype `RepairTypeEnum16`
-* Added enumerators to NETN-ETR datatype `TaskTypeEnum`
-* Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord`
-* Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`
-
-
-
-
-
-</semantics>
+            <semantics>* MAJOR UPDATE TO USE NETN-ETR Patterns 
+* Add dependency on NETN-ETR 
+* Replaced all interaction classes 
+* Removed datatype `OfferTypeEnum32` 
+* Removed datatype `TransferDirectionEnum32` 
+* Removed datatype `RepairStruct` 
+* Removed datatype `ArrayOfRepairStruct` 
+* Removed datatype `ArrayOfRepairTypeEnumStruct` 
+ 
+* Updated datatype `AppointmentStruct` 
+ 
+* Extended`AggregateEntity` object class 
+* Added `AggregateEntity` attribute `Supplies` 
+* Added `AggregateEntity` attribute `Equipment` 
+* Added `AggregateEntity` attribute `Personnel` 
+ 
+* Extended NETN-ETR `RequestTask` 
+* Added `RequestTask` interaction subclass `Resupply` 
+* Added `RequestTask` interaction subclass `Repair` 
+* Added `RequestTask` interaction subclass `Transport` 
+ 
+* Extended NETN-ETR `SimCon` 
+* Added `SimCon` interaction subclass `SetResourceStatus` 
+* Added `SimCon` interaction subclass `SetSupplies` 
+ 
+* Added datatype `RepairTaskStruct` 
+* Added datatype `ResupplyTaskStruct` 
+* Added datatype `TransportTaskStruct` 
+* Added datatype `RepairTypeEnum16` 
+* Added enumerators to NETN-ETR datatype `TaskTypeEnum` 
+* Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord` 
+* Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`</semantics>
         </note>
         <note>
             <label>netn-log_1</label>
@@ -756,120 +747,119 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * NETN-Repair v 1.2.1 
 * NETN-Transport v1.1.2</semantics>
         </note>
-       
         <note>
             <label>Overview</label>
-            <semantics>## Overview
-
-`Supplies`, `Equipment` and `Personnel` are attributes of the `AggregateEntity` object class.
+            <semantics>## Overview 
+ 
+`Supplies`, `Equipment` and `Personnel` are attributes of the `AggregateEntity` object class. 
  
 ### Transfer of Supplies 
-
-OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions.
-
-The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction.
-
+ 
+OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions. 
+ 
+The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction. 
+ 
  
 ```mermaid 
 sequenceDiagram 
-autonumber
-Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity)
-Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started)
+autonumber 
+Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
+Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSupplies(ReceiverEntity) 
-Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Complete)
-
+Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Complete) 
+ 
 ``` 
  
  
-1. A Tasking Federate sends a `Resupply` task with references to the supplier entity and the receiver entity.
+1. A Tasking Federate sends a `Resupply` task with references to the supplier entity and the receiver entity. 
  
-2. The Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer.
+2. The Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer. 
  
-3. During the transfer, update the state of the supplier entity continuously or once after the transfer. Use the `SetSupplies` interaction to request an update of supplies for the receiver entity.
+3. During the transfer, update the state of the supplier entity continuously or once after the transfer. Use the `SetSupplies` interaction to request an update of supplies for the receiver entity. 
  
-4. On completion, the Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure.
+4. On completion, the Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure. 
  
 ### Repair 
-
-OPTIONAL: Use the `Repair` interaction to initiate a task for an entity to repair (RepairingEntity) another entity(ReceiverEntity). The `Repair` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include repair task definitions.
-
-Use the `SetResourceStatus` simulation control interaction to model the repair process by attempting to set the receiver entity's resources status.
+ 
+OPTIONAL: Use the `Repair` interaction to initiate a task for an entity to repair (RepairingEntity) another entity(ReceiverEntity). The `Repair` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include repair task definitions. 
+ 
+Use the `SetResourceStatus` simulation control interaction to model the repair process by attempting to set the receiver entity's resources status. 
  
  
 ```mermaid 
-sequenceDiagram
-autonumber
-Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity)
-Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started)
+sequenceDiagram 
+autonumber 
+Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
+Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
-Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Completed)
+Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Completed) 
 ``` 
  
  
-1. A Tasking Federate sends a `Repair` task referencing the repairing entity and the receiver entity.
+1. A Tasking Federate sends a `Repair` task referencing the repairing entity and the receiver entity. 
  
-2. The Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer.
+2. The Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer. 
  
-3. During the repair, use the `SetResourcesStatus` interaction to request an update of a specific type of resource modelled for the receiver entity.
+3. During the repair, use the `SetResourcesStatus` interaction to request an update of a specific type of resource modelled for the receiver entity. 
  
-4. On completion, the Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure.
-
+4. On completion, the Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure. 
+ 
  
 ### Transport 
  
-A transport task is practical when there is a need to move non-consumable entities such as equipment, personnel or units using transportation simulated in another federate.
+A transport task is practical when there is a need to move non-consumable entities such as equipment, personnel or units using transportation simulated in another federate. 
  
-The transport task consists of the following phases:
+The transport task consists of the following phases: 
  
-1. Embarkment is mounting, loading and storing simulated entities in, e.g. a truck or an aggregate unit. Embarkment takes place at a designated pick-up point. In case of limitations in the transportation capacity, the simulation entity can not embark. An `AggregatedEntity` representation of the transported entity may require a NETN-MRM disaggregation or divide action before embarking/mounting to fit on the transport.
+1. Embarkment is mounting, loading and storing simulated entities in, e.g. a truck or an aggregate unit. Embarkment takes place at a designated pick-up point. In case of limitations in the transportation capacity, the simulation entity can not embark. An `AggregatedEntity` representation of the transported entity may require a NETN-MRM disaggregation or divide action before embarking/mounting to fit on the transport. 
  
-2. After entity embarkation, the transporting entity moves according to a specified route to its destination.
+2. After entity embarkation, the transporting entity moves according to a specified route to its destination. 
  
-3. At the destination, disembarkment takes place.
-
+3. At the destination, disembarkment takes place. 
+ 
  
  
  
 ```mermaid 
-sequenceDiagram
-autonumber
-
-Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity)
-Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started)
-Transport Entity Federate-&gt;&gt;Transported Entity Federate: Mount(TransportedEntity, TransportEntity)
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started)
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed)
-
-Transport Entity Federate-&gt;&gt;Transported Entity Federate: Dismount(TransportedEntity, TransportEntity)
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started)
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed)
-
-Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Completed)
+sequenceDiagram 
+autonumber 
+ 
+Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity) 
+Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started) 
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Mount(TransportedEntity, TransportEntity) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed) 
+ 
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Dismount(TransportedEntity, TransportEntity) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed) 
+ 
+Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Completed) 
 ``` 
  
  
-1. A Tasking Federate sends a `Transport` task referencing the transport entity and the transported entity. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up.
-
-2. The Transport Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transport task.
+1. A Tasking Federate sends a `Transport` task referencing the transport entity and the transported entity. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up. 
  
-3. At the pick-up location, the Transport Entity Federate initiates a NETN-ETR `Mount` task for the transported entity to embark/mount on the transport.
-
-4. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the embarkation/mounting process.
-
+2. The Transport Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transport task. 
+ 
+3. At the pick-up location, the Transport Entity Federate initiates a NETN-ETR `Mount` task for the transported entity to embark/mount on the transport. 
+ 
+4. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the embarkation/mounting process. 
+ 
 5. When the embarkation/mounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. Then, the transport entity conducts its movement according to the transport route. 
-
-6. When at the final destination of the transport route, the Transport Entity Federate initiates a NETN-ETR `Dismount` task for the transported entity to disembark/dismount on the transport.
-
-
-7. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the disembarkation/dismounting process.
-
+ 
+6. When at the final destination of the transport route, the Transport Entity Federate initiates a NETN-ETR `Dismount` task for the transported entity to disembark/dismount on the transport. 
+ 
+ 
+7. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the disembarkation/dismounting process. 
+ 
 8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. 
-
-9. Finally, the Transport Entity Federate sends a `TaskStatusUpdate` to indicate transport task success or failure.
-
+ 
+9. Finally, the Transport Entity Federate sends a `TaskStatusUpdate` to indicate transport task success or failure. 
+ 
 #### Initial Transport State 
  
-A scenario can start with some entities already embarked on transports. Use the simulated entity attribute `HostEntity` to identify a potential transporting entity. </semantics>
+A scenario can start with some entities already embarked on transports. Use the simulated entity attribute `HostEntity` to identify a potential transporting entity.</semantics>
         </note>
     </notes>
 </objectModel>
