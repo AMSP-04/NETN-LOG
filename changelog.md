@@ -81,42 +81,36 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 
 ### v3.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0
 
-* MAJOR UPDATE TO USE NETN-ETR Patterns
-* Add dependency on NETN-ETR
-* Replaced all interaction classes
-* Removed datatype `OfferTypeEnum32`
-* Removed datatype `TransferDirectionEnum32`
-* Removed datatype `RepairStruct`
-* Removed datatype `ArrayOfRepairStruct`
-* Removed datatype `ArrayOfRepairTypeEnumStruct`
-
-* Updated datatype `AppointmentStruct`
-
-* Extended`AggregateEntity` object class
-* Added `AggregateEntity` attribute `Supplies`
-* Added `AggregateEntity` attribute `Equipment`
-* Added `AggregateEntity` attribute `Personnel`
-
-* Extended NETN-ETR `RequestTask`
-* Added `RequestTask` interaction subclass `Resupply`
-* Added `RequestTask` interaction subclass `Repair`
-* Added `RequestTask` interaction subclass `Transport`
-
-* Extended NETN-ETR `SimCon`
-* Added `SimCon` interaction subclass `SetResourceStatus`
-* Added `SimCon` interaction subclass `SetSupplies`
-
-* Added datatype `RepairTaskStruct`
-* Added datatype `ResupplyTaskStruct`
-* Added datatype `TransportTaskStruct`
-* Added datatype `RepairTypeEnum16`
-* Added enumerators to NETN-ETR datatype `TaskTypeEnum`
-* Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord`
+* MAJOR UPDATE TO USE NETN-ETR Patterns 
+* Add dependency on NETN-ETR 
+* Replaced all interaction classes 
+* Removed datatype `OfferTypeEnum32` 
+* Removed datatype `TransferDirectionEnum32` 
+* Removed datatype `RepairStruct` 
+* Removed datatype `ArrayOfRepairStruct` 
+* Removed datatype `ArrayOfRepairTypeEnumStruct` 
+ 
+* Updated datatype `AppointmentStruct` 
+ 
+* Extended`AggregateEntity` object class 
+* Added `AggregateEntity` attribute `Supplies` 
+* Added `AggregateEntity` attribute `Equipment` 
+* Added `AggregateEntity` attribute `Personnel` 
+ 
+* Extended NETN-ETR `RequestTask` 
+* Added `RequestTask` interaction subclass `Resupply` 
+* Added `RequestTask` interaction subclass `Repair` 
+* Added `RequestTask` interaction subclass `Transport` 
+ 
+* Extended NETN-ETR `SimCon` 
+* Added `SimCon` interaction subclass `SetResourceStatus` 
+* Added `SimCon` interaction subclass `SetSupplies` 
+ 
+* Added datatype `RepairTaskStruct` 
+* Added datatype `ResupplyTaskStruct` 
+* Added datatype `TransportTaskStruct` 
+* Added datatype `RepairTypeEnum16` 
+* Added enumerators to datatype `EntityControlActionEnum` 
+* Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord` 
 * Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`
-
-
-
-
-
-
 

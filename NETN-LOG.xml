@@ -4,7 +4,7 @@
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>3.0</version>
-        <modificationDate>2023-11-05</modificationDate>
+        <modificationDate>2023-11-19</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
         <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.</purpose>
@@ -105,18 +105,42 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>ETR_Task</name>
+                <name>SMC_EntityControl</name>
                 <interactionClass>
-                    <name>RequestTask</name>
+                    <name>Task</name>
                     <interactionClass>
-                        <name>Resupply</name>
+                        <name>SetSupplies</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Tasks a simulated entity to resupply another simulated entity (receiving). Successful task completion means that supplies are reduced from the tasked entity and increased at the receiving entity.</semantics>
+                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
                         <parameter>
                             <name>TaskParameters</name>
-                            <dataType>ResupplyTaskStruct</dataType>
+                            <dataType>SupplyStatusStruct</dataType>
+                            <semantics>New quantity of a specific supply.</semantics>
+                        </parameter>
+                    </interactionClass>
+                    <interactionClass>
+                        <name>SetResourceStatus</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
+                        <parameter>
+                            <name>TaskParameters</name>
+                            <dataType>ResourceStatusStruct</dataType>
+                            <semantics>Status of a specific type of resource.</semantics>
+                        </parameter>
+                    </interactionClass>
+                    <interactionClass>
+                        <name>Transport</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAreliable</transportation>
+                        <order>Receive</order>
+                        <semantics>Tasks a simulated entity (transporter entity) to transport another simulated entity (transported entity). Successful completion of the task means that (1) the transport and transported entity moves towards a specified pick-up point, (2) the transported entity mounts the transport, (3) the transport moves according to route and at the final waypoint (4) the transported entity dismounts the transport.</semantics>
+                        <parameter>
+                            <name>TaskParameters</name>
+                            <dataType>TransportTaskStruct</dataType>
                             <semantics>Required: Task parameters</semantics>
                         </parameter>
                     </interactionClass>
@@ -133,39 +157,15 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         </parameter>
                     </interactionClass>
                     <interactionClass>
-                        <name>Transport</name>
+                        <name>Resupply</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Tasks a simulated entity (transporter entity) to transport another simulated entity (transported entity). Successful completion of the task means that (1) the transport and transported entity moves towards a specified pick-up point, (2) the transported entity mounts the transport, (3) the transport moves according to route and at the final waypoint (4) the transported entity dismounts the transport.</semantics>
+                        <semantics>Tasks a simulated entity to resupply another simulated entity (receiving). Successful task completion means that supplies are reduced from the tasked entity and increased at the receiving entity.</semantics>
                         <parameter>
                             <name>TaskParameters</name>
-                            <dataType>TransportTaskStruct</dataType>
+                            <dataType>ResupplyTaskStruct</dataType>
                             <semantics>Required: Task parameters</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>SetResourceStatus</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
-                        <parameter>
-                            <name>TaskParameters</name>
-                            <dataType>ResourceStatusStruct</dataType>
-                            <semantics>Status of a specific type of resource.</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>SetSupplies</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
-                        <parameter>
-                            <name>TaskParameters</name>
-                            <dataType>SupplyStatusStruct</dataType>
-                            <semantics>New quantity of a specific supply.</semantics>
                         </parameter>
                     </interactionClass>
                 </interactionClass>
@@ -516,9 +516,9 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 </enumerator>
             </enumeratedData>
             <enumeratedData>
-                <name>TaskTypeEnum</name>
+                <name>EntityControlActionEnum</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics>Task types.</semantics>
+                <semantics>Control actions for entities..</semantics>
                 <enumerator>
                     <name>Resupply</name>
                     <value>601</value>
@@ -621,14 +621,14 @@ When time is set to zero (0), implies as soon as possible.</semantics>
             <variantRecordData>
                 <name>TaskDefinitionVariantRecord</name>
                 <discriminant>TaskType</discriminant>
-                <dataType>TaskTypeEnum</dataType>
+                <dataType>EntityControlActionEnum</dataType>
                 <encoding>HLAextendableVariantRecord</encoding>
                 <semantics>Variant record for task definition data.</semantics>
             </variantRecordData>
             <variantRecordData>
                 <name>TaskProgressVariantRecord</name>
                 <discriminant>TaskType</discriminant>
-                <dataType>TaskTypeEnum</dataType>
+                <dataType>EntityControlActionEnum</dataType>
                 <encoding>HLAextendableVariantRecord</encoding>
                 <semantics>Variant record for task progress data.</semantics>
             </variantRecordData>
@@ -730,7 +730,7 @@ When time is set to zero (0), implies as soon as possible.</semantics>
 * Added datatype `ResupplyTaskStruct` 
 * Added datatype `TransportTaskStruct` 
 * Added datatype `RepairTypeEnum16` 
-* Added enumerators to NETN-ETR datatype `TaskTypeEnum` 
+* Added enumerators to datatype `EntityControlActionEnum` 
 * Added alternatives to NETN-ETR datatype `TaskDefinitionVariantRecord` 
 * Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`</semantics>
         </note>
@@ -762,7 +762,7 @@ The transfer process is modelled by reducing the supplies of the supplier entity
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSupplies(ReceiverEntity) 
@@ -788,7 +788,7 @@ Use the `SetResourceStatus` simulation control interaction to model the repair p
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
 Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
@@ -822,7 +822,7 @@ The transport task consists of the following phases:
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
  
 Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity) 
 Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started) 
