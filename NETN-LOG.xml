@@ -109,30 +109,6 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 <interactionClass>
                     <name>Task</name>
                     <interactionClass>
-                        <name>SetSupplies</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
-                        <parameter>
-                            <name>TaskParameters</name>
-                            <dataType>SupplyStatusStruct</dataType>
-                            <semantics>New quantity of a specific supply.</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
-                        <name>SetResourceStatus</name>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAreliable</transportation>
-                        <order>Receive</order>
-                        <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
-                        <parameter>
-                            <name>TaskParameters</name>
-                            <dataType>ResourceStatusStruct</dataType>
-                            <semantics>Status of a specific type of resource.</semantics>
-                        </parameter>
-                    </interactionClass>
-                    <interactionClass>
                         <name>Transport</name>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
@@ -168,6 +144,30 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                             <semantics>Required: Task parameters</semantics>
                         </parameter>
                     </interactionClass>
+                </interactionClass>
+                <interactionClass>
+                    <name>SetResourceStatus</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
+                    <parameter>
+                        <name>TaskParameters</name>
+                        <dataType>ResourceStatusStruct</dataType>
+                        <semantics>Status of a specific type of resource.</semantics>
+                    </parameter>
+                </interactionClass>
+                <interactionClass>
+                    <name>SetSupplies</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.</semantics>
+                    <parameter>
+                        <name>TaskParameters</name>
+                        <dataType>SupplyStatusStruct</dataType>
+                        <semantics>New quantity of a specific supply.</semantics>
+                    </parameter>
                 </interactionClass>
             </interactionClass>
         </interactionClass>
@@ -762,7 +762,7 @@ The transfer process is modelled by reducing the supplies of the supplier entity
  
 ```mermaid 
 sequenceDiagram 
-autonumber
+autonumber 
 Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSupplies(ReceiverEntity) 
@@ -788,7 +788,7 @@ Use the `SetResourceStatus` simulation control interaction to model the repair p
  
 ```mermaid 
 sequenceDiagram 
-autonumber
+autonumber 
 Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
 Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
 Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
@@ -822,7 +822,7 @@ The transport task consists of the following phases:
  
 ```mermaid 
 sequenceDiagram 
-autonumber
+autonumber 
  
 Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity) 
 Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started) 
