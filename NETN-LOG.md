@@ -2,7 +2,7 @@
 # NETN-LOG
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2023-11-19|NETN-BASE|
+|3.0|2023-12-10|NETN-BASE|
 
 The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
 
@@ -131,12 +131,22 @@ A scenario can start with some entities already embarked on transports. Use the 
 
 ## Object Classes
 
-Note that inherited and dependency attributes are not included in the description of object classes.
-
 ```mermaid
-graph RL
-BaseEntity-->HLAobjectRoot
-AggregateEntity-->BaseEntity
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- BaseEntity
+HLAobjectRoot : CreationTime(NETN-BASE)
+HLAobjectRoot : UniqueId(NETN-BASE)
+BaseEntity <|-- AggregateEntity
+BaseEntity : EntityIdentifier(RPR-Base)
+BaseEntity : EntityType(RPR-Base)
+BaseEntity : Spatial(RPR-Base)
+AggregateEntity : Equipment
+AggregateEntity : Personnel
+AggregateEntity : Supplies
+AggregateEntity : AggregateState(RPR-Aggregate)
+AggregateEntity : Dimensions(RPR-Aggregate)
 ```
 
 ### AggregateEntity
@@ -145,50 +155,39 @@ A group of one or more separate objects that operate together as part of an orga
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|Supplies|ArrayOfSupplyStatus|Optional. The type and total quantities of supply holdings modelled by this entity.|
 |Equipment|ArrayOfResourceStatus|Optional. The total amount and status of equipment holdings represented by this entity.|
 |Personnel|ArrayOfResourceStatus|Optional. The total amount and status of all personnel holdings modelled by this entity.|
+|Supplies|ArrayOfSupplyStatus|Optional. The type and total quantities of supply holdings modelled by this entity.|
+|AggregateState<br/>(RPR-Aggregate)|AggregateStateEnum8|An indicator of the extent of association of objects form an operating group.| 
+|CreationTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
+|Dimensions<br/>(RPR-Aggregate)|DimensionStruct|The size of the area covered by the units in the aggregate.| 
+|EntityIdentifier<br/>(RPR-Base)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-Base)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-Base)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
 ## Interaction Classes
 
-Note that inherited and dependency parameters are not included in the description of interaction classes.
-
 ```mermaid
-graph RL
-SMC_EntityControl-->HLAinteractionRoot
-Task-->SMC_EntityControl
-SetSupplies-->Task
-SetResourceStatus-->Task
-Transport-->Task
-Repair-->Task
-Resupply-->Task
+classDiagram 
+direction LR
+HLAinteractionRoot <|-- SMC_EntityControl
+HLAinteractionRoot : ScenarioTime(NETN-BASE)
+HLAinteractionRoot : UniqueId(NETN-BASE)
+SMC_EntityControl <|-- Task
+SMC_EntityControl <|-- SetResourceStatus
+SMC_EntityControl <|-- SetSupplies
+SMC_EntityControl : Entity(NETN-SMC)
+Task <|-- Transport
+Task <|-- Repair
+Task <|-- Resupply
+Task : TaskId(NETN-ETR)
+Transport : TaskParameters
+Repair : TaskParameters
+Resupply : TaskParameters
+SetResourceStatus : ResourceStatus
+SetSupplies : SupplyStatus
 ```
-
-### SMC_EntityControl
-
-
-
-
-### Task
-
-
-
-
-### SetSupplies
-
-Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.
-
-|Parameter|Datatype|Semantics|
-|---|---|---|
-|TaskParameters|SupplyStatusStruct|New quantity of a specific supply.|
-
-### SetResourceStatus
-
-Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.
-
-|Parameter|Datatype|Semantics|
-|---|---|---|
-|TaskParameters|ResourceStatusStruct|Status of a specific type of resource.|
 
 ### Transport
 
@@ -197,6 +196,10 @@ Tasks a simulated entity (transporter entity) to transport another simulated ent
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|TransportTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
 
 ### Repair
 
@@ -205,6 +208,10 @@ Tasks a simulated entity to perform repair activity on another simulated entity 
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|RepairTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
 
 ### Resupply
 
@@ -213,6 +220,32 @@ Tasks a simulated entity to resupply another simulated entity (receiving). Succe
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|ResupplyTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### SetResourceStatus
+
+Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|ResourceStatus|ResourceStatusStruct|Required: Status of a specific type of resource.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### SetSupplies
+
+Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|SupplyStatus|SupplyStatusStruct|Required: New quantity of a specific supply.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
 
 ## Datatypes
 
