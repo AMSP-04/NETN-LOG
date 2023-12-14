@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelIdentification notes="Overview">
+    <modelIdentification notes="netn-log_overview">
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>3.0</version>
@@ -17,9 +17,9 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
 * Resupply, e.g. refuelling of aircraft at an airbase or in the air
 * Repair, e.g. repair of damaged platforms in a facility
 * Transport, e.g. loading and transport of supplies from a specific pick-up point to an off-loading destination</useLimitation>
-        <useHistory notes="netn-log_1">v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. </useHistory>
-        <useHistory notes="netn-log_2">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
-        <useHistory notes="netn-log_3">v3.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
+        <useHistory notes="netn-log_changelog_1">v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. </useHistory>
+        <useHistory notes="netn-log_changelog_2">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
+        <useHistory notes="netn-log_changelog_3">v3.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -636,7 +636,7 @@ When time is set to zero (0), implies as soon as possible.</semantics>
     </dataTypes>
     <notes>
         <note>
-            <label>netn-log_2</label>
+            <label>netn-log_changelog_2</label>
             <semantics>* FOM Modules NETN-SCP-BASE v1.1.3, NETN-Supply v1.1.2, NETN-Storage v1.2.2, NETN-Repair v1.2.1 and NETN-Transport v1.1.2 merged into new module NETN-LOG 
 * Prefix dropped from all interaction classes except interaction class LOG_Service 
 * Added note for `modelIdentification` to provide additional description of FOM module 
@@ -700,7 +700,7 @@ When time is set to zero (0), implies as soon as possible.</semantics>
 * Changed datatype for `ArrayOfRepairTypeEnum` from `NETN_RepairTypeEnum16` to `RepairTypeEnum16`</semantics>
         </note>
         <note>
-            <label>netn-log_3</label>
+            <label>netn-log_changelog_3</label>
             <semantics>* MAJOR UPDATE TO USE NETN-ETR Patterns 
 * Add dependency on NETN-ETR 
 * Replaced all interaction classes 
@@ -735,7 +735,7 @@ When time is set to zero (0), implies as soon as possible.</semantics>
 * Added alternatives to NETN-ETR datatype `TaskProgressVariantRecord`</semantics>
         </note>
         <note>
-            <label>netn-log_1</label>
+            <label>netn-log_changelog_1</label>
             <semantics>In NETN FOM v 2.0 this module was replaced with several FOM modules to represent different services. A Base FOM Module was used to represent the basic Service-Consumer Provider (SCP) pattern. 
  
 These modules were initially developed by MSG-106 and prepared for release by MSG-134. 
@@ -748,7 +748,7 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * NETN-Transport v1.1.2</semantics>
         </note>
         <note>
-            <label>Overview</label>
+            <label>netn-log_overview</label>
             <semantics>## Overview 
  
 `Supplies`, `Equipment` and `Personnel` are attributes of the `AggregateEntity` object class. 
