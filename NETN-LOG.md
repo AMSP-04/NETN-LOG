@@ -27,9 +27,8 @@ OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated
 The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction. 
  
  
-```mermaid
-
-sequenceDiagram
+```mermaid 
+sequenceDiagram 
 autonumber
 Tasking Federate->>Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate->>Tasking Federate: TaskStatusUpdate(Started) 
