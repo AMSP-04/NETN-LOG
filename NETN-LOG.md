@@ -2,7 +2,7 @@
 # NETN-LOG
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2023-12-10|NETN-BASE|
+|3.0|2024-02-12|NETN-BASE|
 
 The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
 
@@ -27,8 +27,9 @@ OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated
 The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction. 
  
  
-```mermaid 
-sequenceDiagram 
+```mermaid
+
+sequenceDiagram
 autonumber
 Tasking Federate->>Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate->>Tasking Federate: TaskStatusUpdate(Started) 
@@ -177,6 +178,7 @@ HLAinteractionRoot : UniqueId(NETN-BASE)
 SMC_EntityControl <|-- Task
 SMC_EntityControl <|-- SetResourceStatus
 SMC_EntityControl <|-- SetSupplies
+SMC_EntityControl <|-- Reset
 SMC_EntityControl : Entity(NETN-SMC)
 Task <|-- Transport
 Task <|-- Repair
@@ -187,6 +189,10 @@ Repair : TaskParameters
 Resupply : TaskParameters
 SetResourceStatus : ResourceStatus
 SetSupplies : SupplyStatus
+Reset : ResetDamage
+Reset : ResetResources
+Reset : ResetSpatial
+Reset : ResetSupplies
 ```
 
 ### Transport
@@ -246,6 +252,17 @@ Instruct federate with the primary responsibility of the specified simulated ent
 |Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
 |ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### Reset
+
+Request a reset of aspects of an entity's state to its last initialized value.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|ResetDamage|HLAboolean|Optional: Indicate if damage state of the entity should be reset to last initialized value. Default is False.|
+|ResetResources|HLAboolean|Optional: Indicate if resource state of the entity should be reset to last initialized value. Default is False.|
+|ResetSpatial|HLAboolean|Optional: Indicate if spatial state of the entity should be reset to last initialized value. Default is False.|
+|ResetSupplies|HLAboolean|Optional: Indicate if supplies state of the entity should be reset to last initialized value. Default is False.|
 
 ## Datatypes
 
