@@ -545,7 +545,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
             <enumeratedData>
                 <name>EntityControlActionEnum</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics>Control actions for entities..</semantics>
+                <semantics>Control actions for entities.</semantics>
                 <enumerator>
                     <name>Resupply</name>
                     <value>601</value>
@@ -649,6 +649,24 @@ When time is set to zero (0), implies as soon as possible.</semantics>
                 <name>TaskDefinitionVariantRecord</name>
                 <discriminant>TaskType</discriminant>
                 <dataType>EntityControlActionEnum</dataType>
+                <alternative>
+                    <enumerator>Resupply</enumerator>
+                    <name>Resuply</name>
+                    <dataType>ResupplyTaskStruct</dataType>
+                    <semantics>Task parameters.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>Repair</enumerator>
+                    <name>Repair</name>
+                    <dataType>RepairTaskStruct</dataType>
+                    <semantics>Task parameters.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>Transport</enumerator>
+                    <name>Transport</name>
+                    <dataType>TransportTaskStruct</dataType>
+                    <semantics>Task parameters.</semantics>
+                </alternative>
                 <encoding>HLAextendableVariantRecord</encoding>
                 <semantics>Variant record for task definition data.</semantics>
             </variantRecordData>
@@ -656,6 +674,12 @@ When time is set to zero (0), implies as soon as possible.</semantics>
                 <name>TaskProgressVariantRecord</name>
                 <discriminant>TaskType</discriminant>
                 <dataType>EntityControlActionEnum</dataType>
+                <alternative>
+                    <enumerator>Resuply, Repair, Transport</enumerator>
+                    <name>LOG_ElapsedTime</name>
+                    <dataType>ElapsedTimeProgress</dataType>
+                    <semantics>Keeps track of elapsed time.</semantics>
+                </alternative>
                 <encoding>HLAextendableVariantRecord</encoding>
                 <semantics>Variant record for task progress data.</semantics>
             </variantRecordData>

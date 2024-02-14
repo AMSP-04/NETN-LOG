@@ -271,7 +271,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |Name|Semantics|
 |---|---|
 |AppointmentStruct|Date ; Time and Location of an appointment. When time is set to zero (0), implies as soon as possible.|
-|EntityControlActionEnum|Control actions for entities..|
+|EntityControlActionEnum|Control actions for entities.|
 |RepairTaskStruct|Task-specific data for Repair task. If receiving entity is a physical entity, the `ResourceType`, and `QuantityToRepair` fields are ignored.|
 |RepairTypeEnum16|System repaired|
 |ResupplyTaskStruct|Task-specific data for Resupply task.|
@@ -282,7 +282,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 ### Enumerated Datatypes
 |Name|Representation|Semantics|
 |---|---|---|
-|EntityControlActionEnum|HLAinteger32BE|Control actions for entities..|
+|EntityControlActionEnum|HLAinteger32BE|Control actions for entities.|
 |RepairTypeEnum16|RPRunsignedInteger16BE|System repaired|
         
 ### Array Datatypes
@@ -300,6 +300,6 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 ### Variant Record Datatypes
 |Name|Discriminant (Datatype)|Alternatives|Semantics|
 |---|---|---|---|
-|TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)||Variant record for task definition data.|
-|TaskProgressVariantRecord|TaskType (EntityControlActionEnum)||Variant record for task progress data.|
+|TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)|Resuply, Repair, Transport|Variant record for task definition data.|
+|TaskProgressVariantRecord|TaskType (EntityControlActionEnum)|LOG_ElapsedTime|Variant record for task progress data.|
     
