@@ -102,9 +102,9 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * Added `RequestTask` interaction subclass `Repair` 
 * Added `RequestTask` interaction subclass `Transport` 
  
-* Extended NETN-ETR `SimCon` 
-* Added `SimCon` interaction subclass `SetResourceStatus` 
-* Added `SimCon` interaction subclass `SetSupplies` 
+* Added `SMC_EntityControl` interaction subclass `SetEquipmentStatus` 
+* Added `SMC_EntityControl` interaction subclass `SetPersonnelStatus` 
+* Added `SMC_EntityControl` interaction subclass `SetSuppliesStatus` 
  
 * Added datatype `RepairTaskStruct` 
 * Added datatype `ResupplyTaskStruct` 
