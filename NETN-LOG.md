@@ -82,7 +82,7 @@ The transfer process is modelled by reducing the supplies of the supplier entity
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate->>Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate->>Tasking Federate: ETR_TaskStatus(Started) 
 Supplier Entity Federate->>Receiver Entity Federate: SetSuppliesStatus(ReceiverEntity) 
@@ -110,7 +110,7 @@ Use the `SetEquipmentStatus` or the `SetPersonnelStatus` entity control interact
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate->>Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
 Repairing Entity Federate->>Tasking Federate: ETR_TaskStatus(Started) 
 Repairing Entity Federate->>Receiver Federate: SetResourceStatus(UpdateState) 
@@ -142,7 +142,7 @@ The transport task consists of the following phases:
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
  
 Tasking Federate->>Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntities) 
 Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Started) 
