@@ -559,7 +559,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
             <enumeratedData>
                 <name>EntityControlActionEnum</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics>Control actions for entities.</semantics>
+                <semantics>Enumeration of Entity Control Actions. The datatype is expected to be extended in specific modules defining additional actions.</semantics>
                 <enumerator>
                     <name>Resupply</name>
                     <value>601</value>
@@ -595,8 +595,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
             <fixedRecordData>
                 <name>AppointmentStruct</name>
                 <encoding>HLAfixedRecord</encoding>
-                <semantics>Date and Time and Location of an appointment. 
-</semantics>
+                <semantics>Date and Time and Location of an appointment.</semantics>
                 <field>
                     <name>DateTime</name>
                     <dataType>EpochTime</dataType>
