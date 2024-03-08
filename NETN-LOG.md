@@ -327,7 +327,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |Name|Semantics|
 |---|---|
 |AppointmentStruct|Date and Time and Location of an appointment.|
-|EntityControlActionEnum|Control actions for entities.|
+|EntityControlActionEnum|Control actions for entities. The datatype is expected to be extended in specific modules defining additional actions.|
 |RepairTaskStruct|Task-specific data for Repair task. If receiving entity is a physical entity, the `ResourceType`, and `QuantityToRepair` fields are ignored.|
 |RepairTypeEnum16|System repaired|
 |ResupplyTaskStruct|Task-specific data for Resupply task.|
@@ -338,7 +338,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 ### Enumerated Datatypes
 |Name|Representation|Semantics|
 |---|---|---|
-|EntityControlActionEnum|HLAinteger32BE|Control actions for entities.|
+|EntityControlActionEnum|HLAinteger32BE|Control actions for entities. The datatype is expected to be extended in specific modules defining additional actions.|
 |RepairTypeEnum16|RPRunsignedInteger16BE|System repaired|
         
 ### Array Datatypes
