@@ -841,7 +841,7 @@ The NETN-LOG modules extend the RPR-FOM `AggregateEntity` object class with attr
  
 ```mermaid 
 classDiagram 
-direction LR 
+direction LR
  
 HLAobjectRoot &lt;|-- BaseEntity 
 HLAobjectRoot : UniqueId(NETN-BASE) 
@@ -904,7 +904,7 @@ The transfer process is modelled by reducing the supplies of the supplier entity
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
 Supplier Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
 Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSuppliesStatus(ReceiverEntity) 
@@ -932,7 +932,7 @@ Use the `SetEquipmentStatus` or the `SetPersonnelStatus` entity control interact
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
 Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
 Repairing Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
 Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
@@ -964,7 +964,7 @@ The transport task consists of the following phases:
  
 ```mermaid 
 sequenceDiagram 
-autonumber 
+autonumber
  
 Tasking Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntities) 
 Transport Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
