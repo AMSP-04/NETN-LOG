@@ -19,7 +19,7 @@ The NETN-LOG modules extend the RPR-FOM `AggregateEntity` object class with attr
  
 ```mermaid 
 classDiagram 
-direction LR
+direction LR 
  
 HLAobjectRoot <|-- BaseEntity 
 HLAobjectRoot : UniqueId(NETN-BASE) 
@@ -66,11 +66,11 @@ Reset : ResetSpatial
 Reset : ResetSupplies 
 ``` 
  
-4.	Three control actions extend the NETN-ETR `Task` interaction and associated pattern to provide `Transport`, `Repair`, and `Resupply` tasks.
+4.	Three control actions extend the NETN-ETR `Task` interaction and associated pattern to provide `Transport`, `Repair`, and `Resupply` tasks. 
  
 Use the `SetPersonnelStatus`, `SetEquipmentStatus`, and `SetSuppliesStatus` to request an immediate change in the `Personnel`, `Equipment`, or `Supplies` attributes of a simulated `AggregateEntity`. 
  
-Use the `Reset` control interaction to request an immediate revert of state to the last initialized value for the indicated aspects. The last initialized value is defined as the first value published by the current federate after applying one of the methods of initialization.
+Use the `Reset` control interaction to request an immediate revert of state to the last initialized value for the indicated aspects. The last initialized value is defined as the first value published by the current federate after applying one of the methods of initialization. 
  
  
 ### Transfer of Supplies 
@@ -118,7 +118,7 @@ Repairing Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
 ``` 
  
  
-1. A Tasking Federate sends a `Repair` task referencing the repairing and receiver entities.
+1. A Tasking Federate sends a `Repair` task referencing the repairing and receiver entities. 
  
 2. The Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
  
