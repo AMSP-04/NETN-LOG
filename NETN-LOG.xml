@@ -176,6 +176,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         <name>EquipmentStatus</name>
                         <dataType>ResourceStatusStruct</dataType>
                         <semantics>Required: Status of a specific type of equipment.</semantics>
+
                     </parameter>
                 </interactionClass>
                 <interactionClass>
@@ -808,6 +809,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
 * Added `RequestTask` interaction subclass `Repair` 
 * Added `RequestTask` interaction subclass `Transport` 
  
+
 * Added `SMC_EntityControl` interaction subclass `SetEquipmentStatus` 
 * Added `SMC_EntityControl` interaction subclass `SetPersonnelStatus` 
 * Added `SMC_EntityControl` interaction subclass `SetSuppliesStatus` 
@@ -900,6 +902,7 @@ Use the `Reset` control interaction to request an immediate revert of state to t
 Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions. 
  
 The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSuppliesStatus` entity control action. If both entities are modelled in the same federate, the `SetSuppliesStatus` is not required, and the supplies status can be changed directly. 
+
  
  
 ```mermaid 
@@ -912,7 +915,9 @@ Supplier Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Complete)
  
 ``` 
  
+``` 
  
+
 1. A Tasking Federate sends a `Resupply` task with references to the supplier and receiver entities. 
  
 2. The Supplier Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
@@ -928,6 +933,7 @@ The Supplies attribute of both the supplier and receiver `AggregateEntity` can b
 Use the Repair interaction to initiate a task for an entity to repair (Repairing Entity) another entity (Receiver Entity). 
  
 Use the `SetEquipmentStatus` or the `SetPersonnelStatus` entity control interaction to model the repair process by attempting to set the receiver entity's resources status. If both entities are modelled in the same federate, the `SetEquipmentStatus` and the `SetPersonnelStatus` are not required, and the status can be changed directly. 
+
  
  
 ```mermaid 
@@ -949,12 +955,14 @@ Repairing Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Completed)
 4. On completion, the Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate task success or failure. 
  
 The `Equipment` or the `Personnel` attributes of the repaired `AggregateEntity` can be updated during the repair task, and a final update must be provided when the repair is completed. 
+
  
 ### Transport Task 
- 
+
 Use the `Transport` task to instruct a simulated entity (Transport Entity) to transport other simulated entities (Transported Entity) from a pick-up location to a destination. The transport task combines the `Attach`, `MoveByRoute`, and `Detach` tasks defined in the NETN-ETR module. 
  
 The transport task consists of the following phases: 
+
  
 1. Move to the pick-up location 
 2. Embark/Mount/Load simulated entities by attaching them to the Transport Entity. 
@@ -965,7 +973,6 @@ The transport task consists of the following phases:
 ```mermaid 
 sequenceDiagram 
 autonumber
- 
 Tasking Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntities) 
 Transport Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
 Note over Transport Entity Federate:Move to Pick-up location 
@@ -1001,6 +1008,7 @@ Transport Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Completed)
 9. Finally, the Transport Entity Federate sends an `ETR_TaskStatus` to indicate whether the transport task has succeeded or failed. 
  
  
+
  
 The transport task is rejected if the transport entity is unable to transport all specified simulated entities. An AggregatedEntity representation of a transported entity may require a NETN-MRM Disaggregate or Divide action to fit on the transport. 
  

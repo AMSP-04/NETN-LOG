@@ -78,6 +78,7 @@ Use the `Reset` control interaction to request an immediate revert of state to t
 Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions. 
  
 The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSuppliesStatus` entity control action. If both entities are modelled in the same federate, the `SetSuppliesStatus` is not required, and the supplies status can be changed directly. 
+
  
  
 ```mermaid 
@@ -138,12 +139,12 @@ The transport task consists of the following phases:
 2. Embark/Mount/Load simulated entities by attaching them to the Transport Entity. 
 3. Move according to a specified route to the destination. 
 4. Disembark/Dismount/Unload simulated entities by detaching them from the Transport Entity. 
+
  
  
 ```mermaid 
 sequenceDiagram 
 autonumber
- 
 Tasking Federate->>Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntities) 
 Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Started) 
 Note over Transport Entity Federate:Move to Pick-up location 
@@ -171,7 +172,6 @@ Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
  
 6. When at the final destination of the transport route, the Transport Entity Federate initiates a NETN-ETR `Dismount` task for the transported entity to disembark/dismount on the transport. 
  
- 
 7. The Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the disembarkation/dismounting process. 
  
 8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate successful completion. 
@@ -183,6 +183,7 @@ Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
 The transport task is rejected if the transport entity is unable to transport all specified simulated entities. An AggregatedEntity representation of a transported entity may require a NETN-MRM Disaggregate or Divide action to fit on the transport. 
  
 A scenario can start with some entities already embarked on transport. Use the NETN-ENTITY `BaseEntity` attribute `HostEntity` to identify a potential transporting entity.
+
 
 
 ## Object Classes
@@ -254,6 +255,7 @@ Reset : ResetSupplies
 
 Tasks a simulated entity (transporter entity) to transport another simulated entity (transported entity). Successful completion of the task means that (1) the transport and transported entity moves towards a specified pick-up point, (2) the transported entity mounts the transport, (3) the transport moves according to route and at the final waypoint (4) the transported entity dismounts the transport.
 
+
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|TransportTaskStruct|Required: Task parameters|
@@ -306,6 +308,62 @@ Instruct federate with the primary responsibility of the specified simulated ent
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |EquipmentStatus|ResourceStatusStruct|Required: Status of a specific type of equipment.|
+=======
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|TransportTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### Repair
+
+Tasks a simulated entity to perform repair activity on another simulated entity (receiving). Successful completion of the task means that the damage state of the receiving entity is improved.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|RepairTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### Resupply
+
+Tasks a simulated entity to resupply another simulated entity (receiving). Successful task completion means that supplies are reduced from the tasked entity and increased at the receiving entity.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|ResupplyTaskStruct|Required: Task parameters|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### SetResourceStatus
+
+Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|ResourceStatus|ResourceStatusStruct|Required: Status of a specific type of resource.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
+### SetSupplies
+
+Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Supplies. Only applicable to AggregateEntity.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|SupplyStatus|SupplyStatusStruct|Required: New quantity of a specific supply.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended. Required for all ETR related interactions.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all ETR related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all ETR related interactions.| 
+
 
 ### Reset
 
@@ -357,5 +415,4 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |Name|Discriminant (Datatype)|Alternatives|Semantics|
 |---|---|---|---|
 |TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)|Resuply, Repair, Transport|Variant record for task definition data.|
-|TaskProgressVariantRecord|TaskType (EntityControlActionEnum)|LOG_ElapsedTime, LOG_Transport|Variant record for task progress data.|
-    
+|TaskProgressVariantRecord|TaskType (EntityControlActionEnum)|LOG_ElapsedTime, LOG_Transport|Variant record for task progress data.|   

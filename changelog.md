@@ -102,6 +102,8 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
 * Added `RequestTask` interaction subclass `Repair` 
 * Added `RequestTask` interaction subclass `Transport` 
  
+
+
 * Added `SMC_EntityControl` interaction subclass `SetEquipmentStatus` 
 * Added `SMC_EntityControl` interaction subclass `SetPersonnelStatus` 
 * Added `SMC_EntityControl` interaction subclass `SetSuppliesStatus` 
