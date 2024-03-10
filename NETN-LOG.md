@@ -2,16 +2,16 @@
 # NETN-LOG
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2024-03-03|NETN-BASE|
+|3.0|2024-03-10|NETN-BASE|
 
-The NATO Education and Training Network Logistics Module (NETN-LOG) provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
+The NATO Education and Training Network Logistics Module (NETN-LOG) provides a standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
 
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces, including storage, distribution, maintenance and transportation of supplies, equipment and personnel.
 
 The NETN Logistics module covers the following tasks:    
-* Resupply, e.g. refuelling of aircraft at an airbase or in the air
+* Resupply, e.g. refuelling aircraft at an airbase or in the air
 * Repair, e.g. repair of damaged platforms in a facility
-* Transport, e.g. loading and transport of supplies from a specific pick-up point to an off-loading destination
+* Transport, e.g. transporting supplies from a specific pick-up point to an off-loading destination
 
 ## Overview 
  
@@ -66,11 +66,11 @@ Reset : ResetSpatial
 Reset : ResetSupplies 
 ``` 
  
-Three of the control actions extends the NETN-ETR `Task` interaction and associated pattern to provide tasking for `Transport`, `Repair` and `Resupply`. 
+4.	Three control actions extend the NETN-ETR `Task` interaction and associated pattern to provide `Transport`, `Repair`, and `Resupply` tasks.
  
-Use the `SetPersonnelStatus`, `SetEquipmentStatus` and `SetSuppliesStatus` to request an immediate change of the `Personnel`, `Equipment` or `Supplies` attributes of a simulated `AggregateEntity`. 
+Use the `SetPersonnelStatus`, `SetEquipmentStatus`, and `SetSuppliesStatus` to request an immediate change in the `Personnel`, `Equipment`, or `Supplies` attributes of a simulated `AggregateEntity`. 
  
-Use the `Reset` control interaction to request an immediate revert of state to the last initialized value for the indicated aspects. 
+Use the `Reset` control interaction to request an immediate revert of state to the last initialized value for the indicated aspects. The last initialized value is defined as the first value published by the current federate after applying one of the methods of initialization.
  
  
 ### Transfer of Supplies 
@@ -91,7 +91,7 @@ Supplier Entity Federate->>Tasking Federate: ETR_TaskStatus(Complete)
 ``` 
  
  
-1. A Tasking Federate sends a `Resupply` task with references to the supplier entity and the receiver entity. 
+1. A Tasking Federate sends a `Resupply` task with references to the supplier and receiver entities. 
  
 2. The Supplier Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
  
@@ -99,7 +99,7 @@ Supplier Entity Federate->>Tasking Federate: ETR_TaskStatus(Complete)
  
 4. On completion, the Supplier Entity Federate sends an `ETR_TaskStatus` interaction to indicate task success or failure. 
  
-The Supplies attribute of both the supplier and receiver `AggregateEntity` can be updated during the resupply task and a final update must be provided when the resupply is completed. 
+The Supplies attribute of both the supplier and receiver `AggregateEntity` can be updated during the resupply task, and a final update must be provided when the resupply is completed. 
  
 ### Repair Task 
  
@@ -118,15 +118,15 @@ Repairing Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
 ``` 
  
  
-1. A Tasking Federate sends a `Repair` task referencing the repairing entity and the receiver entity. 
+1. A Tasking Federate sends a `Repair` task referencing the repairing and receiver entities.
  
 2. The Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
  
-3. During the repair, use the `SetEquipmentStatus` or `SetPersonnelStatus` interaction to request an update of a specific type of resource modelled for the receiver entity. 
+3. During the repair, either use the `SetEquipmentStatus` or `SetPersonnelStatus` interaction to request an update of a specific type of resource modelled for the receiver entity. 
  
 4. On completion, the Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate task success or failure. 
  
-The `Equipment` or the `Personnel` attributes of the repaired `AggregateEntity` can be updated during the repair task and a final update must be provided when the repair is completed. 
+The `Equipment` or the `Personnel` attributes of the repaired `AggregateEntity` can be updated during the repair task, and a final update must be provided when the repair is completed. 
  
 ### Transport Task 
  
@@ -159,7 +159,7 @@ Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
 ``` 
  
  
-1. A Tasking Federate sends a `Transport` task referencing the transport entity and the transported entities. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up. 
+1. A Tasking Federate sends a `Transport` task referencing the transport and transported entities. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up. 
  
 2. The Transport Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transport task. 
  
@@ -176,13 +176,13 @@ Transport Entity Federate->>Tasking Federate: ETR_TaskStatus(Completed)
  
 8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate successful completion. 
  
-9. Finally, the Transport Entity Federate sends an `ETR_TaskStatus` to indicate transport task success or failure. 
+9. Finally, the Transport Entity Federate sends an `ETR_TaskStatus` to indicate whether the transport task has succeeded or failed. 
  
  
  
 The transport task is rejected if the transport entity is unable to transport all specified simulated entities. An AggregatedEntity representation of a transported entity may require a NETN-MRM Disaggregate or Divide action to fit on the transport. 
  
-A scenario can start with some entities already embarked on transports. Use the NETN-ENTITY `BaseEntity` attribute `HostEntity` to identify a potential transporting entity.
+A scenario can start with some entities already embarked on transport. Use the NETN-ENTITY `BaseEntity` attribute `HostEntity` to identify a potential transporting entity.
 
 
 ## Object Classes
