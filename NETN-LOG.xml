@@ -4,19 +4,16 @@
         <name>NETN-LOG</name>
         <type>FOM</type>
         <version>3.0</version>
-        <modificationDate>2024-02-12</modificationDate>
+        <modificationDate>2024-03-10</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <releaseRestriction></releaseRestriction>
-        <purpose>The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.</purpose>
+        <purpose>The NATO Education and Training Network Logistics Module (NETN-LOG) provides a standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
-        <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces, including storage, distribution, maintenance and transportation of supplies, equipment and personnel.
-
-The NATO Education and Training Network Logistics Module (NETN-LOG) specifies how to model logistics tasks and logistics attributes of aggregated simulation entities in a federated distributed simulation. 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and supports interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module specifies how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.</description>
+        <description>Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces, including storage, distribution, maintenance and transportation of supplies, equipment and personnel.</description>
         <useLimitation>The NETN Logistics module covers the following tasks:    
-* Resupply, e.g. refuelling of aircraft at an airbase or in the air
+* Resupply, e.g. refuelling aircraft at an airbase or in the air
 * Repair, e.g. repair of damaged platforms in a facility
-* Transport, e.g. loading and transport of supplies from a specific pick-up point to an off-loading destination</useLimitation>
+* Transport, e.g. transporting supplies from a specific pick-up point to an off-loading destination</useLimitation>
         <useHistory notes="netn-log_changelog_1">v1.1 - Initial version developed by MSG-068 for NETN FOM v1.0. </useHistory>
         <useHistory notes="netn-log_changelog_2">v2.0 - Re-merged version of NETN-LOG FOM Module updated by MSG-163 for NETN FOM v3.0. Includes NETN-SCP, NETN-Supply, NETN-Storage, NETN-Repair and NETN-Transport.</useHistory>
         <useHistory notes="netn-log_changelog_3">v3.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
@@ -73,7 +70,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Optional. The type and total quantities of supply holdings modelled by this entity.</semantics>
+                        <semantics>Required. The type and total quantities of supply holdings modelled by this entity.</semantics>
                     </attribute>
                     <attribute>
                         <name>Equipment</name>
@@ -84,7 +81,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Optional. The total amount and status of equipment holdings represented by this entity.</semantics>
+                        <semantics>Required. The total amount and status of equipment holdings represented by this entity.</semantics>
                     </attribute>
                     <attribute>
                         <name>Personnel</name>
@@ -95,7 +92,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAreliable</transportation>
                         <order>Receive</order>
-                        <semantics>Optional. The total amount and status of all personnel holdings modelled by this entity.</semantics>
+                        <semantics>Required. The total amount and status of all personnel holdings modelled by this entity.</semantics>
                     </attribute>
                 </objectClass>
             </objectClass>
@@ -146,19 +143,19 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                     </interactionClass>
                 </interactionClass>
                 <interactionClass>
-                    <name>SetResourceStatus</name>
+                    <name>SetPersonnelStatus</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
-                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Resources. Only applicable to AggregateEntity.</semantics>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Personnel. Only applicable to AggregateEntity.</semantics>
                     <parameter>
-                        <name>ResourceStatus</name>
+                        <name>PersonnelStatus</name>
                         <dataType>ResourceStatusStruct</dataType>
-                        <semantics>Required: Status of a specific type of resource.</semantics>
+                        <semantics>Required: Status of a specific type of personnel.</semantics>
                     </parameter>
                 </interactionClass>
                 <interactionClass>
-                    <name>SetSupplies</name>
+                    <name>SetSuppliesStatus</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
@@ -170,15 +167,33 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                     </parameter>
                 </interactionClass>
                 <interactionClass>
+                    <name>SetEquipmentStatus</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Instruct federate with the primary responsibility of the specified simulated entity to update the model concerning its Equipment. Only applicable to AggregateEntity.</semantics>
+                    <parameter>
+                        <name>EquipmentStatus</name>
+                        <dataType>ResourceStatusStruct</dataType>
+                        <semantics>Required: Status of a specific type of equipment.</semantics>
+
+                    </parameter>
+                </interactionClass>
+                <interactionClass>
                     <name>Reset</name>
                     <sharing>PublishSubscribe</sharing>
                     <transportation>HLAreliable</transportation>
                     <order>Receive</order>
                     <semantics>Request a reset of aspects of an entity's state to its last initialized value.</semantics>
                     <parameter>
-                        <name>ResetDamage</name>
+                        <name>ResetEquipment</name>
                         <dataType>HLAboolean</dataType>
-                        <semantics>Optional: Indicate if damage state of the entity should be reset to last initialized value. Default is False.</semantics>
+                        <semantics>Optional: Indicate if equipment state of the entity should be reset to last initialized value. Default is False.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>ResetPersonnel</name>
+                        <dataType>HLAboolean</dataType>
+                        <semantics>Optional: Indicate if personnel state of the entity should be reset to last initialized value. Default is False.</semantics>
                     </parameter>
                     <parameter>
                         <name>ResetSupplies</name>
@@ -186,9 +201,9 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                         <semantics>Optional: Indicate if supplies state of the entity should be reset to last initialized value. Default is False.</semantics>
                     </parameter>
                     <parameter>
-                        <name>ResetResources</name>
+                        <name>ResetDamage</name>
                         <dataType>HLAboolean</dataType>
-                        <semantics>Optional: Indicate if resource state of the entity should be reset to last initialized value. Default is False.</semantics>
+                        <semantics>Optional: Indicate if damage state of the entity should be reset to last initialized value. Default is False.</semantics>
                     </parameter>
                     <parameter>
                         <name>ResetSpatial</name>
@@ -545,7 +560,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
             <enumeratedData>
                 <name>EntityControlActionEnum</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics>Control actions for entities.</semantics>
+                <semantics>Enumeration of Entity Control Actions. The datatype is expected to be extended in specific modules defining additional actions.</semantics>
                 <enumerator>
                     <name>Resupply</name>
                     <value>601</value>
@@ -558,6 +573,22 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                     <name>Transport</name>
                     <value>603</value>
                 </enumerator>
+                <enumerator>
+                    <name>Reset</name>
+                    <value>604</value>
+                </enumerator>
+                <enumerator>
+                    <name>SetSupplies</name>
+                    <value>605</value>
+                </enumerator>
+                <enumerator>
+                    <name>SetPersonnelStatus</name>
+                    <value>606</value>
+                </enumerator>
+                <enumerator>
+                    <name>SetEquipmentStatus</name>
+                    <value>607</value>
+                </enumerator>
             </enumeratedData>
         </enumeratedDataTypes>
         <arrayDataTypes/>
@@ -565,16 +596,15 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
             <fixedRecordData>
                 <name>AppointmentStruct</name>
                 <encoding>HLAfixedRecord</encoding>
-                <semantics>Date ; Time and Location of an appointment. 
-When time is set to zero (0), implies as soon as possible.</semantics>
+                <semantics>Date and Time and Location of an appointment.</semantics>
                 <field>
                     <name>DateTime</name>
                     <dataType>EpochTime</dataType>
-                    <semantics>Date time in second since 1 junuary 1970 for the appointment</semantics>
+                    <semantics>Date time in second since Epoch for the appointment. When time is set to zero (0), it implies as soon as possible.</semantics>
                 </field>
                 <field>
                     <name>Location</name>
-                    <dataType>LocationStruct</dataType>
+                    <dataType>GeodeticPoint</dataType>
                     <semantics>Location of the appointment</semantics>
                 </field>
             </fixedRecordData>
@@ -628,9 +658,9 @@ When time is set to zero (0), implies as soon as possible.</semantics>
                 <encoding>HLAfixedRecord</encoding>
                 <semantics>Task-specific data for Transport task.</semantics>
                 <field>
-                    <name>TransportedEntity</name>
-                    <dataType>UUID</dataType>
-                    <semantics>The entity to transport.</semantics>
+                    <name>TransportedEntities</name>
+                    <dataType>ArrayOfUuid</dataType>
+                    <semantics>The entities to transport.</semantics>
                 </field>
                 <field>
                     <name>PickUp</name>
@@ -651,7 +681,7 @@ When time is set to zero (0), implies as soon as possible.</semantics>
                 <dataType>EntityControlActionEnum</dataType>
                 <alternative>
                     <enumerator>Resupply</enumerator>
-                    <name>Resuply</name>
+                    <name>Resupply</name>
                     <dataType>ResupplyTaskStruct</dataType>
                     <semantics>Task parameters.</semantics>
                 </alternative>
@@ -675,10 +705,16 @@ When time is set to zero (0), implies as soon as possible.</semantics>
                 <discriminant>TaskType</discriminant>
                 <dataType>EntityControlActionEnum</dataType>
                 <alternative>
-                    <enumerator>Resuply, Repair, Transport</enumerator>
+                    <enumerator>Resupply, Repair</enumerator>
                     <name>LOG_ElapsedTime</name>
                     <dataType>ElapsedTimeProgress</dataType>
                     <semantics>Keeps track of elapsed time.</semantics>
+                </alternative>
+                <alternative>
+                    <enumerator>Transport</enumerator>
+                    <name>LOG_Transport</name>
+                    <dataType>MoveTaskProgress</dataType>
+                    <semantics>Keeps track of movement task.</semantics>
                 </alternative>
                 <encoding>HLAextendableVariantRecord</encoding>
                 <semantics>Variant record for task progress data.</semantics>
@@ -773,9 +809,10 @@ When time is set to zero (0), implies as soon as possible.</semantics>
 * Added `RequestTask` interaction subclass `Repair` 
 * Added `RequestTask` interaction subclass `Transport` 
  
-* Extended NETN-ETR `SimCon` 
-* Added `SimCon` interaction subclass `SetResourceStatus` 
-* Added `SimCon` interaction subclass `SetSupplies` 
+
+* Added `SMC_EntityControl` interaction subclass `SetEquipmentStatus` 
+* Added `SMC_EntityControl` interaction subclass `SetPersonnelStatus` 
+* Added `SMC_EntityControl` interaction subclass `SetSuppliesStatus` 
  
 * Added datatype `RepairTaskStruct` 
 * Added datatype `ResupplyTaskStruct` 
@@ -802,115 +839,180 @@ Modules in AMSP-04 Ed. A. NATO Education and Training Network Federation Archite
             <label>netn-log_overview</label>
             <semantics>## Overview 
  
-`Supplies`, `Equipment` and `Personnel` are attributes of the `AggregateEntity` object class. 
+The NETN-LOG modules extend the RPR-FOM `AggregateEntity` object class with attributes for `Supplies`, `Equipment` and `Personnel`. 
+ 
+```mermaid 
+classDiagram 
+direction LR 
+ 
+HLAobjectRoot &lt;|-- BaseEntity 
+HLAobjectRoot : UniqueId(NETN-BASE) 
+BaseEntity &lt;|-- AggregateEntity 
+BaseEntity : EntityIdentifier(RPR-Base) 
+BaseEntity : EntityType(RPR-Base) 
+BaseEntity : Spatial(RPR-Base) 
+AggregateEntity : Equipment 
+AggregateEntity : Personnel 
+AggregateEntity : Supplies 
+AggregateEntity : AggregateState(RPR-Aggregate) 
+AggregateEntity : Dimensions(RPR-Aggregate) 
+``` 
+ 
+These optional attributes allow the sharing of ground-truth aggregated data related to the status of equipment, personnel, and supplies. 
+ 
+The NETN-LOG modules also extend the NETN-SMC module to provide a set of `SMC_EntityControl` Actions. 
+ 
+```mermaid 
+classDiagram 
+direction LR 
+HLAinteractionRoot &lt;|-- SMC_EntityControl 
+HLAinteractionRoot : UniqueId(NETN-BASE) 
+SMC_EntityControl &lt;|-- Task 
+SMC_EntityControl &lt;|-- SetPersonnelStatus 
+SMC_EntityControl &lt;|-- SetSuppliesStatus 
+SMC_EntityControl &lt;|-- SetEquipmentStatus 
+SMC_EntityControl &lt;|-- Reset 
+SMC_EntityControl : Entity(NETN-SMC) 
+Task &lt;|-- Transport 
+Task &lt;|-- Repair 
+Task &lt;|-- Resupply 
+Task : TaskId(NETN-ETR) 
+Transport : TaskParameters 
+Repair : TaskParameters 
+Resupply : TaskParameters 
+SetPersonnelStatus : PersonnelStatus 
+SetSuppliesStatus : SupplyStatus 
+SetEquipmentStatus : EquipmentStatus 
+Reset : ResetDamage 
+Reset : ResetEquipment 
+Reset : ResetPersonnel 
+Reset : ResetSpatial 
+Reset : ResetSupplies 
+``` 
+ 
+4.	Three control actions extend the NETN-ETR `Task` interaction and associated pattern to provide `Transport`, `Repair`, and `Resupply` tasks. 
+ 
+Use the `SetPersonnelStatus`, `SetEquipmentStatus`, and `SetSuppliesStatus` to request an immediate change in the `Personnel`, `Equipment`, or `Supplies` attributes of a simulated `AggregateEntity`. 
+ 
+Use the `Reset` control interaction to request an immediate revert of state to the last initialized value for the indicated aspects. The last initialized value is defined as the first value published by the current federate after applying one of the methods of initialization. 
+ 
  
 ### Transfer of Supplies 
  
-OPTIONAL: Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions. 
+Use the `Resupply` interaction to transfer supplies from one simulated entity (supplier) to another (receiver). The `Resupply` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include resupply task definitions. 
  
-The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSupplies` simulation control interaction. 
+The transfer process is modelled by reducing the supplies of the supplier entity and attempting to set the increased supplies of the receiver entity using the `SetSuppliesStatus` entity control action. If both entities are modelled in the same federate, the `SetSuppliesStatus` is not required, and the supplies status can be changed directly. 
+
  
  
 ```mermaid 
 sequenceDiagram 
 autonumber
 Tasking Federate-&gt;&gt;Supplier Entity Federate: Reupply(SupplierEntity, ReceiverEntity) 
-Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
-Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSupplies(ReceiverEntity) 
-Supplier Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Complete) 
+Supplier Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
+Supplier Entity Federate-&gt;&gt;Receiver Entity Federate: SetSuppliesStatus(ReceiverEntity) 
+Supplier Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Complete) 
  
 ``` 
  
+``` 
  
-1. A Tasking Federate sends a `Resupply` task with references to the supplier entity and the receiver entity. 
+
+1. A Tasking Federate sends a `Resupply` task with references to the supplier and receiver entities. 
  
-2. The Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer. 
+2. The Supplier Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
  
-3. During the transfer, update the state of the supplier entity continuously or once after the transfer. Use the `SetSupplies` interaction to request an update of supplies for the receiver entity. 
+3. During the transfer, update the state of the supplier entity continuously or once after the transfer. Use the `SetSuppliesStatus` interaction to request an update of supplies for the receiver entity. 
  
-4. On completion, the Supplier Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure. 
+4. On completion, the Supplier Entity Federate sends an `ETR_TaskStatus` interaction to indicate task success or failure. 
  
-### Repair 
+The Supplies attribute of both the supplier and receiver `AggregateEntity` can be updated during the resupply task, and a final update must be provided when the resupply is completed. 
  
-OPTIONAL: Use the `Repair` interaction to initiate a task for an entity to repair (RepairingEntity) another entity(ReceiverEntity). The `Repair` interaction uses the NETN-ETR tasking pattern, and the NETN-LOG modules extend task datatypes to include repair task definitions. 
+### Repair Task 
  
-Use the `SetResourceStatus` simulation control interaction to model the repair process by attempting to set the receiver entity's resources status. 
+Use the Repair interaction to initiate a task for an entity to repair (Repairing Entity) another entity (Receiver Entity). 
+ 
+Use the `SetEquipmentStatus` or the `SetPersonnelStatus` entity control interaction to model the repair process by attempting to set the receiver entity's resources status. If both entities are modelled in the same federate, the `SetEquipmentStatus` and the `SetPersonnelStatus` are not required, and the status can be changed directly. 
+
  
  
 ```mermaid 
 sequenceDiagram 
 autonumber
 Tasking Federate-&gt;&gt;Repairing Entity Federate: Repair(RepairingEntity, ReceiverEntity) 
-Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Started) 
+Repairing Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
 Repairing Entity Federate-&gt;&gt;Receiver Federate: SetResourceStatus(UpdateState) 
-Repairing Entity Federate-&gt;&gt;Tasking Federate: TaskStatusUpdate(Completed) 
+Repairing Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Completed) 
 ``` 
  
  
-1. A Tasking Federate sends a `Repair` task referencing the repairing entity and the receiver entity. 
+1. A Tasking Federate sends a `Repair` task referencing the repairing and receiver entities. 
  
-2. The Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transfer. 
+2. The Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transfer. 
  
-3. During the repair, use the `SetResourcesStatus` interaction to request an update of a specific type of resource modelled for the receiver entity. 
+3. During the repair, either use the `SetEquipmentStatus` or `SetPersonnelStatus` interaction to request an update of a specific type of resource modelled for the receiver entity. 
  
-4. On completion, the Repairing Entity Federate sends a `TaskStatusUpdate` interaction to indicate task success or failure. 
+4. On completion, the Repairing Entity Federate sends an `ETR_TaskStatus` interaction to indicate task success or failure. 
  
+The `Equipment` or the `Personnel` attributes of the repaired `AggregateEntity` can be updated during the repair task, and a final update must be provided when the repair is completed. 
+
  
-### Transport 
- 
-A transport task is practical when there is a need to move non-consumable entities such as equipment, personnel or units using transportation simulated in another federate. 
+### Transport Task 
+
+Use the `Transport` task to instruct a simulated entity (Transport Entity) to transport other simulated entities (Transported Entity) from a pick-up location to a destination. The transport task combines the `Attach`, `MoveByRoute`, and `Detach` tasks defined in the NETN-ETR module. 
  
 The transport task consists of the following phases: 
+
  
-1. Embarkment is mounting, loading and storing simulated entities in, e.g. a truck or an aggregate unit. Embarkment takes place at a designated pick-up point. In case of limitations in the transportation capacity, the simulation entity can not embark. An `AggregatedEntity` representation of the transported entity may require a NETN-MRM disaggregation or divide action before embarking/mounting to fit on the transport. 
- 
-2. After entity embarkation, the transporting entity moves according to a specified route to its destination. 
- 
-3. At the destination, disembarkment takes place. 
- 
- 
+1. Move to the pick-up location 
+2. Embark/Mount/Load simulated entities by attaching them to the Transport Entity. 
+3. Move according to a specified route to the destination. 
+4. Disembark/Dismount/Unload simulated entities by detaching them from the Transport Entity. 
  
  
 ```mermaid 
 sequenceDiagram 
 autonumber
+Tasking Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntities) 
+Transport Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Started) 
+Note over Transport Entity Federate:Move to Pick-up location 
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Attach(TransportedEntity, TransportEntity) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: ETR_TaskStatus(Started) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: ETR_TaskStatus(Completed) 
+Note over Transport Entity Federate:Move by Route 
+Transport Entity Federate-&gt;&gt;Transported Entity Federate: Detach(TransportedEntity, TransportEntity) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: ETR_TaskStatus(Started) 
+Transported Entity Federate-&gt;&gt;Transport Entity Federate: ETR_TaskStatus(Completed) 
  
-Triggering Federate-&gt;&gt;Transport Entity Federate: RequestTransport(TransportEntity, TransportedEntity) 
-Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Started) 
-Transport Entity Federate-&gt;&gt;Transported Entity Federate: Mount(TransportedEntity, TransportEntity) 
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started) 
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed) 
- 
-Transport Entity Federate-&gt;&gt;Transported Entity Federate: Dismount(TransportedEntity, TransportEntity) 
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Started) 
-Transported Entity Federate-&gt;&gt;Transport Entity Federate: TaskStatusUpdate(Completed) 
- 
-Transport Entity Federate-&gt;&gt;Triggering Federate: TaskStatusUpdate(Completed) 
+Transport Entity Federate-&gt;&gt;Tasking Federate: ETR_TaskStatus(Completed) 
 ``` 
  
  
-1. A Tasking Federate sends a `Transport` task referencing the transport entity and the transported entity. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up. 
+1. A Tasking Federate sends a `Transport` task referencing the transport and transported entities. Also, provide a route for the transport and an optional appointment to describe the location and time for pick-up. 
  
-2. The Transport Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the transport task. 
+2. The Transport Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the transport task. 
  
 3. At the pick-up location, the Transport Entity Federate initiates a NETN-ETR `Mount` task for the transported entity to embark/mount on the transport. 
  
-4. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the embarkation/mounting process. 
+4. The Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the embarkation/mounting process. 
  
-5. When the embarkation/mounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. Then, the transport entity conducts its movement according to the transport route. 
+5. When the embarkation/mounting is complete, the Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate successful completion. Then, the transport entity conducts its movement according to the transport route. 
  
 6. When at the final destination of the transport route, the Transport Entity Federate initiates a NETN-ETR `Dismount` task for the transported entity to disembark/dismount on the transport. 
  
  
-7. The Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate the start of the disembarkation/dismounting process. 
+7. The Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate the start of the disembarkation/dismounting process. 
  
-8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends a `TaskStatusUpdate` interaction to indicate successful completion. 
+8. When the disembarkation/dismounting is complete, the Transported Entity Federate sends an `ETR_TaskStatus` interaction to indicate successful completion. 
  
-9. Finally, the Transport Entity Federate sends a `TaskStatusUpdate` to indicate transport task success or failure. 
+9. Finally, the Transport Entity Federate sends an `ETR_TaskStatus` to indicate whether the transport task has succeeded or failed. 
  
-#### Initial Transport State 
  
-A scenario can start with some entities already embarked on transports. Use the simulated entity attribute `HostEntity` to identify a potential transporting entity.</semantics>
+
+ 
+The transport task is rejected if the transport entity is unable to transport all specified simulated entities. An AggregatedEntity representation of a transported entity may require a NETN-MRM Disaggregate or Divide action to fit on the transport. 
+ 
+A scenario can start with some entities already embarked on transport. Use the NETN-ENTITY `BaseEntity` attribute `HostEntity` to identify a potential transporting entity.</semantics>
         </note>
     </notes>
 </objectModel>

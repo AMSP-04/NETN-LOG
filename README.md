@@ -3,21 +3,18 @@
 
 |Version| Date| Dependencies|
 |---|---|---|
-|3.0|2024-02-12|NETN-BASE|
+|3.0|2024-03-10|NETN-BASE|
 
 > [Full Documentation](NETN-LOG.md)
 
-The NATO Education and Training Network (NETN) Logistics (LOG) Module provides a common standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
+The NATO Education and Training Network Logistics Module (NETN-LOG) provides a standard interface for representing supplies, equipment and personnel when modelled as part of an aggregated entity. The module also includes support for logistics tasks in a federated distributed simulation.
 
 Military logistics is the discipline of planning and carrying out the movement and maintenance of military forces, including storage, distribution, maintenance and transportation of supplies, equipment and personnel.
 
-The NATO Education and Training Network Logistics Module (NETN-LOG) specifies how to model logistics tasks and logistics attributes of aggregated simulation entities in a federated distributed simulation. 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and supports interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module specifies how data is represented and exchanged in the federation. The NETN-LOG FOM module is available as an XML file for use in HLA-based federations.
-
 The NETN Logistics module covers the following tasks:    
-* Resupply, e.g. refuelling of aircraft at an airbase or in the air
+* Resupply, e.g. refuelling aircraft at an airbase or in the air
 * Repair, e.g. repair of damaged platforms in a facility
-* Transport, e.g. loading and transport of supplies from a specific pick-up point to an off-loading destination
+* Transport, e.g. transporting supplies from a specific pick-up point to an off-loading destination
 
 ## License
 
