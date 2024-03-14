@@ -417,5 +417,5 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 ### Variant Record Datatypes
 |Name|Discriminant (Datatype)|Alternatives|Semantics|
 |---|---|---|---|
-|TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)|Resuply, Repair, Transport|Variant record for task definition data.|
+|TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)|Resupply, Repair, Transport|Variant record for task definition data.|
 |TaskProgressVariantRecord|TaskType (EntityControlActionEnum)|LOG_ElapsedTime, LOG_Transport|Variant record for task progress data.|   

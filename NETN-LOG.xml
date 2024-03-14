@@ -681,7 +681,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 <dataType>EntityControlActionEnum</dataType>
                 <alternative>
                     <enumerator>Resupply</enumerator>
-                    <name>Resuply</name>
+                    <name>Resupply</name>
                     <dataType>ResupplyTaskStruct</dataType>
                     <semantics>Task parameters.</semantics>
                 </alternative>
@@ -705,7 +705,7 @@ Above license gives you the right to use and redistribute this FOM Module (XML f
                 <discriminant>TaskType</discriminant>
                 <dataType>EntityControlActionEnum</dataType>
                 <alternative>
-                    <enumerator>Resuply, Repair</enumerator>
+                    <enumerator>Resupply, Repair</enumerator>
                     <name>LOG_ElapsedTime</name>
                     <dataType>ElapsedTimeProgress</dataType>
                     <semantics>Keeps track of elapsed time.</semantics>
